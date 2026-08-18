@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login - GGSIPU Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="univ-header">
+        <div class="container header-container">
+            <div class="header-branding">
+                <a href="index.html" class="logo-link">
+                    <img src="assets/ipu-logo.png" alt="GGSIPU Logo" class="univ-logo-img">
+                </a>
+                <div class="header-divider"></div>
+                <div class="title-group">
+                    <span class="portal-badge">Student Portal</span>
+                    <h1 class="system-title">
+                        Certificate Generation, Verification <span class="amp">&amp;</span> Management System
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Student Login Section -->
+    <main class="main-container container auth-container">
+        
+        <div class="auth-card">
+            <!-- Back to Home Link -->
+            <a href="index.html" class="back-link">← Back to Home</a>
+
+            <div class="card-icon">🎓</div>
+            <h2 class="auth-title">Student Login</h2>
+            <p class="auth-subtitle">Sign in to view, download, and manage your verified certificates.</p>
+
+            <form class="auth-form" action="#" method="POST">
+                <!-- Enrollment Number -->
+                <div class="form-group">
+                    <label for="enrollment-no">Enrollment / Roll Number</label>
+                    <input 
+                        type="text" 
+                        id="enrollment-no" 
+                        name="enrollmentNo" 
+                        placeholder="e.g., 0123456789" 
+                        required 
+                        autocomplete="username"
+                    >
+                </div>
+
+                <!-- Password / DOB -->
+                <div class="form-group">
+                    <div class="label-row">
+                        <label for="student-password">Password</label>
+                        <a href="#" class="forgot-link">Forgot Password?</a>
+                    </div>
+                    <input 
+                        type="password" 
+                        id="student-password" 
+                        name="password" 
+                        placeholder="Enter your password" 
+                        required 
+                        autocomplete="current-password"
+                    >
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-success btn-block">Sign In as Student</button>
+            </form>
+
+            <div class="auth-note">
+                Having trouble logging in? <a href="#">Contact Support</a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-team">
+                <span>Designed &amp; Developed with ❤️ by</span>
+                <span class="team-badge">Team CodeLEOS</span>
+            </div>
+
+            <div class="contributors-wrapper">
+                <span class="contributors-label">Contributors</span>
+                <div class="contributor-tags">
+                    <span class="contributor-pill">Kirti Bhardwaj</span>
+                    <span class="contributor-pill">Imran</span>
+                    <span class="contributor-pill">Tushar</span>
+                    <span class="contributor-pill">Divya Rishabh</span>
+                    <span class="contributor-pill">Virenraj</span>
+                    <span class="contributor-pill">Ayush Jha</span>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Guru Gobind Singh Indraprastha University. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
