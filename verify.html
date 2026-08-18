@@ -34,28 +34,28 @@
             <a href="index.html" class="back-link">← Back to Home</a>
 
             <div class="card-icon">🔍</div>
-            <h2 class="auth-title">Instant Certificate Verification</h2>
-            <p class="auth-subtitle">Verify the authenticity of digital certificates issued by GGSIPU.</p>
+            <h2 class="auth-title">Certificate Verification</h2>
+            <p class="auth-subtitle">Verify academic credentials issued by Guru Gobind Singh Indraprastha University.</p>
 
-            <!-- Verification Methods Container -->
+            <!-- Verification Input Grid -->
             <div class="verify-grid">
                 
                 <!-- Method 1: ID Search -->
                 <div class="verify-box">
-                    <h3 class="verify-box-title">Method 1: Certificate ID</h3>
-                    <p class="verify-box-desc">Enter the unique Certificate ID or hash printed on the document.</p>
+                    <h3 class="verify-box-title">Search by Certificate ID</h3>
+                    <p class="verify-box-desc">Enter the alphanumeric Certificate ID printed on the document.</p>
                     
-                    <form class="verify-form" action="#" method="GET">
+                    <form class="verify-form" onsubmit="return false;">
                         <div class="form-group">
                             <input 
                                 type="text" 
                                 id="cert-id" 
                                 name="certId" 
-                                placeholder="e.g., IPU-2026-AIML-1024" 
+                                placeholder="Enter Certificate ID" 
                                 required
                             >
                         </div>
-                        <button type="submit" class="btn btn-dark btn-block">Verify by ID</button>
+                        <button type="submit" class="btn btn-dark btn-block">Verify Document</button>
                     </form>
                 </div>
 
@@ -64,20 +64,19 @@
                     <span>OR</span>
                 </div>
 
-                <!-- Method 2: QR Scanner / File Upload -->
+                <!-- Method 2: QR Scanner / Upload -->
                 <div class="verify-box qr-box">
-                    <h3 class="verify-box-title">Method 2: QR Code / Doc Upload</h3>
-                    <p class="verify-box-desc">Scan the printed QR code using camera or upload document image.</p>
+                    <h3 class="verify-box-title">Upload QR / Document</h3>
+                    <p class="verify-box-desc">Select the certificate file or scan the embedded QR code.</p>
                     
                     <div class="qr-action-area">
                         <div class="qr-placeholder">
-                            <span class="qr-icon">📷</span>
-                            <span class="qr-text">Scan or Drag Certificate QR here</span>
+                            <span class="qr-icon">📄</span>
+                            <span class="qr-text">PDF or image file</span>
                         </div>
                         <div class="qr-buttons">
-                            <button type="button" class="btn btn-primary btn-sm">Scan with Camera</button>
-                            <label for="qr-upload" class="btn btn-outline-dark btn-sm custom-file-upload">
-                                Upload File
+                            <label for="qr-upload" class="btn btn-dark btn-sm custom-file-upload">
+                                Browse File
                                 <input type="file" id="qr-upload" accept="image/*,.pdf" style="display: none;">
                             </label>
                         </div>
@@ -87,7 +86,7 @@
             </div>
 
             <div class="security-badge-note">
-                🔒 Cryptographically signed &amp; tamper-proof verification powered by GGSIPU.
+                Official Credential Verification Engine — GGSIPU
             </div>
         </div>
 
