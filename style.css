@@ -1,4 +1,4 @@
-/* --- Global Reset & Fonts --- */
+/* --- Global Reset & Base Setup --- */
 * {
     margin: 0;
     padding: 0;
@@ -16,156 +16,148 @@ body {
 
 .container {
     width: 100%;
-    max-width: 1100px;
+    max-width: 1180px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 0 20px;
 }
 
-/* --- Header & Navbar --- */
-.navbar-wrapper {
+/* --- Top Header (Logo + High-Impact Styled Title) --- */
+.univ-header {
     background-color: #ffffff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    padding: 14px 0;
 }
 
-.navbar {
-    height: 64px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-}
-
-.navbar-brand {
+.header-container {
     display: flex;
     align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: 700;
-    color: #0f172a;
-    flex-shrink: 0; /* Logo squeeze nahi hoga */
 }
 
-.logo-box {
-    width: 28px;
-    height: 28px;
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    border-radius: 6px;
+.header-branding {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
     flex-shrink: 0;
 }
 
-.nav-links {
+.univ-logo-img {
+    height: 72px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.header-divider {
+    width: 2px;
+    height: 52px;
+    background: linear-gradient(to bottom, #cbd5e1, #94a3b8, #cbd5e1);
+    flex-shrink: 0;
+}
+
+.title-group {
     display: flex;
-    align-items: center;
-    list-style: none;
-    gap: 16px; /* Compact space between options */
-    margin: 0;
-    padding: 0;
+    flex-direction: column;
+    gap: 2px;
 }
 
-.nav-links li {
-    display: flex;
-    align-items: center;
+.portal-badge {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #7f1d1d;
 }
 
-.nav-links a {
-    text-decoration: none;
-    color: #475569;
-    font-size: 14px;
-    font-weight: 500;
-    white-space: nowrap; /* Text break nahi hoga */
-    transition: color 0.2s ease;
+.system-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.3px;
+    line-height: 1.25;
 }
 
-.nav-links a:hover {
+.system-title .amp {
     color: #2563eb;
 }
 
-.nav-links .nav-login-btn {
-    background-color: #f1f5f9;
-    padding: 6px 14px;
-    border-radius: 6px;
-    color: #0f172a;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.nav-links .nav-login-btn:hover {
-    background-color: #e2e8f0;
-}
-
-/* --- Main Layout --- */
+/* --- Main Layout & Card Grid --- */
 .main-container {
     flex: 1;
-    padding-top: 30px;
-    padding-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 50px;
 }
 
 .portal-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 28px;
 }
 
 /* --- Cards --- */
 .card {
     background-color: #ffffff;
-    border-radius: 16px;
-    padding: 32px 20px;
+    border-radius: 18px;
+    padding: 38px 24px;
     border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.08);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.08);
 }
 
 .card-icon {
-    font-size: 36px;
-    margin-bottom: 16px;
+    font-size: 42px;
+    margin-bottom: 18px;
 }
 
 .card-title {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 22px;
+    font-weight: 700;
     color: #0f172a;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .card-desc {
-    font-size: 14px;
+    font-size: 14.5px;
     color: #64748b;
-    line-height: 1.5;
-    margin-bottom: 24px;
+    line-height: 1.6;
+    margin-bottom: 28px;
     flex: 1;
 }
 
 .card-highlight {
-    background: #f8fafc;
+    background: #ffffff;
     border-color: #cbd5e1;
 }
 
-/* --- Buttons --- */
+/* --- Action Buttons --- */
 .btn {
     display: inline-block;
     width: 100%;
-    max-width: 200px;
-    padding: 12px 20px;
+    max-width: 220px;
+    padding: 13px 22px;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 9px;
     text-align: center;
-    transition: background-color 0.2s ease, transform 0.1s ease;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
 }
 
 .btn:active {
@@ -175,6 +167,7 @@ body {
 .btn-primary {
     background-color: #2563eb;
     color: #ffffff;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
 .btn-primary:hover {
@@ -184,6 +177,7 @@ body {
 .btn-success {
     background-color: #16a34a;
     color: #ffffff;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
 }
 
 .btn-success:hover {
@@ -193,59 +187,151 @@ body {
 .btn-dark {
     background-color: #0f172a;
     color: #ffffff;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
 }
 
 .btn-dark:hover {
     background-color: #1e293b;
 }
 
-/* --- Footer --- */
+/* --- Upgraded Footer Section --- */
 .footer {
     background-color: #ffffff;
     border-top: 1px solid #e2e8f0;
-    padding: 18px 0;
+    padding: 30px 0 20px;
     margin-top: auto;
 }
 
 .footer-content {
-    text-align: center;
-    font-size: 13px;
-    color: #64748b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
 }
 
-/* --- Mobile Specific Screen Adjustments --- */
-@media (max-width: 650px) {
-    .navbar {
-        height: 56px;
+.footer-team {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #475569;
+    font-weight: 500;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.team-badge {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #f8fafc;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+}
+
+.contributors-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.contributors-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #94a3b8;
+    font-weight: 700;
+}
+
+.contributor-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.contributor-pill {
+    background-color: #f1f5f9;
+    color: #334155;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.contributor-pill:hover {
+    background-color: #e2e8f0;
+    border-color: #cbd5e1;
+}
+
+.footer-bottom {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 12px;
+    width: 100%;
+    text-align: center;
+}
+
+.footer-bottom p {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    .univ-header {
+        padding: 12px 0;
     }
 
-    .navbar-brand {
-        font-size: 16px;
+    .header-branding {
+        gap: 12px;
     }
 
-    .logo-box {
-        width: 24px;
-        height: 24px;
+    .univ-logo-img {
+        height: 48px;
     }
 
-    .nav-links {
-        gap: 10px; /* Choti screen par items paas rahenge */
+    .header-divider {
+        height: 38px;
     }
 
-    .nav-links a {
-        font-size: 12px; /* Clean fit on phones */
+    .system-title {
+        font-size: 14px;
+        line-height: 1.3;
     }
 
-    .nav-links .nav-login-btn {
-        padding: 5px 10px;
-        font-size: 12px;
+    .portal-badge {
+        font-size: 10px;
+    }
+
+    .main-container {
+        padding-top: 24px;
+        padding-bottom: 36px;
     }
 
     .portal-grid {
         grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .card {
+        padding: 28px 18px;
     }
 
     .btn {
         max-width: 100%;
+    }
+
+    .footer-team {
+        font-size: 13px;
+    }
+
+    .contributor-pill {
+        font-size: 11.5px;
+        padding: 3px 10px;
     }
 }

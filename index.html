@@ -3,64 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificate Management Portal</title>
+    <title>GGSIPU - Certificate Management Portal</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Header / Navigation Bar -->
-    <header class="navbar-wrapper">
-        <nav class="navbar container">
-            <a href="#" class="navbar-brand">
-                <div class="logo-box"></div>
-                <span>Home</span>
-            </a>
-            <ul class="nav-links">
-                <li><a href="#verify">Verify Certificate</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#login" class="nav-login-btn">Login</a></li>
-            </ul>
-        </nav>
+    <!-- Professional Top Header with Logo & Prominent Title -->
+    <header class="univ-header">
+        <div class="container header-container">
+            <div class="header-branding">
+                <a href="index.html" class="logo-link">
+                    <img src="assets/ipu-logo.png" alt="GGSIPU Logo" class="univ-logo-img">
+                </a>
+                <div class="header-divider"></div>
+                <div class="title-group">
+                    <span class="portal-badge">Official Portal</span>
+                    <h1 class="system-title">
+                        Certificate Generation, Verification <span class="amp">&amp;</span> Management System
+                    </h1>
+                </div>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content Container -->
     <main class="main-container container">
-
-        <!-- Hero / Section Title -->
         <section class="portal-grid">
             
-            <!-- Teacher Portal Card -->
+            <!-- Teacher Portal -->
             <div class="card">
-                <div class="card-icon teacher-icon">👨‍🏫</div>
+                <div class="card-icon">👨‍🏫</div>
                 <h2 class="card-title">Teacher Portal</h2>
-                <p class="card-desc">Generate, manage, and distribute verified certificates effortlessly.</p>
+                <p class="card-desc">Generate, manage, and issue tamper-proof digital certificates.</p>
                 <a href="#" class="btn btn-primary">Teacher Login</a>
             </div>
 
-            <!-- Student Portal Card -->
+            <!-- Student Portal -->
             <div class="card">
-                <div class="card-icon student-icon">🎓</div>
+                <div class="card-icon">🎓</div>
                 <h2 class="card-title">Student Portal</h2>
-                <p class="card-desc">View, download, and access your digital certificates securely anytime.</p>
+                <p class="card-desc">View, download, and securely access your verified academic records.</p>
                 <a href="#" class="btn btn-success">Student Login</a>
             </div>
 
-            <!-- Quick Verification Card -->
+            <!-- Quick Verification -->
             <div class="card card-highlight">
-                <div class="card-icon verify-icon">🔍</div>
+                <div class="card-icon">🔍</div>
                 <h2 class="card-title">Quick Verification</h2>
-                <p class="card-desc">Authenticate and verify student certificates instantly using ID or QR.</p>
+                <p class="card-desc">Authenticate and verify student credentials instantly using Certificate ID or QR code.</p>
                 <a href="#" class="btn btn-dark">Verify Certificate</a>
             </div>
 
         </section>
-
     </main>
 
-    <!-- Footer -->
+    <!-- Footer Section -->
     <footer class="footer">
         <div class="container footer-content">
-            <p>© 2026 Certificate Verification System. All rights reserved.</p>
+            <!-- Team Branding -->
+            <div class="footer-team">
+                <span>Designed &amp; Developed with ❤️ by</span>
+                <span class="team-badge">Team CodeLEOS</span>
+            </div>
+
+            <!-- Contributors List -->
+            <div class="contributors-wrapper">
+                <span class="contributors-label">Contributors</span>
+                <div class="contributor-tags">
+                    <span class="contributor-pill">Kirti Bhardwaj</span>
+                    <span class="contributor-pill">Imran</span>
+                    <span class="contributor-pill">Tushar</span>
+                    <span class="contributor-pill">Divya Rishabh</span>
+                    <span class="contributor-pill">Virenraj</span>
+                    <span class="contributor-pill">Ayush Jha</span>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="footer-bottom">
+                <p>© 2026 Guru Gobind Singh Indraprastha University. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
