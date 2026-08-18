@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Certificate - GGSIPU Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="univ-header">
+        <div class="container header-container">
+            <div class="header-branding">
+                <a href="index.html" class="logo-link">
+                    <img src="assets/ipu-logo.png" alt="GGSIPU Logo" class="univ-logo-img">
+                </a>
+                <div class="header-divider"></div>
+                <div class="title-group">
+                    <span class="portal-badge">Public Verification</span>
+                    <h1 class="system-title">
+                        Certificate Generation, Verification <span class="amp">&amp;</span> Management System
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Verification Section -->
+    <main class="main-container container auth-container">
+        
+        <div class="verify-card">
+            <!-- Back to Home Link -->
+            <a href="index.html" class="back-link">← Back to Home</a>
+
+            <div class="card-icon">🔍</div>
+            <h2 class="auth-title">Instant Certificate Verification</h2>
+            <p class="auth-subtitle">Verify the authenticity of digital certificates issued by GGSIPU.</p>
+
+            <!-- Verification Methods Container -->
+            <div class="verify-grid">
+                
+                <!-- Method 1: ID Search -->
+                <div class="verify-box">
+                    <h3 class="verify-box-title">Method 1: Certificate ID</h3>
+                    <p class="verify-box-desc">Enter the unique Certificate ID or hash printed on the document.</p>
+                    
+                    <form class="verify-form" action="#" method="GET">
+                        <div class="form-group">
+                            <input 
+                                type="text" 
+                                id="cert-id" 
+                                name="certId" 
+                                placeholder="e.g., IPU-2026-AIML-1024" 
+                                required
+                            >
+                        </div>
+                        <button type="submit" class="btn btn-dark btn-block">Verify by ID</button>
+                    </form>
+                </div>
+
+                <!-- Divider -->
+                <div class="verify-or-divider">
+                    <span>OR</span>
+                </div>
+
+                <!-- Method 2: QR Scanner / File Upload -->
+                <div class="verify-box qr-box">
+                    <h3 class="verify-box-title">Method 2: QR Code / Doc Upload</h3>
+                    <p class="verify-box-desc">Scan the printed QR code using camera or upload document image.</p>
+                    
+                    <div class="qr-action-area">
+                        <div class="qr-placeholder">
+                            <span class="qr-icon">📷</span>
+                            <span class="qr-text">Scan or Drag Certificate QR here</span>
+                        </div>
+                        <div class="qr-buttons">
+                            <button type="button" class="btn btn-primary btn-sm">Scan with Camera</button>
+                            <label for="qr-upload" class="btn btn-outline-dark btn-sm custom-file-upload">
+                                Upload File
+                                <input type="file" id="qr-upload" accept="image/*,.pdf" style="display: none;">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="security-badge-note">
+                🔒 Cryptographically signed &amp; tamper-proof verification powered by GGSIPU.
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-team">
+                <span>Designed &amp; Developed with ❤️ by</span>
+                <span class="team-badge">Team CodeLEOS</span>
+            </div>
+
+            <div class="contributors-wrapper">
+                <span class="contributors-label">Contributors</span>
+                <div class="contributor-tags">
+                    <span class="contributor-pill">Kirti Bhardwaj</span>
+                    <span class="contributor-pill">Imran</span>
+                    <span class="contributor-pill">Tushar</span>
+                    <span class="contributor-pill">Divya Rishabh</span>
+                    <span class="contributor-pill">Virenraj</span>
+                    <span class="contributor-pill">Ayush Jha</span>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Guru Gobind Singh Indraprastha University. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

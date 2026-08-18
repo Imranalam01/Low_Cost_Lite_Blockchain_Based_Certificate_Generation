@@ -102,21 +102,23 @@ body {
     gap: 28px;
 }
 
-/* --- Cards --- */
+/* --- Cards (Updated: Faded Greyish Theme) --- */
 .card {
-    background-color: #ffffff;
+    background-color: #f1f5f9; /* Faded soft grey */
     border-radius: 18px;
     padding: 38px 24px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #cbd5e1; /* Subtle distinct border */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .card:hover {
+    background-color: #eaf0f6;
+    border-color: #94a3b8;
     transform: translateY(-6px);
     box-shadow: 0 16px 28px rgba(0, 0, 0, 0.08);
 }
@@ -135,14 +137,14 @@ body {
 
 .card-desc {
     font-size: 14.5px;
-    color: #64748b;
+    color: #475569;
     line-height: 1.6;
     margin-bottom: 28px;
     flex: 1;
 }
 
 .card-highlight {
-    background: #ffffff;
+    background-color: #edf2f7;
     border-color: #cbd5e1;
 }
 
@@ -336,7 +338,7 @@ body {
     }
 }
 
-/* --- Auth / Login Form Styles --- */
+/* --- Auth / Login Form Styles (Updated: Faded Greyish Card) --- */
 .auth-container {
     display: flex;
     justify-content: center;
@@ -344,11 +346,11 @@ body {
 }
 
 .auth-card {
-    background-color: #ffffff;
+    background-color: #f1f5f9; /* Faded soft grey */
     border-radius: 18px;
     padding: 40px 32px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.05);
     width: 100%;
     max-width: 440px;
     text-align: center;
@@ -430,7 +432,7 @@ body {
     border-radius: 8px;
     outline: none;
     color: #1e293b;
-    background-color: #f8fafc;
+    background-color: #ffffff; /* Crisp white input on grey card */
     transition: all 0.2s ease;
 }
 
@@ -465,5 +467,145 @@ body {
 @media (max-width: 500px) {
     .auth-card {
         padding: 32px 20px;
+    }
+}
+
+/* --- Quick Verification Page Specific Styles (Updated: Faded Greyish Card) --- */
+.verify-card {
+    background-color: #f1f5f9; /* Faded soft grey */
+    border-radius: 18px;
+    padding: 40px 32px;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 6px 24px rgba(15, 23, 42, 0.05);
+    width: 100%;
+    max-width: 820px;
+    text-align: center;
+    position: relative;
+}
+
+.verify-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+    align-items: center;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.verify-box {
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 14px;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-align: left;
+}
+
+.verify-box-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+
+.verify-box-desc {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    flex: 1;
+}
+
+.verify-or-divider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.verify-or-divider span {
+    background-color: #cbd5e1;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 10px;
+    border-radius: 50%;
+}
+
+.qr-action-area {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.qr-placeholder {
+    border: 2px dashed #94a3b8;
+    border-radius: 10px;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8fafc;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.qr-placeholder:hover {
+    border-color: #2563eb;
+    background-color: #f1f5f9;
+}
+
+.qr-icon {
+    font-size: 28px;
+    margin-bottom: 6px;
+}
+
+.qr-text {
+    font-size: 12.5px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.qr-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-sm {
+    padding: 9px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    max-width: 100%;
+    flex: 1;
+}
+
+.custom-file-upload {
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.security-badge-note {
+    font-size: 12.5px;
+    color: #475569;
+    font-weight: 600;
+    margin-top: 14px;
+    padding-top: 16px;
+    border-top: 1px solid #cbd5e1;
+}
+
+@media (max-width: 768px) {
+    .verify-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .verify-or-divider span {
+        padding: 4px 12px;
+        border-radius: 12px;
     }
 }
