@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - GGSIPU</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="univ-header">
+        <div class="container header-container dash-header">
+            <div class="header-branding">
+                <a href="index.html" class="logo-link">
+                    <img src="assets/ipu-logo.png" alt="GGSIPU Logo" class="univ-logo-img">
+                </a>
+                <div class="header-divider"></div>
+                <div class="title-group">
+                    <span class="portal-badge">Student Portal</span>
+                    <h1 class="system-title">
+                        Certificate Generation, Verification <span class="amp">&amp;</span> Management System
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Logout -->
+            <div class="user-nav">
+                <a href="student-login.html" class="btn-logout">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Workspace -->
+    <main class="container dashboard-container">
+
+        <!-- Issued Certificates Section -->
+        <section class="dash-section">
+            <div class="section-card">
+                <div class="section-card-header table-header-flex">
+                    <div>
+                        <h2 class="section-title">Verified Certificates</h2>
+                        <p class="section-desc">View and download your academic and event credentials.</p>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Certificate ID</th>
+                                <th>Title / Description</th>
+                                <th>Category</th>
+                                <th>Date of Issuance</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="cert-code">IPU-2026-ENG-0891</td>
+                                <td class="font-bold">Academic Merit Certificate</td>
+                                <td>Merit</td>
+                                <td>18 Aug 2026</td>
+                                <td><span class="status-badge status-active">Verified</span></td>
+                                <td class="action-buttons">
+                                    <button class="btn-table-action btn-download" type="button">Download PDF</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="cert-code">IPU-2026-SIH-0412</td>
+                                <td class="font-bold">Internal Hackathon Participation</td>
+                                <td>Participation</td>
+                                <td>12 Aug 2026</td>
+                                <td><span class="status-badge status-active">Verified</span></td>
+                                <td class="action-buttons">
+                                    <button class="btn-table-action btn-download" type="button">Download PDF</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-team">
+                <span>Designed &amp; Developed with ❤️ by</span>
+                <span class="team-badge">Team CodeLEOS</span>
+            </div>
+
+            <div class="contributors-wrapper">
+                <span class="contributors-label">Contributors</span>
+                <div class="contributor-tags">
+                    <span class="contributor-pill">Kirti Bhardwaj</span>
+                    <span class="contributor-pill">Imran</span>
+                    <span class="contributor-pill">Tushar</span>
+                    <span class="contributor-pill">Divya Rishabh</span>
+                    <span class="contributor-pill">Virenraj</span>
+                    <span class="contributor-pill">Ayush Jha</span>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Guru Gobind Singh Indraprastha University. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
