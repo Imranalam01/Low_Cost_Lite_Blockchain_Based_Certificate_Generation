@@ -45,13 +45,13 @@
                     <h3 class="verify-box-title">Search by Certificate ID</h3>
                     <p class="verify-box-desc">Enter the alphanumeric Certificate ID printed on the document.</p>
                     
-                    <form class="verify-form" onsubmit="return false;">
+                    <form class="verify-form" id="verifyForm">
                         <div class="form-group">
                             <input 
                                 type="text" 
                                 id="cert-id" 
                                 name="certId" 
-                                placeholder="Enter Certificate ID" 
+                                placeholder="e.g. IPU-2026-XXXXXX" 
                                 required
                             >
                         </div>
@@ -85,7 +85,36 @@
 
             </div>
 
-            <div class="security-badge-note">
+            <!-- Dynamic Verification Result Card -->
+            <div id="verificationResult" class="verification-result-box" style="display: none; margin-top: 2rem; border-top: 1px solid var(--border-color, #e2e8f0); padding-top: 1.5rem; text-align: left;">
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #065f46; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-weight: 600;">
+                    ✓ Blockchain Verified & Authentic
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; font-size: 0.95rem;">
+                    <div>
+                        <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Candidate Name:</strong>
+                        <div id="resStudentName" style="font-weight: 600; font-size: 1.05rem;">-</div>
+                    </div>
+                    <div>
+                        <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Enrollment No:</strong>
+                        <div id="resEnrollment" style="font-weight: 600;">-</div>
+                    </div>
+                    <div>
+                        <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Certificate ID:</strong>
+                        <div id="resCertId" style="font-family: monospace; font-weight: 600; color: #1e40af;">-</div>
+                    </div>
+                    <div>
+                        <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Event / Category:</strong>
+                        <div id="resCategory" style="font-weight: 600;">-</div>
+                    </div>
+                    <div>
+                        <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Issue Date:</strong>
+                        <div id="resIssueDate" style="font-weight: 600;">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="security-badge-note" style="margin-top: 1.5rem;">
                 Official Credential Verification Engine — GGSIPU
             </div>
         </div>
@@ -118,5 +147,6 @@
         </div>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>

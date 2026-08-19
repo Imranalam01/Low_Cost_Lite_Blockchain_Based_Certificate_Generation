@@ -39,7 +39,7 @@
     <!-- Main Workspace -->
     <main class="container dashboard-container">
         
-        <!-- Generate Certificate Section -->
+        <!-- Generate Certificate Section (Single Entry) -->
         <section class="dash-section">
             <div class="section-card">
                 <div class="section-card-header">
@@ -92,6 +92,26 @@
                         <button type="reset" class="btn btn-secondary">Clear Fields</button>
                     </div>
                 </form>
+            </div>
+        </section>
+
+        <!-- Bulk Issuance Section (Batch CSV Upload) -->
+        <section class="dash-section">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-title">Bulk Certificate Issuance (Batch CSV)</h2>
+                    <p class="section-desc">Upload a CSV file containing batch student records to mine all blockchain certificates simultaneously.</p>
+                </div>
+
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem; flex-wrap: wrap;">
+                    <input type="file" id="csvFileInput" accept=".csv" style="padding: 0.6rem; border: 1px dashed #94a3b8; border-radius: 6px; background: #fff; cursor: pointer;">
+                    <button type="button" id="btnUploadCsv" class="btn btn-primary">Process &amp; Mine Batch</button>
+                    <button type="button" id="btnDownloadSample" class="btn btn-secondary">Download Sample CSV</button>
+                </div>
+                
+                <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.85rem;">
+                    Required Headers: <code>Student_Name, Enrollment_No, Dept, Event_Title, Cert_ID</code>
+                </p>
             </div>
         </section>
 

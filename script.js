@@ -107,3 +107,87 @@ if (verifyForm) {
         }
     });
 }
+
+// --- 3. Faculty Bulk Upload via CSV ---
+const csvInput = document.getElementById("csvFileInput");
+const btnUploadCsv = document.getElementById("btnUploadCsv");
+const btnSample = document.getElementById("btnDownloadSample");
+
+// Sample CSV Download Helper
+if (btnSample) {
+    btnSample.addEventListener("click", () => {
+        const sampleContent = "Student_Name,Enrollment_No,Dept,Event_Title,Cert_ID\nRahul Sharma,01916403222,AIML,Academic Excellence,IPU/USAR/AIML/2026/001\nPriya Patel,02416403222,AIML,Degree Completion,IPU/USAR/AIML/2026/002\nAryan Verma,03016403222,AIML,SIH Hackathon,IPU/USAR/AIML/2026/003";
+        const blob = new Blob([sampleContent], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "batch_certificate_sample.csv";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+}
+
+// Parse & Post Batch Data
+if (btnUploadCsv && csvInput) {
+    btnUploadCsv.addEventListener("click", async function() {
+        const file = csvInput.files[0];
+        if (!file) {
+            alert("Please select a CSV file first.");
+            return;
+        }
+
+        btnUploadCsv.textContent = "Mining Blocks...";
+        btnUploadCsv.disabled = true;
+
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            const text = e.target.result;
+            const lines = text.split(/\r?\n/).filter(row => row.trim() !== "");
+            
+            if (lines.length <= 1) {
+                alert("CSV is empty or missing data rows.");
+                btnUploadCsv.textContent = "Process & Mine Batch";
+                btnUploadCsv.disabled = false;
+                return;
+            }
+
+            const batchData = [];
+            for (let i = 1; i < lines.length; i++) {
+                const cols = lines[i].split(",").map(c => c.trim());
+                if (cols.length >= 4) {
+                    batchData.push({
+                        studentName: cols[0],
+                        enrollmentNo: cols[1],
+                        courseDept: cols[2],
+                        eventTitle: cols[3],
+                        certId: cols[4] || ""
+                    });
+                }
+            }
+
+            try {
+                const res = await fetch(API_BASE_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify(batchData)
+                });
+                const resData = await res.json();
+
+                if (resData.status === "SUCCESS") {
+                    alert(`Batch Mined Successfully!\n\nTotal Certificates: ${resData.count}\nAll records are linked in the blockchain ledger.`);
+                    csvInput.value = "";
+                } else {
+                    alert("Bulk generation error: " + (resData.message || "Failed"));
+                }
+            } catch (err) {
+                console.error("Bulk Upload Error:", err);
+                alert("Error connecting to Blockchain Ledger.");
+            } finally {
+                btnUploadCsv.textContent = "Process & Mine Batch";
+                btnUploadCsv.disabled = false;
+            }
+        };
+
+        reader.readAsText(file);
+    });
+}
