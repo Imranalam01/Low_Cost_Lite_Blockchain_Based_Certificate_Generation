@@ -5,7 +5,13 @@ const path = require("path");
 // Contract & Connection Setup
 const CONTRACT_ADDRESS = "0x28c9c77549F21dfb76834eE91F90EeEA1861F495";
 const RPC_URL = "https://ethereum-sepolia-rpc.publicnode.com"; 
-const PRIVATE_KEY = "8c915548edb3365c6e4cd3de65344519bde3980da59295e34574bd12ef7be6b3"; // Replace with your exported private key
+require("dotenv").config();
+
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+
+if (!PRIVATE_KEY) {
+  throw new Error("PRIVATE_KEY is missing from environment variables (.env file).");
+}
 
 // Contract ABI
 const ABI = [
@@ -25,7 +31,8 @@ async function main() {
   const payload = JSON.parse(rawData);
 
   // Format arguments for anchorBatch
-  const batchId = ethers.id(payload.batch_id); 
+  const batchId = ethers.id(payload.batch_id);
+  console.log("EXACT BATCH ID HASH:", batchId);``
   const merkleRoot = payload.merkle_root; 
   const totalRecords = payload.total_records;
 
