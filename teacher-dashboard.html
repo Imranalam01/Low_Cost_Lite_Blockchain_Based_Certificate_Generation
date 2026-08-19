@@ -6,6 +6,7 @@
     <title>Faculty Dashboard - GGSIPU</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!-- Header -->
@@ -46,31 +47,31 @@
                     <p class="section-desc">Enter candidate and program details to generate a verified credential.</p>
                 </div>
 
-                <form class="cert-form" action="#" method="POST">
+                <form class="cert-form" id="issueCertForm">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="student-name">Student Name</label>
                             <input type="text" id="student-name" placeholder="Full name as per records" required>
                         </div>
                         <div class="form-group">
-                            <label for="enrollment-number">Enrollment Number</label>
-                            <input type="text" id="enrollment-number" placeholder="Enrollment No." required>
+                            <label for="enrollment-no">Enrollment Number</label>
+                            <input type="text" id="enrollment-no" placeholder="Enrollment No." required>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="course-program">Program / Department</label>
-                            <input type="text" id="course-program" placeholder="e.g., AIML" required>
+                            <label for="dept">Program / Department</label>
+                            <input type="text" id="dept" placeholder="e.g., AIML" required>
                         </div>
                         <div class="form-group">
                             <label for="cert-type">Certificate Category</label>
                             <select id="cert-type" class="form-select" required>
                                 <option value="" disabled selected>Select category</option>
-                                <option value="academic">Academic Excellence</option>
-                                <option value="completion">Degree / Program Completion</option>
-                                <option value="internship">Internship &amp; Research</option>
-                                <option value="event">Institutional Event / Participation</option>
+                                <option value="Academic Excellence">Academic Excellence</option>
+                                <option value="Degree / Program Completion">Degree / Program Completion</option>
+                                <option value="Internship & Research">Internship &amp; Research</option>
+                                <option value="Institutional Event / Participation">Institutional Event / Participation</option>
                             </select>
                         </div>
                     </div>
@@ -176,5 +177,6 @@
         </div>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
