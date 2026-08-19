@@ -1,7 +1,33 @@
+# Secrets
+.env
+*.pem
+*.key
+
+# Node / Frontend
+node_modules/
+dist/
+
+# C++ & Windows Build Outputs
+build/
+*.o
+*.so
+*.a
 *.exe
 *.dll
-*.o
-*.obj
-build/
-CMakeCache.txt
-CMakeFiles/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Generated / Media Files
+*.pdf
+*.png
+*.jpg
