@@ -30,4 +30,8 @@ Thumbs.db
 # Generated / Media Files
 *.pdf
 *.png
+<<<<<<< HEAD
 *.jpg
+=======
+*.jpg
+>>>>>>> bd335b4 (feat(blockchain): integrate MerkleAnchor smart contract, anchor service, and verification schema)

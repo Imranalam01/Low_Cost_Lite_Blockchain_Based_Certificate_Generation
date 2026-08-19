@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MerkleBatchVerificationResponse",
+  "type": "object",
+  "properties": {
+    "success": { "type": "boolean" },
+    "batch_id": { "type": "string" },
+    "batch_id_hash": { "type": "string", "pattern": "^0x[a-fA-F0-9]{64}$" },
+    "merkle_root": { "type": "string", "pattern": "^0x[a-fA-F0-9]{64}$" },
+    "total_records": { "type": "integer" },
+    "tx_hash": { "type": "string", "pattern": "^0x[a-fA-F0-9]{64}$" },
+    "block_number": { "type": "integer" },
+    "explorer_url": { "type": "string", "format": "uri" },
+    "timestamp": { "type": "integer" }
+  },
+  "required": ["success", "batch_id", "merkle_root", "tx_hash", "explorer_url"]
+}

@@ -1,13 +1,5 @@
 ﻿{
-  "batch_id": "BATCH-2026-08-17-001",
-  "records": [
-    {
-      "certificate_id": "GGSIPU-2026-001",
-      "raw_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "certificate_id": "GGSIPU-2026-002",
-      "raw_hash": "f1d2c3b4a567890123456789abcdef0123456789abcdef0123456789abcdef01"
-    }
-  ]
+  "batch_id": "batch_001",
+  "merkle_root": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+  "total_records": 10
 }
