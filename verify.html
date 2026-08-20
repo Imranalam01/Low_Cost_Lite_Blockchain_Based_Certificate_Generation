@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Certificate - GGSIPU Portal</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Lightweight Client-side QR Decoder Engine -->
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <!-- QR Code Scanning Engine -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
 
@@ -37,7 +37,7 @@
 
             <div class="card-icon">🔍</div>
             <h2 class="auth-title">Certificate Verification</h2>
-            <p class="auth-subtitle">Verify cryptographic academic credentials issued by Guru Gobind Singh Indraprastha University.</p>
+            <p class="auth-subtitle">Verify academic credentials issued by Guru Gobind Singh Indraprastha University.</p>
 
             <!-- Verification Input Grid -->
             <div class="verify-grid">
@@ -45,7 +45,7 @@
                 <!-- Method 1: ID Search -->
                 <div class="verify-box">
                     <h3 class="verify-box-title">Search by Certificate ID / Hash</h3>
-                    <p class="verify-box-desc">Enter the Certificate ID, Enrollment No, or SHA-256 Hash.</p>
+                    <p class="verify-box-desc">Enter the Certificate ID, Enrollment No, or SHA-256 Block Hash.</p>
                     
                     <form class="verify-form" id="verifyForm">
                         <div class="form-group">
@@ -66,22 +66,25 @@
                     <span>OR</span>
                 </div>
 
-                <!-- Method 2: QR Scanner / Upload -->
+                <!-- Method 2: Live Camera & File Scanner -->
                 <div class="verify-box qr-box">
-                    <h3 class="verify-box-title">Upload QR Image</h3>
-                    <p class="verify-box-desc">Select an image containing the certificate's verification QR code.</p>
+                    <h3 class="verify-box-title">Scan QR / Upload Document</h3>
+                    <p class="verify-box-desc">Scan via device camera or upload a QR image.</p>
                     
                     <div class="qr-action-area">
-                        <div class="qr-placeholder" id="qrDropZone">
-                            <span class="qr-icon" id="qrIcon">📷</span>
-                            <span class="qr-text" id="qrStatusText">Click browse to upload QR image</span>
-                        </div>
-                        <div class="qr-buttons">
-                            <label for="qr-upload" class="btn btn-dark btn-sm custom-file-upload">
-                                Browse QR Image
-                                <input type="file" id="qr-upload" accept="image/*" style="display: none;">
+                        <!-- Camera Viewport -->
+                        <div id="qr-reader" style="width: 100%; max-width: 280px; margin: 0 auto; display: none; border-radius: 8px; overflow: hidden; border: 1px solid #cbd5e1;"></div>
+                        
+                        <div id="qr-controls" style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem;">
+                            <button type="button" id="btnStartCamera" class="btn btn-dark btn-sm">📷 Start Camera Scan</button>
+                            <button type="button" id="btnStopCamera" class="btn btn-danger btn-sm" style="display: none; background: #ef4444; color: white; border: none;">⏹ Stop Camera</button>
+                            
+                            <label for="qr-file-input" class="btn btn-dark btn-sm custom-file-upload">
+                                📁 Browse File
+                                <input type="file" id="qr-file-input" accept="image/*" style="display: none;">
                             </label>
                         </div>
+                        <div id="scanStatusMsg" style="font-size: 0.8rem; color: #64748b; margin-top: 0.5rem;"></div>
                     </div>
                 </div>
 
@@ -90,10 +93,8 @@
             <!-- Dynamic Verification Result Container -->
             <div id="verificationResult" class="verification-result-box" style="display: none; margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1.5rem; text-align: left;">
                 
-                <!-- Verification Status Header Badge -->
-                <div id="verifyStatusBadge" style="padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-weight: 600;">
-                    <!-- Injected dynamically -->
-                </div>
+                <!-- Status Badge -->
+                <div id="verifyStatusBadge" style="padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-weight: 600;"></div>
 
                 <!-- Details Grid -->
                 <div id="verifyDetailsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; font-size: 0.95rem;">
@@ -123,7 +124,7 @@
                     </div>
                 </div>
 
-                <!-- Blockchain Hash & Action Row -->
+                <!-- Blockchain Hash Row -->
                 <div id="blockchainMetaRow" style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px dashed #cbd5e1; font-size: 0.85rem;">
                     <div style="margin-bottom: 0.5rem;">
                         <strong style="color: #64748b;">SHA-256 Block Hash:</strong>
@@ -169,11 +170,13 @@
         </div>
     </footer>
 
-    <!-- Verification Logic Script -->
+    <!-- Verification & Scanner Script -->
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
 
-        // Handle URL parameters (e.g. from scanned QR: verify.html?certId=IPU-2026-AIML001)
+        let html5QrScanner = null;
+
+        // Auto-run if opened with URL params (e.g. from mobile camera scan)
         document.addEventListener("DOMContentLoaded", () => {
             const urlParams = new URLSearchParams(window.location.search);
             const queryParam = urlParams.get("certId") || urlParams.get("query") || urlParams.get("id");
@@ -183,65 +186,97 @@
             }
         });
 
-        // Form Submit Handler (Manual ID / Hash input)
+        // Form Submit Handler
         document.getElementById("verifyForm").addEventListener("submit", function(e) {
             e.preventDefault();
             const query = document.getElementById("cert-id").value.trim();
-            if (query) {
-                runVerification(query);
+            if (query) runVerification(query);
+        });
+
+        // Helper to extract Query from full QR URLs
+        function extractIdFromQr(decodedText) {
+            let result = decodedText;
+            if (decodedText.includes("?")) {
+                try {
+                    const parsedUrl = new URL(decodedText);
+                    result = parsedUrl.searchParams.get("certId") || parsedUrl.searchParams.get("query") || parsedUrl.searchParams.get("id") || decodedText;
+                } catch(e) {}
+            }
+            return result;
+        }
+
+        // 1. Live Camera Scanner Logic
+        const btnStartCamera = document.getElementById("btnStartCamera");
+        const btnStopCamera = document.getElementById("btnStopCamera");
+        const qrReaderDiv = document.getElementById("qr-reader");
+        const statusMsg = document.getElementById("scanStatusMsg");
+
+        btnStartCamera.addEventListener("click", async () => {
+            qrReaderDiv.style.display = "block";
+            btnStartCamera.style.display = "none";
+            btnStopCamera.style.display = "inline-block";
+            statusMsg.innerText = "Point camera at certificate QR code...";
+
+            html5QrScanner = new Html5Qrcode("qr-reader");
+            const config = { fps: 10, qrbox: { width: 200, height: 200 } };
+
+            try {
+                await html5QrScanner.start(
+                    { facingMode: "environment" },
+                    config,
+                    (decodedText) => {
+                        // On successful QR scan
+                        const targetId = extractIdFromQr(decodedText);
+                        document.getElementById("cert-id").value = targetId;
+                        stopCameraScanner();
+                        statusMsg.innerText = "QR Detected: " + targetId;
+                        runVerification(targetId);
+                    },
+                    (errorMessage) => {}
+                );
+            } catch (err) {
+                statusMsg.innerText = "Camera permission denied or camera not available.";
+                stopCameraScanner();
             }
         });
 
-        // Image / QR File Upload Handler
-        document.getElementById("qr-upload").addEventListener("change", function(e) {
+        btnStopCamera.addEventListener("click", stopCameraScanner);
+
+        function stopCameraScanner() {
+            if (html5QrScanner) {
+                html5QrScanner.stop().then(() => {
+                    qrReaderDiv.style.display = "none";
+                    btnStartCamera.style.display = "inline-block";
+                    btnStopCamera.style.display = "none";
+                }).catch(() => {
+                    qrReaderDiv.style.display = "none";
+                    btnStartCamera.style.display = "inline-block";
+                    btnStopCamera.style.display = "none";
+                });
+            }
+        }
+
+        // 2. File Upload QR Scanner Logic
+        document.getElementById("qr-file-input").addEventListener("change", (e) => {
             const file = e.target.files[0];
             if (!file) return;
 
-            const qrStatus = document.getElementById("qrStatusText");
-            qrStatus.innerText = "Analyzing QR Image...";
-
-            const reader = new FileReader();
-            reader.onload = function() {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement("canvas");
-                    const context = canvas.getContext("2d");
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    context.drawImage(img, 0, 0, img.width, img.height);
-                    
-                    const imageData = context.getImageData(0, 0, img.width, img.height);
-                    const code = jsQR(imageData.data, imageData.width, imageData.height, {
-                        inversionAttempts: "dontInvert",
-                    });
-
-                    if (code && code.data) {
-                        qrStatus.innerText = "QR Code Detected!";
-                        
-                        // Extract query parameter if QR contains a full URL
-                        let extractedQuery = code.data;
-                        if (extractedQuery.includes("?")) {
-                            try {
-                                const parsedUrl = new URL(extractedQuery);
-                                extractedQuery = parsedUrl.searchParams.get("certId") || parsedUrl.searchParams.get("query") || parsedUrl.searchParams.get("id") || code.data;
-                            } catch(err) {
-                                // Keep raw string
-                            }
-                        }
-                        
-                        document.getElementById("cert-id").value = extractedQuery;
-                        runVerification(extractedQuery);
-                    } else {
-                        qrStatus.innerText = "No readable QR found. Try another image.";
-                        alert("Could not detect a valid QR code in the uploaded image. Please ensure the QR is clear or search manually using Certificate ID.");
-                    }
-                };
-                img.src = reader.result;
-            };
-            reader.readAsDataURL(file);
+            statusMsg.innerText = "Analyzing uploaded file...";
+            const fileScanner = new Html5Qrcode("qr-reader");
+            fileScanner.scanFile(file, true)
+                .then(decodedText => {
+                    const targetId = extractIdFromQr(decodedText);
+                    document.getElementById("cert-id").value = targetId;
+                    statusMsg.innerText = "QR Found in Image: " + targetId;
+                    runVerification(targetId);
+                })
+                .catch(err => {
+                    statusMsg.innerText = "No valid QR code found in the image.";
+                    alert("Could not detect a valid QR code in this image. Please try another or enter ID manually.");
+                });
         });
 
-        // Main Verification Engine
+        // 3. Core Verification Engine
         async function runVerification(query) {
             const resultBox = document.getElementById("verificationResult");
             const badge = document.getElementById("verifyStatusBadge");
@@ -265,7 +300,6 @@
                 const data = await response.json();
 
                 if (data.status === "SUCCESS" && data.isAuthentic) {
-                    // 1. Authentic & Verified
                     badge.style.background = "rgba(16, 185, 129, 0.1)";
                     badge.style.border = "1px solid #10b981";
                     badge.style.color = "#065f46";
@@ -292,13 +326,11 @@
                     detailsGrid.style.display = "grid";
                     metaRow.style.display = "block";
                 } else if (data.status === "SUCCESS" && !data.isAuthentic) {
-                    // 2. Tampered Document Alert
                     badge.style.background = "#fef2f2";
                     badge.style.border = "1px solid #ef4444";
                     badge.style.color = "#991b1b";
                     badge.innerHTML = `⚠️ <b>CRITICAL WARNING: Tampered Credential!</b><br>The cryptographic hash does not match the ledger record. Integrity compromised.`;
                 } else {
-                    // 3. Not Found
                     badge.style.background = "#fef2f2";
                     badge.style.border = "1px solid #fecaca";
                     badge.style.color = "#991b1b";
