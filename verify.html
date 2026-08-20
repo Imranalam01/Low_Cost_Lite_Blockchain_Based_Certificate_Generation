@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Certificate - GGSIPU Portal</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Lightweight Client-side QR Decoder Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 </head>
 <body>
 
@@ -35,7 +37,7 @@
 
             <div class="card-icon">🔍</div>
             <h2 class="auth-title">Certificate Verification</h2>
-            <p class="auth-subtitle">Verify academic credentials issued by Guru Gobind Singh Indraprastha University.</p>
+            <p class="auth-subtitle">Verify cryptographic academic credentials issued by Guru Gobind Singh Indraprastha University.</p>
 
             <!-- Verification Input Grid -->
             <div class="verify-grid">
@@ -43,7 +45,7 @@
                 <!-- Method 1: ID Search -->
                 <div class="verify-box">
                     <h3 class="verify-box-title">Search by Certificate ID / Hash</h3>
-                    <p class="verify-box-desc">Enter the Certificate ID or SHA-256 Block Hash printed on the document.</p>
+                    <p class="verify-box-desc">Enter the Certificate ID, Enrollment No, or SHA-256 Hash.</p>
                     
                     <form class="verify-form" id="verifyForm">
                         <div class="form-group">
@@ -51,7 +53,7 @@
                                 type="text" 
                                 id="cert-id" 
                                 name="certId" 
-                                placeholder="e.g. IPU-2026-TEST01" 
+                                placeholder="e.g. IPU-2026-AIML001" 
                                 required
                             >
                         </div>
@@ -66,18 +68,18 @@
 
                 <!-- Method 2: QR Scanner / Upload -->
                 <div class="verify-box qr-box">
-                    <h3 class="verify-box-title">Upload QR / Document</h3>
-                    <p class="verify-box-desc">Select the certificate file or scan the embedded QR code.</p>
+                    <h3 class="verify-box-title">Upload QR Image</h3>
+                    <p class="verify-box-desc">Select an image containing the certificate's verification QR code.</p>
                     
                     <div class="qr-action-area">
-                        <div class="qr-placeholder">
-                            <span class="qr-icon">📄</span>
-                            <span class="qr-text">PDF or image file</span>
+                        <div class="qr-placeholder" id="qrDropZone">
+                            <span class="qr-icon" id="qrIcon">📷</span>
+                            <span class="qr-text" id="qrStatusText">Click browse to upload QR image</span>
                         </div>
                         <div class="qr-buttons">
                             <label for="qr-upload" class="btn btn-dark btn-sm custom-file-upload">
-                                Browse File
-                                <input type="file" id="qr-upload" accept="image/*,.pdf" style="display: none;">
+                                Browse QR Image
+                                <input type="file" id="qr-upload" accept="image/*" style="display: none;">
                             </label>
                         </div>
                     </div>
@@ -94,14 +96,14 @@
                 </div>
 
                 <!-- Details Grid -->
-                <div id="verifyDetailsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; font-size: 0.95rem;">
+                <div id="verifyDetailsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; font-size: 0.95rem;">
                     <div>
                         <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Candidate Name:</strong>
-                        <div id="resStudentName" style="font-weight: 600; font-size: 1.05rem;">-</div>
+                        <div id="resStudentName" style="font-weight: 600; font-size: 1.05rem; color: #0f172a;">-</div>
                     </div>
                     <div>
                         <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Enrollment No:</strong>
-                        <div id="resEnrollment" style="font-weight: 600;">-</div>
+                        <div id="resEnrollment" style="font-weight: 600; color: #0f172a;">-</div>
                     </div>
                     <div>
                         <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Certificate ID:</strong>
@@ -109,23 +111,23 @@
                     </div>
                     <div>
                         <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Department / Program:</strong>
-                        <div id="resDept" style="font-weight: 600;">-</div>
+                        <div id="resDept" style="font-weight: 600; color: #0f172a;">-</div>
                     </div>
                     <div>
                         <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Event / Category:</strong>
-                        <div id="resCategory" style="font-weight: 600;">-</div>
+                        <div id="resCategory" style="font-weight: 600; color: #0f172a;">-</div>
                     </div>
                     <div>
                         <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Issue Date:</strong>
-                        <div id="resIssueDate" style="font-weight: 600;">-</div>
+                        <div id="resIssueDate" style="font-weight: 600; color: #0f172a;">-</div>
                     </div>
                 </div>
 
-                <!-- Blockchain Hash & PDF Action Row -->
+                <!-- Blockchain Hash & Action Row -->
                 <div id="blockchainMetaRow" style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px dashed #cbd5e1; font-size: 0.85rem;">
                     <div style="margin-bottom: 0.5rem;">
                         <strong style="color: #64748b;">SHA-256 Block Hash:</strong>
-                        <span id="resBlockHash" style="font-family: monospace; word-break: break-all; color: #334155; display: block; margin-top: 2px;">-</span>
+                        <span id="resBlockHash" style="font-family: monospace; word-break: break-all; color: #334155; display: block; margin-top: 2px; background: #f8fafc; padding: 6px 10px; border-radius: 6px; border: 1px solid #e2e8f0;">-</span>
                     </div>
                     <div style="margin-top: 0.75rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
                         <a id="btnResViewPdf" href="#" target="_blank" class="btn btn-primary btn-sm" style="display: none; text-decoration: none; padding: 0.45rem 1rem;">View Original PDF</a>
@@ -135,7 +137,7 @@
             </div>
 
             <div class="security-badge-note" style="margin-top: 1.5rem;">
-                Official Credential Verification Engine — GGSIPU
+                Official Cryptographic Credential Verification Engine — GGSIPU
             </div>
         </div>
 
@@ -171,17 +173,17 @@
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
 
-        // Handle URL parameters (e.g. from scanned QR: verify.html?certId=IPU-2026-TEST01)
+        // Handle URL parameters (e.g. from scanned QR: verify.html?certId=IPU-2026-AIML001)
         document.addEventListener("DOMContentLoaded", () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const queryParam = urlParams.get("certId") || urlParams.get("query");
+            const queryParam = urlParams.get("certId") || urlParams.get("query") || urlParams.get("id");
             if (queryParam) {
                 document.getElementById("cert-id").value = queryParam;
                 runVerification(queryParam);
             }
         });
 
-        // Form Submit Handler
+        // Form Submit Handler (Manual ID / Hash input)
         document.getElementById("verifyForm").addEventListener("submit", function(e) {
             e.preventDefault();
             const query = document.getElementById("cert-id").value.trim();
@@ -190,7 +192,56 @@
             }
         });
 
-        // Verification Execution
+        // Image / QR File Upload Handler
+        document.getElementById("qr-upload").addEventListener("change", function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const qrStatus = document.getElementById("qrStatusText");
+            qrStatus.innerText = "Analyzing QR Image...";
+
+            const reader = new FileReader();
+            reader.onload = function() {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement("canvas");
+                    const context = canvas.getContext("2d");
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    context.drawImage(img, 0, 0, img.width, img.height);
+                    
+                    const imageData = context.getImageData(0, 0, img.width, img.height);
+                    const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                        inversionAttempts: "dontInvert",
+                    });
+
+                    if (code && code.data) {
+                        qrStatus.innerText = "QR Code Detected!";
+                        
+                        // Extract query parameter if QR contains a full URL
+                        let extractedQuery = code.data;
+                        if (extractedQuery.includes("?")) {
+                            try {
+                                const parsedUrl = new URL(extractedQuery);
+                                extractedQuery = parsedUrl.searchParams.get("certId") || parsedUrl.searchParams.get("query") || parsedUrl.searchParams.get("id") || code.data;
+                            } catch(err) {
+                                // Keep raw string
+                            }
+                        }
+                        
+                        document.getElementById("cert-id").value = extractedQuery;
+                        runVerification(extractedQuery);
+                    } else {
+                        qrStatus.innerText = "No readable QR found. Try another image.";
+                        alert("Could not detect a valid QR code in the uploaded image. Please ensure the QR is clear or search manually using Certificate ID.");
+                    }
+                };
+                img.src = reader.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Main Verification Engine
         async function runVerification(query) {
             const resultBox = document.getElementById("verificationResult");
             const badge = document.getElementById("verifyStatusBadge");
