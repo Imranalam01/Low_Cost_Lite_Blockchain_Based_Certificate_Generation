@@ -8,7 +8,6 @@
 </head>
 <body>
 
-    <!-- Header Section -->
     <header class="univ-header">
         <div class="container header-container">
             <div class="header-branding">
@@ -26,59 +25,54 @@
         </div>
     </header>
 
-    <!-- Main Student Login Section -->
     <main class="main-container container auth-container">
         
-        <div class="auth-card">
-            <!-- Back to Home Link -->
+        <div class="auth-card" style="max-width: 440px; margin: 2.5rem auto;">
             <a href="index.html" class="back-link">← Back to Home</a>
 
             <div class="card-icon">🎓</div>
-            <h2 class="auth-title">Student Login</h2>
-            <p class="auth-subtitle">Sign in to view, download, and manage your verified certificates.</p>
+            <h2 class="auth-title">Student Access</h2>
+            <p class="auth-subtitle">Enter your official Enrollment Number and Date of Birth to access your verified credentials.</p>
 
-            <form class="auth-form" action="student-dashboard.html" method="GET">
-                <!-- Enrollment Number -->
-                <div class="form-group">
-                    <label for="enrollment-no">Enrollment / Roll Number</label>
+            <div id="studentAuthAlert" class="status-banner" style="display: none; margin-bottom: 1.25rem; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.9rem; text-align: left;"></div>
+
+            <form class="auth-form" id="studentLoginForm" style="text-align: left;">
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                    <label for="loginEnroll">Official Enrollment Number</label>
                     <input 
                         type="text" 
-                        id="enrollment-no" 
-                        name="enrollmentNo" 
-                        placeholder="e.g., 0123456789" 
+                        id="loginEnroll" 
+                        placeholder="e.g. 01916403222" 
                         required 
                         autocomplete="username"
                     >
                 </div>
 
-                <!-- Password / DOB -->
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 1.5rem;">
                     <div class="label-row">
-                        <label for="student-password">Password</label>
-                        <a href="#" class="forgot-link">Forgot Password?</a>
+                        <label for="loginDob">Date of Birth / Password (DDMMYYYY)</label>
                     </div>
                     <input 
                         type="password" 
-                        id="student-password" 
-                        name="password" 
-                        placeholder="Enter your password" 
+                        id="loginDob" 
+                        placeholder="e.g. 06062006" 
+                        maxlength="10"
                         required 
                         autocomplete="current-password"
                     >
+                    <small style="color: #64748b; font-size: 0.75rem; margin-top: 4px; display: block;">Format: 8-digit Date of Birth (e.g. 06062006)</small>
                 </div>
 
-                <!-- Submit Button -->
-                <button type="submit" class="btn btn-success btn-block">Sign In as Student</button>
+                <button type="submit" id="btnStudentLogin" class="btn btn-success btn-block">Sign In to Dashboard</button>
             </form>
 
-            <div class="auth-note">
+            <div class="auth-note" style="margin-top: 1.5rem;">
                 Having trouble logging in? <a href="#">Contact Support</a>
             </div>
         </div>
 
     </main>
 
-    <!-- Footer Section -->
     <footer class="footer">
         <div class="container footer-content">
             <div class="footer-team">
@@ -104,5 +98,63 @@
         </div>
     </footer>
 
+    <script>
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
+
+        function showAlert(msg, isSuccess) {
+            const alertBox = document.getElementById("studentAuthAlert");
+            alertBox.style.display = "block";
+            if (isSuccess) {
+                alertBox.style.background = "#dcfce7";
+                alertBox.style.color = "#166534";
+                alertBox.style.border = "1px solid #86efac";
+            } else {
+                alertBox.style.background = "#fee2e2";
+                alertBox.style.color = "#991b1b";
+                alertBox.style.border = "1px solid #fca5a5";
+            }
+            alertBox.innerHTML = msg;
+        }
+
+        // Direct Login via Enrollment + DOB
+        document.getElementById("studentLoginForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById("btnStudentLogin");
+            const payload = {
+                action: "LOGIN_STUDENT",
+                enrollmentNo: document.getElementById("loginEnroll").value.trim(),
+                dob: document.getElementById("loginDob").value.trim()
+            };
+
+            btn.disabled = true;
+            showAlert("⏳ Verifying credentials against university ledger...", true);
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+
+                if (data.status === "SUCCESS") {
+                    sessionStorage.setItem("ipu_student_auth", "true");
+                    sessionStorage.setItem("ipu_student_name", data.studentName);
+                    sessionStorage.setItem("ipu_student_enroll", data.enrollmentNo);
+                    sessionStorage.setItem("ipu_student_certs", JSON.stringify(data.certificates));
+
+                    showAlert(`✅ Welcome, <b>${data.studentName}</b>! Redirecting to dashboard...`, true);
+                    setTimeout(() => {
+                        window.location.href = "student-dashboard.html";
+                    }, 700);
+                } else {
+                    showAlert(`❌ ${data.message}`, false);
+                }
+            } catch (err) {
+                showAlert(`❌ Server Error: ${err.message}`, false);
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    </script>
 </body>
 </html>

@@ -24,9 +24,13 @@
                 </div>
             </div>
 
-            <!-- Logout -->
-            <div class="user-nav">
-                <a href="student-login.html" class="btn-logout">Logout</a>
+            <!-- Student Profile & Logout -->
+            <div class="user-nav" style="display: flex; align-items: center; gap: 1rem;">
+                <div class="user-meta" style="text-align: right;">
+                    <div id="studentDisplayName" style="font-weight: 600; color: #0f172a; font-size: 0.95rem;">Student</div>
+                    <div id="studentDisplayEnroll" style="font-size: 0.8rem; color: #64748b;">-</div>
+                </div>
+                <a href="#" id="studentLogoutBtn" class="btn-logout">Logout</a>
             </div>
         </div>
     </header>
@@ -40,7 +44,7 @@
                 <div class="section-card-header table-header-flex">
                     <div>
                         <h2 class="section-title">Verified Certificates</h2>
-                        <p class="section-desc">View and download your academic and event credentials.</p>
+                        <p class="section-desc">View and download your academic and event credentials secured on blockchain.</p>
                     </div>
                 </div>
 
@@ -50,33 +54,14 @@
                             <tr>
                                 <th>Certificate ID</th>
                                 <th>Title / Description</th>
-                                <th>Category</th>
+                                <th>Department</th>
                                 <th>Date of Issuance</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td class="cert-code">IPU-2026-ENG-0891</td>
-                                <td class="font-bold">Academic Merit Certificate</td>
-                                <td>Merit</td>
-                                <td>18 Aug 2026</td>
-                                <td><span class="status-badge status-active">Verified</span></td>
-                                <td class="action-buttons">
-                                    <button class="btn-table-action btn-download" type="button">Download PDF</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cert-code">IPU-2026-SIH-0412</td>
-                                <td class="font-bold">Internal Hackathon Participation</td>
-                                <td>Participation</td>
-                                <td>12 Aug 2026</td>
-                                <td><span class="status-badge status-active">Verified</span></td>
-                                <td class="action-buttons">
-                                    <button class="btn-table-action btn-download" type="button">Download PDF</button>
-                                </td>
-                            </tr>
+                        <tbody id="studentCertTableBody">
+                            <!-- Dynamic records injected here -->
                         </tbody>
                     </table>
                 </div>
@@ -111,5 +96,58 @@
         </div>
     </footer>
 
+    <!-- Dynamic Session & Table Render Script -->
+    <script>
+        // 1. Auth Guard Check
+        if (sessionStorage.getItem("ipu_student_auth") !== "true") {
+            alert("⚠️ Unauthorized access! Please sign in via Student Login.");
+            window.location.href = "student-login.html";
+        }
+
+        // 2. Set Profile Header Details
+        const studentName = sessionStorage.getItem("ipu_student_name") || "Student";
+        const studentEnroll = sessionStorage.getItem("ipu_student_enroll") || "-";
+        const rawCerts = sessionStorage.getItem("ipu_student_certs");
+        const certificates = rawCerts ? JSON.parse(rawCerts) : [];
+
+        document.getElementById("studentDisplayName").innerText = studentName;
+        document.getElementById("studentDisplayEnroll").innerText = "Enroll: " + studentEnroll;
+
+        // 3. Logout Handler
+        document.getElementById("studentLogoutBtn").addEventListener("click", function(e) {
+            e.preventDefault();
+            sessionStorage.removeItem("ipu_student_auth");
+            sessionStorage.removeItem("ipu_student_name");
+            sessionStorage.removeItem("ipu_student_enroll");
+            sessionStorage.removeItem("ipu_student_certs");
+            window.location.href = "student-login.html";
+        });
+
+        // 4. Populate Table Rows Dynamically
+        const tbody = document.getElementById("studentCertTableBody");
+
+        if (certificates.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">No credentials found on ledger for this enrollment.</td></tr>`;
+        } else {
+            tbody.innerHTML = "";
+            certificates.forEach(cert => {
+                const dateStr = cert.timestamp ? new Date(cert.timestamp).toLocaleDateString("en-IN", { day: '2-digit', month: 'short', year: 'numeric' }) : "-";
+                
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td class="cert-code">${cert.certId}</td>
+                    <td class="font-bold">${cert.eventTitle}</td>
+                    <td>${cert.courseDept}</td>
+                    <td>${dateStr}</td>
+                    <td><span class="status-badge status-active">✓ Block #${cert.blockIndex} Verified</span></td>
+                    <td class="action-buttons">
+                        <a href="verify.html?certId=${encodeURIComponent(cert.certId)}" class="btn-table-action btn-view" target="_blank" style="text-decoration:none;">Verify</a>
+                        <a href="${cert.pdfLink}" target="_blank" class="btn-table-action btn-download" style="text-decoration:none; display:inline-block; line-height: normal;">Download PDF</a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    </script>
 </body>
 </html>
