@@ -42,8 +42,8 @@
                 
                 <!-- Method 1: ID Search -->
                 <div class="verify-box">
-                    <h3 class="verify-box-title">Search by Certificate ID</h3>
-                    <p class="verify-box-desc">Enter the alphanumeric Certificate ID printed on the document.</p>
+                    <h3 class="verify-box-title">Search by Certificate ID / Hash</h3>
+                    <p class="verify-box-desc">Enter the Certificate ID or SHA-256 Block Hash printed on the document.</p>
                     
                     <form class="verify-form" id="verifyForm">
                         <div class="form-group">
@@ -51,11 +51,11 @@
                                 type="text" 
                                 id="cert-id" 
                                 name="certId" 
-                                placeholder="e.g. IPU-2026-XXXXXX" 
+                                placeholder="e.g. IPU-2026-TEST01" 
                                 required
                             >
                         </div>
-                        <button type="submit" class="btn btn-dark btn-block">Verify Document</button>
+                        <button type="submit" id="btnVerify" class="btn btn-dark btn-block">Verify Document</button>
                     </form>
                 </div>
 
@@ -85,12 +85,16 @@
 
             </div>
 
-            <!-- Dynamic Verification Result Card -->
-            <div id="verificationResult" class="verification-result-box" style="display: none; margin-top: 2rem; border-top: 1px solid var(--border-color, #e2e8f0); padding-top: 1.5rem; text-align: left;">
-                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #065f46; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-weight: 600;">
-                    ✓ Blockchain Verified & Authentic
+            <!-- Dynamic Verification Result Container -->
+            <div id="verificationResult" class="verification-result-box" style="display: none; margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1.5rem; text-align: left;">
+                
+                <!-- Verification Status Header Badge -->
+                <div id="verifyStatusBadge" style="padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-weight: 600;">
+                    <!-- Injected dynamically -->
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; font-size: 0.95rem;">
+
+                <!-- Details Grid -->
+                <div id="verifyDetailsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; font-size: 0.95rem;">
                     <div>
                         <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Candidate Name:</strong>
                         <div id="resStudentName" style="font-weight: 600; font-size: 1.05rem;">-</div>
@@ -104,6 +108,10 @@
                         <div id="resCertId" style="font-family: monospace; font-weight: 600; color: #1e40af;">-</div>
                     </div>
                     <div>
+                        <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Department / Program:</strong>
+                        <div id="resDept" style="font-weight: 600;">-</div>
+                    </div>
+                    <div>
                         <strong style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Event / Category:</strong>
                         <div id="resCategory" style="font-weight: 600;">-</div>
                     </div>
@@ -112,6 +120,18 @@
                         <div id="resIssueDate" style="font-weight: 600;">-</div>
                     </div>
                 </div>
+
+                <!-- Blockchain Hash & PDF Action Row -->
+                <div id="blockchainMetaRow" style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px dashed #cbd5e1; font-size: 0.85rem;">
+                    <div style="margin-bottom: 0.5rem;">
+                        <strong style="color: #64748b;">SHA-256 Block Hash:</strong>
+                        <span id="resBlockHash" style="font-family: monospace; word-break: break-all; color: #334155; display: block; margin-top: 2px;">-</span>
+                    </div>
+                    <div style="margin-top: 0.75rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                        <a id="btnResViewPdf" href="#" target="_blank" class="btn btn-primary btn-sm" style="display: none; text-decoration: none; padding: 0.45rem 1rem;">View Original PDF</a>
+                    </div>
+                </div>
+
             </div>
 
             <div class="security-badge-note" style="margin-top: 1.5rem;">
@@ -147,6 +167,101 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- Verification Logic Script -->
+    <script>
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
+
+        // Handle URL parameters (e.g. from scanned QR: verify.html?certId=IPU-2026-TEST01)
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryParam = urlParams.get("certId") || urlParams.get("query");
+            if (queryParam) {
+                document.getElementById("cert-id").value = queryParam;
+                runVerification(queryParam);
+            }
+        });
+
+        // Form Submit Handler
+        document.getElementById("verifyForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const query = document.getElementById("cert-id").value.trim();
+            if (query) {
+                runVerification(query);
+            }
+        });
+
+        // Verification Execution
+        async function runVerification(query) {
+            const resultBox = document.getElementById("verificationResult");
+            const badge = document.getElementById("verifyStatusBadge");
+            const detailsGrid = document.getElementById("verifyDetailsGrid");
+            const metaRow = document.getElementById("blockchainMetaRow");
+            const btnVerify = document.getElementById("btnVerify");
+
+            resultBox.style.display = "block";
+            badge.style.display = "block";
+            badge.style.background = "#eff6ff";
+            badge.style.border = "1px solid #bfdbfe";
+            badge.style.color = "#1e40af";
+            badge.innerHTML = `⏳ Verifying cryptographic signature against blockchain ledger...`;
+            
+            detailsGrid.style.display = "none";
+            metaRow.style.display = "none";
+            btnVerify.disabled = true;
+
+            try {
+                const response = await fetch(`${APPS_SCRIPT_URL}?action=verify&query=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                if (data.status === "SUCCESS" && data.isAuthentic) {
+                    // 1. Authentic & Verified
+                    badge.style.background = "rgba(16, 185, 129, 0.1)";
+                    badge.style.border = "1px solid #10b981";
+                    badge.style.color = "#065f46";
+                    badge.innerHTML = `✓ Blockchain Verified &amp; Authentic Document (Block #${data.record.blockIndex})`;
+
+                    document.getElementById("resStudentName").innerText = data.record.studentName || "-";
+                    document.getElementById("resEnrollment").innerText = data.record.enrollmentNo || "-";
+                    document.getElementById("resCertId").innerText = data.record.certId || "-";
+                    document.getElementById("resDept").innerText = data.record.courseDept || "-";
+                    document.getElementById("resCategory").innerText = data.record.eventTitle || "-";
+                    
+                    const issueDate = data.record.timestamp ? new Date(data.record.timestamp).toLocaleDateString("en-IN", { day: '2-digit', month: 'short', year: 'numeric' }) : "-";
+                    document.getElementById("resIssueDate").innerText = issueDate;
+                    document.getElementById("resBlockHash").innerText = data.record.currentHash || "-";
+
+                    const btnPdf = document.getElementById("btnResViewPdf");
+                    if (data.record.pdfLink && data.record.pdfLink.startsWith("http")) {
+                        btnPdf.href = data.record.pdfLink;
+                        btnPdf.style.display = "inline-block";
+                    } else {
+                        btnPdf.style.display = "none";
+                    }
+
+                    detailsGrid.style.display = "grid";
+                    metaRow.style.display = "block";
+                } else if (data.status === "SUCCESS" && !data.isAuthentic) {
+                    // 2. Tampered Document Alert
+                    badge.style.background = "#fef2f2";
+                    badge.style.border = "1px solid #ef4444";
+                    badge.style.color = "#991b1b";
+                    badge.innerHTML = `⚠️ <b>CRITICAL WARNING: Tampered Credential!</b><br>The cryptographic hash does not match the ledger record. Integrity compromised.`;
+                } else {
+                    // 3. Not Found
+                    badge.style.background = "#fef2f2";
+                    badge.style.border = "1px solid #fecaca";
+                    badge.style.color = "#991b1b";
+                    badge.innerHTML = `❌ No record found matching <b>"${query}"</b> on the blockchain ledger.`;
+                }
+            } catch (err) {
+                badge.style.background = "#fef2f2";
+                badge.style.border = "1px solid #fecaca";
+                badge.style.color = "#991b1b";
+                badge.innerHTML = `❌ Network Error: Unable to query verification engine. (${err.message})`;
+            } finally {
+                btnVerify.disabled = false;
+            }
+        }
+    </script>
 </body>
 </html>

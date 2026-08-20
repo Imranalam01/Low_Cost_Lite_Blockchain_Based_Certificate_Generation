@@ -39,6 +39,9 @@
     <!-- Main Workspace -->
     <main class="container dashboard-container">
         
+        <!-- Live Alert Status Banner -->
+        <div id="statusBanner" class="status-banner"></div>
+
         <!-- Generate Certificate Section (Single Entry) -->
         <section class="dash-section">
             <div class="section-card">
@@ -88,7 +91,7 @@
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Generate Certificate</button>
+                        <button type="submit" id="btnSubmitSingle" class="btn btn-primary">Generate Certificate</button>
                         <button type="reset" class="btn btn-secondary">Clear Fields</button>
                     </div>
                 </form>
@@ -124,12 +127,12 @@
                         <p class="section-desc">Search and manage recently issued certificates.</p>
                     </div>
                     <div class="table-search">
-                        <input type="text" placeholder="Search by Roll No. or ID..." class="search-input">
+                        <input type="text" id="tableSearchInput" placeholder="Search by Roll No. or ID..." class="search-input">
                     </div>
                 </div>
 
                 <div class="table-responsive">
-                    <table class="custom-table">
+                    <table class="custom-table" id="recordsTable">
                         <thead>
                             <tr>
                                 <th>Certificate ID</th>
@@ -140,27 +143,33 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="recordsTableBody">
                             <tr>
-                                <td class="cert-code">IPU-2026-ENG-0891</td>
+                                <td class="cert-code">
+                                    IPU-2026-ENG-0891
+                                    <span class="cert-hash-sub">Hash: 8f3c7...910a</span>
+                                </td>
                                 <td class="font-bold">Rahul Sharma</td>
                                 <td>01916403222</td>
                                 <td>Academic Excellence</td>
                                 <td>18 Aug 2026</td>
                                 <td class="action-buttons">
-                                    <button class="btn-table-action btn-view" type="button">View</button>
-                                    <button class="btn-table-action btn-download" type="button">Download</button>
+                                    <button class="btn-table-action btn-view" type="button" onclick="window.open('https://drive.google.com', '_blank')">View</button>
+                                    <button class="btn-table-action btn-download" type="button" onclick="window.open('https://drive.google.com', '_blank')">Download</button>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="cert-code">IPU-2026-ENG-0892</td>
+                                <td class="cert-code">
+                                    IPU-2026-ENG-0892
+                                    <span class="cert-hash-sub">Hash: 2b5e1...f08c</span>
+                                </td>
                                 <td class="font-bold">Priya Patel</td>
                                 <td>02416403222</td>
                                 <td>Degree Completion</td>
                                 <td>16 Aug 2026</td>
                                 <td class="action-buttons">
-                                    <button class="btn-table-action btn-view" type="button">View</button>
-                                    <button class="btn-table-action btn-download" type="button">Download</button>
+                                    <button class="btn-table-action btn-view" type="button" onclick="window.open('https://drive.google.com', '_blank')">View</button>
+                                    <button class="btn-table-action btn-download" type="button" onclick="window.open('https://drive.google.com', '_blank')">Download</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -197,6 +206,197 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- Integrated Backend Connector Script -->
+    <script>
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const today = new Date().toISOString().split("T")[0];
+            const issueDateInput = document.getElementById("issue-date");
+            if (issueDateInput) issueDateInput.value = today;
+        });
+
+        function showStatus(message, type = "loading") {
+            const banner = document.getElementById("statusBanner");
+            banner.className = `status-banner ${type}`;
+            banner.innerHTML = message;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function prependRecordToTable(record) {
+            const tbody = document.getElementById("recordsTableBody");
+            const tr = document.createElement("tr");
+            
+            const pdfUrl = record.pdfLink || "#";
+            const shortHash = record.currentHash ? `${record.currentHash.substring(0, 8)}...${record.currentHash.slice(-6)}` : "Verified Block";
+
+            tr.innerHTML = `
+                <td class="cert-code">
+                    ${record.certId}
+                    <span class="cert-hash-sub">Hash: ${shortHash}</span>
+                </td>
+                <td class="font-bold">${record.studentName}</td>
+                <td>${record.enrollmentNo}</td>
+                <td>${record.eventTitle || "Academic"}</td>
+                <td>${new Date().toLocaleDateString("en-IN", { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+                <td class="action-buttons">
+                    <button class="btn-table-action btn-view" type="button" onclick="window.open('${pdfUrl}', '_blank')">View</button>
+                    <button class="btn-table-action btn-download" type="button" onclick="window.open('${pdfUrl}', '_blank')">Download</button>
+                </td>
+            `;
+            tbody.insertBefore(tr, tbody.firstChild);
+        }
+
+        // Single Issuance
+        document.getElementById("issueCertForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById("btnSubmitSingle");
+            
+            const payload = {
+                studentName: document.getElementById("student-name").value.trim(),
+                enrollmentNo: document.getElementById("enrollment-no").value.trim(),
+                courseDept: document.getElementById("dept").value.trim(),
+                eventTitle: document.getElementById("cert-type").value,
+                remarks: document.getElementById("grade-remarks").value.trim()
+            };
+
+            submitBtn.disabled = true;
+            showStatus(`⏳ Mining Block &amp; Generating Certificate PDF for <b>${payload.studentName}</b>... Please wait.`, "loading");
+
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.status === "SUCCESS") {
+                    showStatus(`✅ <b>Certificate Successfully Mined!</b><br>Cert ID: <code>${result.certId}</code> | Block #${result.blockIndex} | Hash: <code>${result.currentHash}</code><br><a href="${result.pdfLink}" target="_blank" style="color: #065f46; font-weight: bold; text-decoration: underline;">👉 Open Generated PDF</a>`, "success");
+                    
+                    prependRecordToTable({
+                        certId: result.certId,
+                        studentName: payload.studentName,
+                        enrollmentNo: payload.enrollmentNo,
+                        eventTitle: payload.eventTitle,
+                        currentHash: result.currentHash,
+                        pdfLink: result.pdfLink
+                    });
+
+                    document.getElementById("issueCertForm").reset();
+                    document.getElementById("issue-date").value = new Date().toISOString().split("T")[0];
+                } else {
+                    showStatus(`❌ Issuance failed: ${result.message || "Unknown error"}`, "error");
+                }
+            } catch (err) {
+                showStatus(`❌ Network / Server Error: ${err.message}`, "error");
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Sample CSV Download
+        document.getElementById("btnDownloadSample").addEventListener("click", () => {
+            const csvContent = "data:text/csv;charset=utf-8," + 
+                "Student_Name,Enrollment_No,Dept,Event_Title,Cert_ID\n" +
+                "Aryan Verma,01916403201,AIML,Academic Excellence,\n" +
+                "Sneha Gupta,01916403202,AIML,Institutional Event / Participation,\n" +
+                "Kunal Singh,01916403203,CSE,Degree / Program Completion,";
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Sample_Batch_Students.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Batch CSV Upload
+        document.getElementById("btnUploadCsv").addEventListener("click", async () => {
+            const fileInput = document.getElementById("csvFileInput");
+            const uploadBtn = document.getElementById("btnUploadCsv");
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert("Please select a valid CSV file first.");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = async function (e) {
+                const text = e.target.result;
+                const lines = text.split(/\r\n|\n/).filter(line => line.trim() !== "");
+                
+                if (lines.length <= 1) {
+                    showStatus("❌ CSV file appears to be empty.", "error");
+                    return;
+                }
+
+                const batchData = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const cols = lines[i].split(",").map(c => c.trim());
+                    if (cols.length >= 4 && cols[0]) {
+                        batchData.push({
+                            studentName: cols[0],
+                            enrollmentNo: cols[1] || "",
+                            courseDept: cols[2] || "AIML",
+                            eventTitle: cols[3] || "Academic Excellence",
+                            certId: cols[4] || ""
+                        });
+                    }
+                }
+
+                if (batchData.length === 0) {
+                    showStatus("❌ No valid rows found in CSV.", "error");
+                    return;
+                }
+
+                uploadBtn.disabled = true;
+                showStatus(`⏳ Mining ${batchData.length} certificates onto Blockchain & Google Drive... Please wait.`, "loading");
+
+                try {
+                    const response = await fetch(APPS_SCRIPT_URL, {
+                        method: "POST",
+                        body: JSON.stringify(batchData)
+                    });
+                    const result = await response.json();
+
+                    if (result.status === "SUCCESS") {
+                        showStatus(`✅ Successfully mined all <b>${result.count}</b> certificates in batch!`, "success");
+                        result.certificates.forEach(item => {
+                            prependRecordToTable({
+                                certId: item.certId,
+                                studentName: item.studentName,
+                                enrollmentNo: "-",
+                                eventTitle: "Batch Issued",
+                                currentHash: item.hash,
+                                pdfLink: item.pdfLink
+                            });
+                        });
+                        fileInput.value = "";
+                    } else {
+                        showStatus(`❌ Batch issuance failed: ${result.message || "Error"}`, "error");
+                    }
+                } catch (err) {
+                    showStatus(`❌ Network error while processing batch: ${err.message}`, "error");
+                } finally {
+                    uploadBtn.disabled = false;
+                }
+            };
+
+            reader.readAsText(file);
+        });
+
+        // Search Filter
+        document.getElementById("tableSearchInput").addEventListener("input", function () {
+            const query = this.value.toLowerCase().trim();
+            const rows = document.querySelectorAll("#recordsTableBody tr");
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? "" : "none";
+            });
+        });
+    </script>
 </body>
 </html>

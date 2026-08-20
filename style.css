@@ -1021,3 +1021,43 @@ body {
     font-weight: 700;
     color: #0f172a;
 }
+
+/* --- Live Status & Hash Helpers --- */
+.status-banner {
+    display: none;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.status-banner.success {
+    display: block;
+    background-color: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.status-banner.error {
+    display: block;
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.status-banner.loading {
+    display: block;
+    background-color: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+.cert-hash-sub {
+    display: block;
+    font-size: 0.72rem;
+    color: #64748b;
+    font-family: monospace;
+    word-break: break-all;
+    margin-top: 2px;
+}
