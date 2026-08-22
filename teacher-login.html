@@ -6,29 +6,6 @@
     <title>Faculty Portal - GGSIPU</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .auth-tab-group {
-            display: flex;
-            background: #f1f5f9;
-            border-radius: 8px;
-            padding: 4px;
-            margin-bottom: 1.5rem;
-        }
-        .auth-tab-btn {
-            flex: 1;
-            padding: 0.6rem 1rem;
-            border: none;
-            background: transparent;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 6px;
-            color: #64748b;
-            transition: all 0.2s ease;
-        }
-        .auth-tab-btn.active {
-            background: #ffffff;
-            color: #0f172a;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
         .auth-status-alert {
             display: none;
             margin-bottom: 1.25rem;
@@ -67,14 +44,8 @@
             <a href="index.html" class="back-link">← Back to Home</a>
 
             <div class="card-icon">👨‍🏫</div>
-            <h2 class="auth-title" id="authHeading">Faculty Portal Access</h2>
-            <p class="auth-subtitle" id="authSubheading">Sign in to generate, approve, and manage certificates.</p>
-
-            <!-- Switcher Tabs -->
-            <div class="auth-tab-group">
-                <button type="button" class="auth-tab-btn active" id="tabLoginBtn" onclick="switchAuthTab('login')">Sign In</button>
-                <button type="button" class="auth-tab-btn" id="tabRegisterBtn" onclick="switchAuthTab('register')">Register New</button>
-            </div>
+            <h2 class="auth-title">Faculty Portal Access</h2>
+            <p class="auth-subtitle">Sign in to generate, approve, and manage certificates.</p>
 
             <!-- Status Alert Banner -->
             <div id="authStatusBanner" class="auth-status-alert"></div>
@@ -106,31 +77,6 @@
                 </div>
 
                 <button type="submit" id="btnLoginSubmit" class="btn btn-primary btn-block">Sign In to Dashboard</button>
-            </form>
-
-            <!-- Registration Form -->
-            <form id="facultyRegisterForm" class="auth-form" style="display: none; text-align: left;">
-                <div class="form-group" style="margin-bottom: 1rem;">
-                    <label for="regName">Full Name &amp; Title</label>
-                    <input type="text" id="regName" placeholder="e.g. Dr. Rajesh Kumar" required>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 1rem;">
-                    <label for="regEmail">Official Faculty Email</label>
-                    <input type="email" id="regEmail" placeholder="e.g. r.kumar@ipu.ac.in" required>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 1rem;">
-                    <label for="regDept">Department / School</label>
-                    <input type="text" id="regDept" placeholder="e.g. USAR - AIML" required>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 1.5rem;">
-                    <label for="regPass">Create Password</label>
-                    <input type="password" id="regPass" placeholder="••••••••" required>
-                </div>
-
-                <button type="submit" id="btnRegisterSubmit" class="btn btn-primary btn-block">Register Faculty Account</button>
             </form>
 
         </div>
@@ -167,33 +113,6 @@
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
 
-        function switchAuthTab(tab) {
-            const loginForm = document.getElementById("facultyLoginForm");
-            const regForm = document.getElementById("facultyRegisterForm");
-            const tabLogin = document.getElementById("tabLoginBtn");
-            const tabReg = document.getElementById("tabRegisterBtn");
-            const heading = document.getElementById("authHeading");
-            const subheading = document.getElementById("authSubheading");
-            const banner = document.getElementById("authStatusBanner");
-            banner.style.display = "none";
-
-            if (tab === 'login') {
-                loginForm.style.display = "block";
-                regForm.style.display = "none";
-                tabLogin.classList.add("active");
-                tabReg.classList.remove("active");
-                heading.innerText = "Faculty Portal Access";
-                subheading.innerText = "Sign in to generate, approve, and manage certificates.";
-            } else {
-                loginForm.style.display = "none";
-                regForm.style.display = "block";
-                tabReg.classList.add("active");
-                tabLogin.classList.remove("active");
-                heading.innerText = "Faculty Registration";
-                subheading.innerText = "Register authorized profile to issue academic credentials.";
-            }
-        }
-
         function showAuthAlert(msg, type) {
             const banner = document.getElementById("authStatusBanner");
             banner.style.display = "block";
@@ -213,7 +132,7 @@
             banner.innerHTML = msg;
         }
 
-        // 1. Handle Login
+        // Handle Login
         document.getElementById("facultyLoginForm").addEventListener("submit", async function(e) {
             e.preventDefault();
             const btn = document.getElementById("btnLoginSubmit");
@@ -248,44 +167,6 @@
                 }
             } catch (err) {
                 showAuthAlert(`❌ Server error: ${err.message}`, "error");
-            } finally {
-                btn.disabled = false;
-            }
-        });
-
-        // 2. Handle Registration
-        document.getElementById("facultyRegisterForm").addEventListener("submit", async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById("btnRegisterSubmit");
-            const payload = {
-                action: "REGISTER_FACULTY",
-                name: document.getElementById("regName").value.trim(),
-                email: document.getElementById("regEmail").value.trim(),
-                dept: document.getElementById("regDept").value.trim(),
-                password: document.getElementById("regPass").value.trim()
-            };
-
-            btn.disabled = true;
-            showAuthAlert("⏳ Registering faculty profile in university ledger...", "loading");
-
-            try {
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: "POST",
-                    body: JSON.stringify(payload)
-                });
-                const res = await response.json();
-
-                if (res.status === "SUCCESS") {
-                    showAuthAlert(`✅ Registered successfully! Please sign in with your email.`, "success");
-                    setTimeout(() => {
-                        switchAuthTab('login');
-                        document.getElementById("loginEmail").value = payload.email;
-                    }, 1200);
-                } else {
-                    showAuthAlert(`❌ ${res.message}`, "error");
-                }
-            } catch (err) {
-                showAuthAlert(`❌ Registration error: ${err.message}`, "error");
             } finally {
                 btn.disabled = false;
             }
