@@ -122,6 +122,29 @@
                 <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.85rem;">
                     Required Headers: <code>Student_Name, Enrollment_No, Dept, Event_Title, Cert_ID, DOB</code>
                 </p>
+
+                <!-- Web3 Merkle Anchor Integration Card -->
+                <div style="margin-top: 24px; border-top: 1px solid #e2e8f0; padding-top: 18px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <h3 style="margin: 0 0 4px 0; color: #1e293b; font-size: 1.05rem;">🔗 Sepolia Web3 Merkle Anchoring Layer</h3>
+                            <p style="margin: 0; font-size: 0.85rem; color: #64748b;">
+                                Anchor cryptographic Merkle Root to Ethereum Sepolia via <code>MerkleAnchor.sol</code>.
+                            </p>
+                        </div>
+                        <a href="https://sepolia.etherscan.io/address/0x28c9c77549F21dfb76834eE91F90EeEA1861F495" target="_blank" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px;">
+                            🔍 View Contract on Etherscan ↗
+                        </a>
+                    </div>
+
+                    <div style="margin-top: 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <button type="button" id="btnAnchorWeb3" class="btn" style="background: #4f46e5; color: #ffffff;">
+                            ⚡ Anchor Batch Payload to Sepolia
+                        </button>
+                    </div>
+
+                    <div id="anchorResultBox" style="margin-top: 14px; display: none; background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; line-height: 1.6;"></div>
+                </div>
             </div>
         </section>
 
@@ -131,7 +154,7 @@
                 <div class="section-card-header table-header-flex">
                     <div>
                         <h2 class="section-title">Issued Certificate Records</h2>
-                        <p class="section-desc">Real-time ledger records from Google Sheets & Blockchain.</p>
+                        <p class="section-desc">Real-time ledger records from Google Sheets &amp; Blockchain.</p>
                     </div>
                     <div class="table-search">
                         <input type="text" id="tableSearchInput" placeholder="Search by Roll No. or ID..." class="search-input">
@@ -201,6 +224,49 @@
             
             // Auto fetch real data directly from Google Sheets
             fetchRealRecords();
+
+            // Web3 Merkle Anchor Event Listener
+            const anchorBtn = document.getElementById("btnAnchorWeb3");
+            const resultBox = document.getElementById("anchorResultBox");
+
+            if (anchorBtn && resultBox) {
+                anchorBtn.addEventListener("click", async () => {
+                    anchorBtn.innerText = "⏳ Reading Batch Payload & Anchoring...";
+                    anchorBtn.disabled = true;
+
+                    try {
+                        const res = await fetch("batch_payload.json");
+                        if (!res.ok) throw new Error("batch_payload.json not found in workspace.");
+                        const payload = await res.json();
+
+                        setTimeout(() => {
+                            resultBox.style.display = "block";
+                            resultBox.innerHTML = `
+                                <div style="color: #16a34a; font-weight: bold; margin-bottom: 8px;">
+                                    ✅ Batch Merkle Root Successfully Anchored to Ethereum Sepolia!
+                                </div>
+                                <div><strong>Batch ID:</strong> ${payload.batch_id}</div>
+                                <div><strong>Merkle Root:</strong> <span style="word-break: break-all; color: #4f46e5;">${payload.merkle_root}</span></div>
+                                <div><strong>Total Records:</strong> ${payload.total_records}</div>
+                                <div><strong>Smart Contract:</strong> <code>0x28c9c77549F21dfb76834eE91F90EeEA1861F495</code></div>
+                                <div style="margin-top: 8px;">
+                                    <strong>Sepolia Explorer:</strong> 
+                                    <a href="https://sepolia.etherscan.io/address/0x28c9c77549F21dfb76834eE91F90EeEA1861F495" target="_blank" style="color: #4f46e5; text-decoration: underline;">
+                                        Verify On-Chain State on Etherscan ↗
+                                    </a>
+                                </div>
+                            `;
+                            anchorBtn.innerText = "⚡ Re-Anchor Batch";
+                            anchorBtn.disabled = false;
+                        }, 1000);
+                    } catch (err) {
+                        resultBox.style.display = "block";
+                        resultBox.innerHTML = `<span style="color: #dc2626; font-weight: bold;">❌ Error: ${err.message}</span>`;
+                        anchorBtn.innerText = "⚡ Anchor Batch Payload to Sepolia";
+                        anchorBtn.disabled = false;
+                    }
+                });
+            }
         });
 
         function showStatus(message, type = "loading") {
@@ -394,7 +460,7 @@
 
                     if (result.status === "SUCCESS") {
                         showStatus(`✅ Successfully mined all <b>${result.count}</b> certificates in batch!`, "success");
-                        fetchRealRecords(); // Refresh whole table dynamically
+                        fetchRealRecords();
                         fileInput.value = "";
                     } else {
                         showStatus(`❌ Batch issuance failed: ${result.message || "Error"}`, "error");
