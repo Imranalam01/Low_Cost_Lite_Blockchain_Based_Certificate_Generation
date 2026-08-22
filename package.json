@@ -1,5 +1,15 @@
 {
+  "name": "certificate-verification-system",
+  "version": "1.0.0",
+  "description": "Hybrid Web3 & C++ Merkle Tree Certificate Issuance and Verification System",
+  "scripts": {
+    "build:cpp": "cmake -B build && cmake --build build",
+    "mine:batch": "./build/merkle_engine batch_payload.json",
+    "anchor:web3": "node scripts/anchor.js",
+    "pipeline:full": "npm run build:cpp && npm run mine:batch && npm run anchor:web3"
+  },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "ethers": "^6.17.0"
   }
 }
