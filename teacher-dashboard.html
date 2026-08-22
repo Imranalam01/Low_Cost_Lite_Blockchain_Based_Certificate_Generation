@@ -81,10 +81,17 @@
 
                     <div class="form-row">
                         <div class="form-group">
+                            <label for="student-dob">Student DOB (Password: DDMMYYYY)</label>
+                            <input type="text" id="student-dob" placeholder="e.g., 06012006" pattern="\d{8}" maxlength="8" required>
+                        </div>
+                        <div class="form-group">
                             <label for="issue-date">Date of Issuance</label>
                             <input type="date" id="issue-date" required>
                         </div>
-                        <div class="form-group">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="width: 100%;">
                             <label for="grade-remarks">Division / Grade / Remark</label>
                             <input type="text" id="grade-remarks" placeholder="Optional remark (e.g., First Division)">
                         </div>
@@ -113,7 +120,7 @@
                 </div>
                 
                 <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.85rem;">
-                    Required Headers: <code>Student_Name, Enrollment_No, Dept, Event_Title, Cert_ID</code>
+                    Required Headers: <code>Student_Name, Enrollment_No, Dept, Event_Title, Cert_ID, DOB</code>
                 </p>
             </div>
         </section>
@@ -124,7 +131,7 @@
                 <div class="section-card-header table-header-flex">
                     <div>
                         <h2 class="section-title">Issued Certificate Records</h2>
-                        <p class="section-desc">Search and manage recently issued certificates.</p>
+                        <p class="section-desc">Real-time ledger records from Google Sheets & Blockchain.</p>
                     </div>
                     <div class="table-search">
                         <input type="text" id="tableSearchInput" placeholder="Search by Roll No. or ID..." class="search-input">
@@ -138,38 +145,15 @@
                                 <th>Certificate ID</th>
                                 <th>Student Name</th>
                                 <th>Enrollment No.</th>
-                                <th>Category</th>
+                                <th>Category / Event</th>
                                 <th>Issue Date</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="recordsTableBody">
                             <tr>
-                                <td class="cert-code">
-                                    IPU-2026-ENG-0891
-                                    <span class="cert-hash-sub">Hash: 8f3c7...910a</span>
-                                </td>
-                                <td class="font-bold">Rahul Sharma</td>
-                                <td>01916403222</td>
-                                <td>Academic Excellence</td>
-                                <td>18 Aug 2026</td>
-                                <td class="action-buttons">
-                                    <button class="btn-table-action btn-view" type="button" onclick="window.open('https://drive.google.com', '_blank')">View</button>
-                                    <button class="btn-table-action btn-download" type="button" onclick="window.open('https://drive.google.com', '_blank')">Download</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="cert-code">
-                                    IPU-2026-ENG-0892
-                                    <span class="cert-hash-sub">Hash: 2b5e1...f08c</span>
-                                </td>
-                                <td class="font-bold">Priya Patel</td>
-                                <td>02416403222</td>
-                                <td>Degree Completion</td>
-                                <td>16 Aug 2026</td>
-                                <td class="action-buttons">
-                                    <button class="btn-table-action btn-view" type="button" onclick="window.open('https://drive.google.com', '_blank')">View</button>
-                                    <button class="btn-table-action btn-download" type="button" onclick="window.open('https://drive.google.com', '_blank')">Download</button>
+                                <td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">
+                                    ⏳ Loading live records from Ledger...
                                 </td>
                             </tr>
                         </tbody>
@@ -214,6 +198,9 @@
             const today = new Date().toISOString().split("T")[0];
             const issueDateInput = document.getElementById("issue-date");
             if (issueDateInput) issueDateInput.value = today;
+            
+            // Auto fetch real data directly from Google Sheets
+            fetchRealRecords();
         });
 
         function showStatus(message, type = "loading") {
@@ -223,10 +210,51 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        async function fetchRealRecords() {
+            const tbody = document.getElementById("recordsTableBody");
+            try {
+                const response = await fetch(`${APPS_SCRIPT_URL}?action=getAll`);
+                const result = await response.json();
+                
+                if (result.status === "SUCCESS" && result.certificates && result.certificates.length > 0) {
+                    tbody.innerHTML = "";
+                    result.certificates.forEach(rec => {
+                        const tr = document.createElement("tr");
+                        const pdfUrl = rec.pdfLink || "#";
+                        const shortHash = rec.currentHash ? `${rec.currentHash.substring(0, 8)}...${rec.currentHash.slice(-6)}` : "Verified Block";
+                        const dateText = rec.timestamp ? new Date(rec.timestamp).toLocaleDateString("en-IN", { day: '2-digit', month: 'short', year: 'numeric' }) : "-";
+
+                        tr.innerHTML = `
+                            <td class="cert-code">
+                                ${rec.certId}
+                                <span class="cert-hash-sub">Hash: ${shortHash}</span>
+                            </td>
+                            <td class="font-bold">${rec.studentName}</td>
+                            <td>${rec.enrollmentNo}</td>
+                            <td>${rec.eventTitle || "Academic"}</td>
+                            <td>${dateText}</td>
+                            <td class="action-buttons">
+                                <button class="btn-table-action btn-view" type="button" onclick="window.open('${pdfUrl}', '_blank')">View</button>
+                                <button class="btn-table-action btn-download" type="button" onclick="window.open('${pdfUrl}', '_blank')">Download</button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">No certificates found on ledger.</td></tr>`;
+                }
+            } catch (err) {
+                console.error("Fetch records error:", err);
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444; padding: 2rem;">Failed to load live records: ${err.message}</td></tr>`;
+            }
+        }
+
         function prependRecordToTable(record) {
             const tbody = document.getElementById("recordsTableBody");
+            if (tbody.children.length === 1 && (tbody.children[0].innerText.includes("No certificates") || tbody.children[0].innerText.includes("Loading live"))) {
+                tbody.innerHTML = "";
+            }
             const tr = document.createElement("tr");
-            
             const pdfUrl = record.pdfLink || "#";
             const shortHash = record.currentHash ? `${record.currentHash.substring(0, 8)}...${record.currentHash.slice(-6)}` : "Verified Block";
 
@@ -257,6 +285,7 @@
                 enrollmentNo: document.getElementById("enrollment-no").value.trim(),
                 courseDept: document.getElementById("dept").value.trim(),
                 eventTitle: document.getElementById("cert-type").value,
+                dob: document.getElementById("student-dob").value.trim(),
                 remarks: document.getElementById("grade-remarks").value.trim()
             };
 
@@ -297,10 +326,10 @@
         // Sample CSV Download
         document.getElementById("btnDownloadSample").addEventListener("click", () => {
             const csvContent = "data:text/csv;charset=utf-8," + 
-                "Student_Name,Enrollment_No,Dept,Event_Title,Cert_ID\n" +
-                "Aryan Verma,01916403201,AIML,Academic Excellence,\n" +
-                "Sneha Gupta,01916403202,AIML,Institutional Event / Participation,\n" +
-                "Kunal Singh,01916403203,CSE,Degree / Program Completion,";
+                "Student_Name,Enrollment_No,Dept,Event_Title,Cert_ID,DOB\n" +
+                "Aryan Verma,01916403201,AIML,Academic Excellence,IPU-2026-AIML001,06012006\n" +
+                "Sneha Gupta,01916403202,AIML,Institutional Event / Participation,IPU-2026-AIML002,01012006\n" +
+                "Kunal Singh,01916403203,CSE,Degree / Program Completion,IPU-2026-AIML003,02012006";
             
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
@@ -342,7 +371,8 @@
                             enrollmentNo: cols[1] || "",
                             courseDept: cols[2] || "AIML",
                             eventTitle: cols[3] || "Academic Excellence",
-                            certId: cols[4] || ""
+                            certId: cols[4] || "",
+                            dob: cols[5] || ""
                         });
                     }
                 }
@@ -364,16 +394,7 @@
 
                     if (result.status === "SUCCESS") {
                         showStatus(`✅ Successfully mined all <b>${result.count}</b> certificates in batch!`, "success");
-                        result.certificates.forEach(item => {
-                            prependRecordToTable({
-                                certId: item.certId,
-                                studentName: item.studentName,
-                                enrollmentNo: "-",
-                                eventTitle: "Batch Issued",
-                                currentHash: item.hash,
-                                pdfLink: item.pdfLink
-                            });
-                        });
+                        fetchRealRecords(); // Refresh whole table dynamically
                         fileInput.value = "";
                     } else {
                         showStatus(`❌ Batch issuance failed: ${result.message || "Error"}`, "error");
