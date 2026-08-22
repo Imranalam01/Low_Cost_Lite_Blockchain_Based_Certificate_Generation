@@ -5,6 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faculty Dashboard - GGSIPU</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Visual Template Selector Styles */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-top: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .template-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #ffffff;
+            padding: 0.6rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .template-card:hover {
+            border-color: #94a3b8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+        }
+
+        .template-card.active {
+            border-color: #2563eb;
+            background: #f0f7ff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2), 0 4px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        .template-card.active::before {
+            content: "✓ Selected";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 20px;
+            z-index: 2;
+        }
+
+        .template-preview-img {
+            width: 100%;
+            height: 125px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .template-info {
+            margin-top: 0.6rem;
+            text-align: left;
+        }
+
+        .template-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+
+        .template-tag {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .template-preview-link {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 0.75rem;
+            color: #2563eb;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -47,7 +131,7 @@
             <div class="section-card">
                 <div class="section-card-header">
                     <h2 class="section-title">Issue Academic Certificate</h2>
-                    <p class="section-desc">Enter candidate and program details to generate a verified credential.</p>
+                    <p class="section-desc">Enter candidate details and choose your preferred design template.</p>
                 </div>
 
                 <form class="cert-form" id="issueCertForm">
@@ -90,10 +174,49 @@
                         </div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group" style="width: 100%;">
-                            <label for="grade-remarks">Division / Grade / Remark</label>
-                            <input type="text" id="grade-remarks" placeholder="Optional remark (e.g., First Division)">
+                    <!-- Visual Template Gallery Picker (Single) - Placed after Remarks -->
+                    <div class="form-group" style="width: 100%; margin-top: 1rem;">
+                        <label style="font-weight: 700; display: block; margin-bottom: 0.25rem;">
+                            Choose Certificate Design Template (Click to Select)
+                        </label>
+                        <input type="hidden" id="cert-template" value="template_1">
+
+                        <div class="template-grid" id="singleTemplateGrid">
+                            <!-- Template 1 -->
+                            <div class="template-card active" onclick="selectTemplate('single', 'template_1', this)">
+                                <img src="https://docs.google.com/presentation/d/16ZHQSN5Es_HQMagiNy3m1Ic0MLi5HszJXnVCxV0-pb8/export/png" alt="Template 1 Preview" class="template-preview-img">
+                                <div class="template-info">
+                                    <div class="template-name">Template 1</div>
+                                    <a href="https://docs.google.com/presentation/d/16ZHQSN5Es_HQMagiNy3m1Ic0MLi5HszJXnVCxV0-pb8/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
+                                </div>
+                            </div>
+
+                            <!-- Template 2 -->
+                            <div class="template-card" onclick="selectTemplate('single', 'template_2', this)">
+                                <img src="https://docs.google.com/presentation/d/1W2kpKU9zUT2xvaG2pQYRE_Oo2Hu3Zy2f7WIJpMU8JHY/export/png" alt="Template 2 Preview" class="template-preview-img">
+                                <div class="template-info">
+                                    <div class="template-name">Template 2</div>
+                                    <a href="https://docs.google.com/presentation/d/1W2kpKU9zUT2xvaG2pQYRE_Oo2Hu3Zy2f7WIJpMU8JHY/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
+                                </div>
+                            </div>
+
+                            <!-- Template 3 -->
+                            <div class="template-card" onclick="selectTemplate('single', 'template_3', this)">
+                                <img src="https://docs.google.com/presentation/d/1QHylky_GDKXYeeNH3qJTuzDDH8gEDWIbB8jhzKDqmfQ/export/png" alt="Template 3 Preview" class="template-preview-img">
+                                <div class="template-info">
+                                    <div class="template-name">Template 3</div>
+                                    <a href="https://docs.google.com/presentation/d/1QHylky_GDKXYeeNH3qJTuzDDH8gEDWIbB8jhzKDqmfQ/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
+                                </div>
+                            </div>
+
+                            <!-- Template 4 -->
+                            <div class="template-card" onclick="selectTemplate('single', 'template_4', this)">
+                                <img src="https://docs.google.com/presentation/d/12ZD6f0WwAaD7ahDsxYSFEtEQ77v5qi511DRVmyFTyZo/export/png" alt="Template 4 Preview" class="template-preview-img">
+                                <div class="template-info">
+                                    <div class="template-name">Template 4</div>
+                                    <a href="https://docs.google.com/presentation/d/12ZD6f0WwAaD7ahDsxYSFEtEQ77v5qi511DRVmyFTyZo/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -110,10 +233,56 @@
             <div class="section-card">
                 <div class="section-card-header">
                     <h2 class="section-title">Bulk Certificate Issuance (Batch CSV)</h2>
-                    <p class="section-desc">Upload a CSV file containing batch student records to generate and blockchain-secure credentials automatically.</p>
+                    <p class="section-desc">Select template design and upload a CSV file containing batch student records.</p>
                 </div>
 
-                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem; flex-wrap: wrap;">
+                <!-- Visual Template Gallery Picker (Batch) -->
+                <div class="form-group" style="width: 100%; margin-top: 1rem;">
+                    <label style="font-weight: 700; display: block; margin-bottom: 0.25rem;">
+                        Choose Certificate Design Template (Click to Select)
+                    </label>
+                    <input type="hidden" id="batch-cert-template" value="template_1">
+
+                    <div class="template-grid" id="batchTemplateGrid">
+                        <!-- Template 1 -->
+                        <div class="template-card active" onclick="selectTemplate('batch', 'template_1', this)">
+                            <img src="https://docs.google.com/presentation/d/16ZHQSN5Es_HQMagiNy3m1Ic0MLi5HszJXnVCxV0-pb8/export/png" alt="Template 1 Preview" class="template-preview-img">
+                            <div class="template-info">
+                                <div class="template-name">🏛️ Classic Academic</div>
+                                <div class="template-tag">Official Gold Seal</div>
+                            </div>
+                        </div>
+
+                        <!-- Template 2 -->
+                        <div class="template-card" onclick="selectTemplate('batch', 'template_2', this)">
+                            <img src="https://docs.google.com/presentation/d/1W2kpKU9zUT2xvaG2pQYRE_Oo2Hu3Zy2f7WIJpMU8JHY/export/png" alt="Template 2 Preview" class="template-preview-img">
+                            <div class="template-info">
+                                <div class="template-name">💻 Modern Tech</div>
+                                <div class="template-tag">Hackathon &amp; Technical AI</div>
+                            </div>
+                        </div>
+
+                        <!-- Template 3 -->
+                        <div class="template-card" onclick="selectTemplate('batch', 'template_3', this)">
+                            <img src="https://docs.google.com/presentation/d/1QHylky_GDKXYeeNH3qJTuzDDH8gEDWIbB8jhzKDqmfQ/export/png" alt="Template 3 Preview" class="template-preview-img">
+                            <div class="template-info">
+                                <div class="template-name">🏅 Event &amp; Cultural</div>
+                                <div class="template-tag">Sports &amp; Event Participation</div>
+                            </div>
+                        </div>
+
+                        <!-- Template 4 -->
+                        <div class="template-card" onclick="selectTemplate('batch', 'template_4', this)">
+                            <img src="https://docs.google.com/presentation/d/12ZD6f0WwAaD7ahDsxYSFEtEQ77v5qi511DRVmyFTyZo/export/png" alt="Template 4 Preview" class="template-preview-img">
+                            <div class="template-info">
+                                <div class="template-name">📜 Degree Completion</div>
+                                <div class="template-tag">Executive University Layout</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1rem; flex-wrap: wrap;">
                     <input type="file" id="csvFileInput" accept=".csv" style="padding: 0.6rem; border: 1px dashed #94a3b8; border-radius: 6px; background: #fff; cursor: pointer;">
                     <button type="button" id="btnUploadCsv" class="btn btn-primary">Process &amp; Issue Batch</button>
                     <button type="button" id="btnDownloadSample" class="btn btn-secondary">Download Sample CSV</button>
@@ -194,12 +363,27 @@
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
 
+        // Template Card Selection Handler
+        function selectTemplate(mode, templateKey, cardElement) {
+            const containerId = mode === 'single' ? 'singleTemplateGrid' : 'batchTemplateGrid';
+            const hiddenInputId = mode === 'single' ? 'cert-template' : 'batch-cert-template';
+
+            // Remove active class from other cards in the same section
+            const cards = document.getElementById(containerId).querySelectorAll('.template-card');
+            cards.forEach(c => c.classList.remove('active'));
+
+            // Add active class to clicked card
+            cardElement.classList.add('active');
+
+            // Set hidden input value
+            document.getElementById(hiddenInputId).value = templateKey;
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             const today = new Date().toISOString().split("T")[0];
             const issueDateInput = document.getElementById("issue-date");
             if (issueDateInput) issueDateInput.value = today;
             
-            // Auto fetch real data directly from Google Sheets
             fetchRealRecords();
         });
 
@@ -275,7 +459,7 @@
             tbody.insertBefore(tr, tbody.firstChild);
         }
 
-        // Single Issuance
+        // Single Issuance Form Submission
         document.getElementById("issueCertForm").addEventListener("submit", async function (e) {
             e.preventDefault();
             const submitBtn = document.getElementById("btnSubmitSingle");
@@ -286,7 +470,8 @@
                 courseDept: document.getElementById("dept").value.trim(),
                 eventTitle: document.getElementById("cert-type").value,
                 dob: document.getElementById("student-dob").value.trim(),
-                remarks: document.getElementById("grade-remarks").value.trim()
+                remarks: document.getElementById("grade-remarks").value.trim(),
+                template: document.getElementById("cert-template").value
             };
 
             submitBtn.disabled = true;
@@ -313,6 +498,8 @@
 
                     document.getElementById("issueCertForm").reset();
                     document.getElementById("issue-date").value = new Date().toISOString().split("T")[0];
+                    // Reset to template 1
+                    selectTemplate('single', 'template_1', document.querySelector('#singleTemplateGrid .template-card'));
                 } else {
                     showStatus(`❌ Issuance failed: ${result.message || "Unknown error"}`, "error");
                 }
@@ -340,10 +527,11 @@
             document.body.removeChild(link);
         });
 
-        // Batch CSV Upload (With Seamless Auto-Blockchain Settlement)
+        // Batch CSV Upload
         document.getElementById("btnUploadCsv").addEventListener("click", async () => {
             const fileInput = document.getElementById("csvFileInput");
             const uploadBtn = document.getElementById("btnUploadCsv");
+            const selectedBatchTemplate = document.getElementById("batch-cert-template").value;
 
             if (!fileInput.files || fileInput.files.length === 0) {
                 alert("Please select a valid CSV file first.");
@@ -371,6 +559,7 @@
                             enrollmentNo: cols[1] || "",
                             courseDept: cols[2] || "AIML",
                             eventTitle: cols[3] || "Academic Excellence",
+                            template: selectedBatchTemplate,
                             certId: cols[4] || "",
                             dob: cols[5] || ""
                         });
