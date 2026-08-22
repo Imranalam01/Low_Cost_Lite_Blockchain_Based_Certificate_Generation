@@ -88,6 +88,40 @@
             text-decoration: underline;
             cursor: pointer;
         }
+
+        /* Pagination Styles */
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .pagination-btn {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+            padding: 0.45rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -112,7 +146,7 @@
             <!-- Profile & Logout -->
             <div class="user-nav">
                 <div class="user-info">
-                    <span class="user-name">Faculty Panel</span>
+                    <span class="user-name" id="displayFacultyName">Faculty Panel</span>
                     <span class="user-role">GGSIPU Campus</span>
                 </div>
                 <a href="teacher-login.html" class="btn-logout">Logout</a>
@@ -174,7 +208,7 @@
                         </div>
                     </div>
 
-                    <!-- Visual Template Gallery Picker (Single) - Placed after Remarks -->
+                    <!-- Visual Template Gallery Picker (Single) -->
                     <div class="form-group" style="width: 100%; margin-top: 1rem;">
                         <label style="font-weight: 700; display: block; margin-bottom: 0.25rem;">
                             Choose Certificate Design Template (Click to Select)
@@ -182,38 +216,38 @@
                         <input type="hidden" id="cert-template" value="template_1">
 
                         <div class="template-grid" id="singleTemplateGrid">
-                            <!-- Template 1 -->
                             <div class="template-card active" onclick="selectTemplate('single', 'template_1', this)">
                                 <img src="https://docs.google.com/presentation/d/16ZHQSN5Es_HQMagiNy3m1Ic0MLi5HszJXnVCxV0-pb8/export/png" alt="Template 1 Preview" class="template-preview-img">
                                 <div class="template-info">
                                     <div class="template-name">Template 1</div>
+                                    
                                     <a href="https://docs.google.com/presentation/d/16ZHQSN5Es_HQMagiNy3m1Ic0MLi5HszJXnVCxV0-pb8/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
                                 </div>
                             </div>
 
-                            <!-- Template 2 -->
                             <div class="template-card" onclick="selectTemplate('single', 'template_2', this)">
                                 <img src="https://docs.google.com/presentation/d/1W2kpKU9zUT2xvaG2pQYRE_Oo2Hu3Zy2f7WIJpMU8JHY/export/png" alt="Template 2 Preview" class="template-preview-img">
                                 <div class="template-info">
                                     <div class="template-name">Template 2</div>
+                                    
                                     <a href="https://docs.google.com/presentation/d/1W2kpKU9zUT2xvaG2pQYRE_Oo2Hu3Zy2f7WIJpMU8JHY/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
                                 </div>
                             </div>
 
-                            <!-- Template 3 -->
                             <div class="template-card" onclick="selectTemplate('single', 'template_3', this)">
                                 <img src="https://docs.google.com/presentation/d/1QHylky_GDKXYeeNH3qJTuzDDH8gEDWIbB8jhzKDqmfQ/export/png" alt="Template 3 Preview" class="template-preview-img">
                                 <div class="template-info">
                                     <div class="template-name">Template 3</div>
+                                    
                                     <a href="https://docs.google.com/presentation/d/1QHylky_GDKXYeeNH3qJTuzDDH8gEDWIbB8jhzKDqmfQ/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
                                 </div>
                             </div>
 
-                            <!-- Template 4 -->
                             <div class="template-card" onclick="selectTemplate('single', 'template_4', this)">
                                 <img src="https://docs.google.com/presentation/d/12ZD6f0WwAaD7ahDsxYSFEtEQ77v5qi511DRVmyFTyZo/export/png" alt="Template 4 Preview" class="template-preview-img">
                                 <div class="template-info">
                                     <div class="template-name">Template 4</div>
+                                    
                                     <a href="https://docs.google.com/presentation/d/12ZD6f0WwAaD7ahDsxYSFEtEQ77v5qi511DRVmyFTyZo/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
                                 </div>
                             </div>
@@ -244,39 +278,35 @@
                     <input type="hidden" id="batch-cert-template" value="template_1">
 
                     <div class="template-grid" id="batchTemplateGrid">
-                        <!-- Template 1 -->
                         <div class="template-card active" onclick="selectTemplate('batch', 'template_1', this)">
                             <img src="https://docs.google.com/presentation/d/16ZHQSN5Es_HQMagiNy3m1Ic0MLi5HszJXnVCxV0-pb8/export/png" alt="Template 1 Preview" class="template-preview-img">
                             <div class="template-info">
-                                <div class="template-name">🏛️ Classic Academic</div>
-                                <div class="template-tag">Official Gold Seal</div>
+                                <div class="template-name">Template 1</div>
+                                
                             </div>
                         </div>
 
-                        <!-- Template 2 -->
                         <div class="template-card" onclick="selectTemplate('batch', 'template_2', this)">
                             <img src="https://docs.google.com/presentation/d/1W2kpKU9zUT2xvaG2pQYRE_Oo2Hu3Zy2f7WIJpMU8JHY/export/png" alt="Template 2 Preview" class="template-preview-img">
                             <div class="template-info">
-                                <div class="template-name">💻 Modern Tech</div>
-                                <div class="template-tag">Hackathon &amp; Technical AI</div>
+                                <div class="template-name">Template 2</div>
+                                
                             </div>
                         </div>
 
-                        <!-- Template 3 -->
                         <div class="template-card" onclick="selectTemplate('batch', 'template_3', this)">
                             <img src="https://docs.google.com/presentation/d/1QHylky_GDKXYeeNH3qJTuzDDH8gEDWIbB8jhzKDqmfQ/export/png" alt="Template 3 Preview" class="template-preview-img">
                             <div class="template-info">
-                                <div class="template-name">🏅 Event &amp; Cultural</div>
-                                <div class="template-tag">Sports &amp; Event Participation</div>
+                                <div class="template-name">Template 3</div>
+                                
                             </div>
                         </div>
 
-                        <!-- Template 4 -->
                         <div class="template-card" onclick="selectTemplate('batch', 'template_4', this)">
                             <img src="https://docs.google.com/presentation/d/12ZD6f0WwAaD7ahDsxYSFEtEQ77v5qi511DRVmyFTyZo/export/png" alt="Template 4 Preview" class="template-preview-img">
                             <div class="template-info">
-                                <div class="template-name">📜 Degree Completion</div>
-                                <div class="template-tag">Executive University Layout</div>
+                                <div class="template-name">Template 4</div>
+                                
                             </div>
                         </div>
                     </div>
@@ -294,40 +324,49 @@
             </div>
         </section>
 
-        <!-- Issued Records Table -->
-        <section class="dash-section">
-            <div class="section-card">
-                <div class="section-card-header table-header-flex">
+        <!-- Issued Records Section (Visual Ledger Cards with Pagination) -->
+        <section class="dash-section" style="margin-top: 2rem;">
+            <div class="section-card" style="padding: 1.5rem; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
                     <div>
-                        <h2 class="section-title">Issued Certificate Records</h2>
-                        <p class="section-desc">Real-time ledger records from Google Sheets &amp; Blockchain.</p>
+                        <h2 class="section-title" style="margin: 0; font-size: 1.3rem; color: #0f172a;">Issued Certificate Records</h2>
+                        <p class="section-desc" style="margin: 4px 0 0 0; color: #64748b;">Live records stored on Google Sheet ledger and secured via SHA-256 block hash.</p>
                     </div>
-                    <div class="table-search">
-                        <input type="text" id="tableSearchInput" placeholder="Search by Roll No. or ID..." class="search-input">
+                    
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="text" id="tableSearchInput" placeholder="Search Enrollment no." style="padding: 0.65rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; width: 260px; outline: none; background: #ffffff; color: #0f172a;">
+                        <button type="button" id="btnSearchRecords" class="btn btn-primary" style="padding: 0.65rem 1.2rem; font-weight: 600;">Search</button>
+                        <button type="button" id="btnRefreshRecords" class="btn btn-secondary" style="padding: 0.65rem 0.9rem;" title="Refresh Records">🔄</button>
                     </div>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="custom-table" id="recordsTable">
-                        <thead>
-                            <tr>
-                                <th>Certificate ID</th>
-                                <th>Student Name</th>
-                                <th>Enrollment No.</th>
-                                <th>Category / Event</th>
-                                <th>Issue Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recordsTableBody">
-                            <tr>
-                                <td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">
-                                    ⏳ Loading live records from Ledger...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Live Ledger Cards Container -->
+                <div id="ledgerCardsContainer" style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%; min-height: 120px;">
+                    <div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 500;">
+                        ⏳ Fetching live records from Google Sheets Ledger...
+                    </div>
                 </div>
+
+                <!-- Dynamic Pagination Bar -->
+                <div class="pagination-container" id="paginationBar" style="display: none;">
+                    <div style="display: flex; align-items: center; gap: 0.6rem;">
+                        <span style="font-size: 0.85rem; color: #475569;">Show:</span>
+                        <select id="pageSizeSelect" style="padding: 0.35rem 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; outline: none;">
+                            <option value="5" selected>5 per page</option>
+                            <option value="10">10 per page</option>
+                            <option value="20">20 per page</option>
+                        </select>
+                        <span id="recordCountText" style="font-size: 0.85rem; color: #64748b; margin-left: 6px;"></span>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <button type="button" class="pagination-btn" id="btnPrevPage">← Prev</button>
+                        <span id="pageNumberText" style="font-size: 0.85rem; font-weight: 600; color: #1e293b; padding: 0 4px;"></span>
+                        <button type="button" class="pagination-btn" id="btnNextPage">Next →</button>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -363,19 +402,19 @@
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
 
-        // Template Card Selection Handler
+        let allRecordsCache = [];
+        let filteredRecordsCache = [];
+        let currentPage = 1;
+        let pageSize = 5;
+
         function selectTemplate(mode, templateKey, cardElement) {
             const containerId = mode === 'single' ? 'singleTemplateGrid' : 'batchTemplateGrid';
             const hiddenInputId = mode === 'single' ? 'cert-template' : 'batch-cert-template';
 
-            // Remove active class from other cards in the same section
             const cards = document.getElementById(containerId).querySelectorAll('.template-card');
             cards.forEach(c => c.classList.remove('active'));
 
-            // Add active class to clicked card
             cardElement.classList.add('active');
-
-            // Set hidden input value
             document.getElementById(hiddenInputId).value = templateKey;
         }
 
@@ -383,6 +422,11 @@
             const today = new Date().toISOString().split("T")[0];
             const issueDateInput = document.getElementById("issue-date");
             if (issueDateInput) issueDateInput.value = today;
+
+            const fName = sessionStorage.getItem("ipu_faculty_name");
+            if (fName) {
+                document.getElementById("displayFacultyName").innerText = fName;
+            }
             
             fetchRealRecords();
         });
@@ -394,70 +438,145 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        async function fetchRealRecords() {
-            const tbody = document.getElementById("recordsTableBody");
-            try {
-                const response = await fetch(`${APPS_SCRIPT_URL}?action=getAll`);
-                const result = await response.json();
-                
-                if (result.status === "SUCCESS" && result.certificates && result.certificates.length > 0) {
-                    tbody.innerHTML = "";
-                    result.certificates.forEach(rec => {
-                        const tr = document.createElement("tr");
-                        const pdfUrl = rec.pdfLink || "#";
-                        const shortHash = rec.currentHash ? `${rec.currentHash.substring(0, 8)}...${rec.currentHash.slice(-6)}` : "Verified Block";
-                        const dateText = rec.timestamp ? new Date(rec.timestamp).toLocaleDateString("en-IN", { day: '2-digit', month: 'short', year: 'numeric' }) : "-";
+        function renderCurrentPage() {
+            const container = document.getElementById("ledgerCardsContainer");
+            const paginationBar = document.getElementById("paginationBar");
+            container.innerHTML = "";
 
-                        tr.innerHTML = `
-                            <td class="cert-code">
-                                ${rec.certId}
-                                <span class="cert-hash-sub">Hash: ${shortHash}</span>
-                            </td>
-                            <td class="font-bold">${rec.studentName}</td>
-                            <td>${rec.enrollmentNo}</td>
-                            <td>${rec.eventTitle || "Academic"}</td>
-                            <td>${dateText}</td>
-                            <td class="action-buttons">
-                                <button class="btn-table-action btn-view" type="button" onclick="window.open('${pdfUrl}', '_blank')">View</button>
-                                <button class="btn-table-action btn-download" type="button" onclick="window.open('${pdfUrl}', '_blank')">Download</button>
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
+            if (!filteredRecordsCache || filteredRecordsCache.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 500;">
+                        No matching certificate records found.
+                    </div>`;
+                paginationBar.style.display = "none";
+                return;
+            }
+
+            paginationBar.style.display = "flex";
+            const totalRecords = filteredRecordsCache.length;
+            const totalPages = Math.ceil(totalRecords / pageSize);
+
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const startIndex = (currentPage - 1) * pageSize;
+            const pageRecords = filteredRecordsCache.slice(startIndex, startIndex + pageSize);
+
+            pageRecords.forEach(rec => {
+                const pdfUrl = rec.pdfLink || "#";
+                const shortHash = rec.currentHash ? `${rec.currentHash.substring(0, 10)}...${rec.currentHash.slice(-8)}` : "Verified Block";
+                const dateText = rec.timestamp ? new Date(rec.timestamp).toLocaleDateString("en-IN", { day: '2-digit', month: 'short', year: 'numeric' }) : "-";
+
+                const card = document.createElement("div");
+                card.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); flex-wrap: wrap; gap: 1rem;";
+
+                card.innerHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 3px; min-width: 180px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-family: monospace; font-weight: 700; color: #1e293b; font-size: 0.95rem;">${rec.certId}</span>
+                            <span style="background: #e0f2fe; color: #0369a1; font-size: 0.72rem; padding: 2px 7px; border-radius: 12px; font-weight: 700;">Block #${rec.blockIndex || 1}</span>
+                        </div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-family: monospace;">Hash: ${shortHash}</div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; min-width: 160px;">
+                        <span style="font-weight: 700; color: #0f172a; font-size: 0.98rem;">${rec.studentName}</span>
+                        <span style="font-size: 0.82rem; color: #475569;">Enrollment: <b style="color: #2563eb;">${rec.enrollmentNo}</b> (${rec.courseDept || "AIML"})</span>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; min-width: 160px;">
+                        <span style="font-weight: 600; color: #334155; font-size: 0.88rem;">${rec.eventTitle || "Academic Excellence"}</span>
+                        <span style="font-size: 0.8rem; color: #64748b;">Issued: ${dateText}</span>
+                    </div>
+
+                    <div style="display: flex; gap: 6px;">
+                        <a href="${pdfUrl}" target="_blank" style="background: #2563eb; color: #ffffff; text-decoration: none; padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.82rem; font-weight: 600;">View PDF ↗</a>
+                        <a href="${pdfUrl}" target="_blank" style="background: #0f172a; color: #ffffff; text-decoration: none; padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.82rem; font-weight: 600;">Download</a>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            // Update Pagination Elements
+            document.getElementById("recordCountText").innerText = `Total: ${totalRecords} records`;
+            document.getElementById("pageNumberText").innerText = `Page ${currentPage} of ${totalPages}`;
+            document.getElementById("btnPrevPage").disabled = (currentPage === 1);
+            document.getElementById("btnNextPage").disabled = (currentPage === totalPages);
+        }
+
+        async function fetchRealRecords() {
+            const container = document.getElementById("ledgerCardsContainer");
+            container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 500;">⏳ Fetching live records from Google Sheets Ledger...</div>`;
+
+            try {
+                const url = `${APPS_SCRIPT_URL}?action=getAll&_t=${Date.now()}`;
+                const response = await fetch(url, { redirect: "follow" });
+                const result = await response.json();
+
+                if (result.status === "SUCCESS" && result.certificates && result.certificates.length > 0) {
+                    allRecordsCache = result.certificates;
+                    filteredRecordsCache = [...allRecordsCache];
+                    currentPage = 1;
+                    renderCurrentPage();
                 } else {
-                    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">No certificates found on ledger.</td></tr>`;
+                    container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1;">No certificates found in ledger.</div>`;
                 }
             } catch (err) {
                 console.error("Fetch records error:", err);
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #ef4444; padding: 2rem;">Failed to load live records: ${err.message}</td></tr>`;
+                container.innerHTML = `<div style="text-align: center; color: #ef4444; padding: 2.5rem; background: #fef2f2; border-radius: 8px; border: 1px dashed #f87171;">Failed to load records. Click 🔄 to retry.</div>`;
             }
         }
 
-        function prependRecordToTable(record) {
-            const tbody = document.getElementById("recordsTableBody");
-            if (tbody.children.length === 1 && (tbody.children[0].innerText.includes("No certificates") || tbody.children[0].innerText.includes("Loading live"))) {
-                tbody.innerHTML = "";
-            }
-            const tr = document.createElement("tr");
-            const pdfUrl = record.pdfLink || "#";
-            const shortHash = record.currentHash ? `${record.currentHash.substring(0, 8)}...${record.currentHash.slice(-6)}` : "Verified Block";
+        function filterRecords() {
+            const query = document.getElementById("tableSearchInput").value.toLowerCase().trim();
+            if (!query) {
+                filteredRecordsCache = [...allRecordsCache];
+            } else {
+                const cleanQuery = query.replace(/^0+/, "");
+                filteredRecordsCache = allRecordsCache.filter(rec => {
+                    const enrollRaw = String(rec.enrollmentNo || "").toLowerCase();
+                    const enrollClean = enrollRaw.replace(/^0+/, "");
+                    const name = String(rec.studentName || "").toLowerCase();
+                    const id = String(rec.certId || "").toLowerCase();
+                    const event = String(rec.eventTitle || "").toLowerCase();
 
-            tr.innerHTML = `
-                <td class="cert-code">
-                    ${record.certId}
-                    <span class="cert-hash-sub">Hash: ${shortHash}</span>
-                </td>
-                <td class="font-bold">${record.studentName}</td>
-                <td>${record.enrollmentNo}</td>
-                <td>${record.eventTitle || "Academic"}</td>
-                <td>${new Date().toLocaleDateString("en-IN", { day: '2-digit', month: 'short', year: 'numeric' })}</td>
-                <td class="action-buttons">
-                    <button class="btn-table-action btn-view" type="button" onclick="window.open('${pdfUrl}', '_blank')">View</button>
-                    <button class="btn-table-action btn-download" type="button" onclick="window.open('${pdfUrl}', '_blank')">Download</button>
-                </td>
-            `;
-            tbody.insertBefore(tr, tbody.firstChild);
+                    return enrollRaw.includes(query) || 
+                           (cleanQuery !== "" && enrollClean.includes(cleanQuery)) ||
+                           name.includes(query) || 
+                           id.includes(query) || 
+                           event.includes(query);
+                });
+            }
+            currentPage = 1;
+            renderCurrentPage();
         }
+
+        // Pagination Events
+        document.getElementById("btnPrevPage").addEventListener("click", () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderCurrentPage();
+            }
+        });
+
+        document.getElementById("btnNextPage").addEventListener("click", () => {
+            const totalPages = Math.ceil(filteredRecordsCache.length / pageSize);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderCurrentPage();
+            }
+        });
+
+        document.getElementById("pageSizeSelect").addEventListener("change", (e) => {
+            pageSize = parseInt(e.target.value, 10);
+            currentPage = 1;
+            renderCurrentPage();
+        });
+
+        document.getElementById("tableSearchInput").addEventListener("input", filterRecords);
+        document.getElementById("btnSearchRecords").addEventListener("click", filterRecords);
+        document.getElementById("btnRefreshRecords").addEventListener("click", fetchRealRecords);
 
         // Single Issuance Form Submission
         document.getElementById("issueCertForm").addEventListener("submit", async function (e) {
@@ -487,18 +606,23 @@
                 if (result.status === "SUCCESS") {
                     showStatus(`✅ <b>Certificate Successfully Mined!</b><br>Cert ID: <code>${result.certId}</code> | Block #${result.blockIndex} | Hash: <code>${result.currentHash}</code><br><a href="${result.pdfLink}" target="_blank" style="color: #065f46; font-weight: bold; text-decoration: underline;">👉 Open Generated PDF</a>`, "success");
                     
-                    prependRecordToTable({
+                    const newRec = {
+                        blockIndex: result.blockIndex,
                         certId: result.certId,
                         studentName: payload.studentName,
                         enrollmentNo: payload.enrollmentNo,
                         eventTitle: payload.eventTitle,
+                        courseDept: payload.courseDept,
                         currentHash: result.currentHash,
-                        pdfLink: result.pdfLink
-                    });
+                        pdfLink: result.pdfLink,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    allRecordsCache.unshift(newRec);
+                    filterRecords();
 
                     document.getElementById("issueCertForm").reset();
                     document.getElementById("issue-date").value = new Date().toISOString().split("T")[0];
-                    // Reset to template 1
                     selectTemplate('single', 'template_1', document.querySelector('#singleTemplateGrid .template-card'));
                 } else {
                     showStatus(`❌ Issuance failed: ${result.message || "Unknown error"}`, "error");
@@ -582,21 +706,7 @@
                     const result = await response.json();
 
                     if (result.status === "SUCCESS") {
-                        let rootHash = "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef";
-                        try {
-                            const pRes = await fetch("batch_payload.json");
-                            if (pRes.ok) {
-                                const pData = await pRes.json();
-                                rootHash = pData.merkle_root || rootHash;
-                            }
-                        } catch (e) {}
-
-                        showStatus(`✅ <b>Successfully issued and blockchain-secured all ${result.count} certificates!</b><br>
-                            <span style="font-size: 0.85rem; color: #065f46;">
-                            🔒 <b>On-Chain Merkle Root:</b> <code>${rootHash.substring(0, 14)}...${rootHash.slice(-8)}</code> | 
-                            <a href="https://sepolia.etherscan.io/address/0x28c9c77549F21dfb76834eE91F90EeEA1861F495" target="_blank" style="color: #047857; text-decoration: underline; font-weight: bold;">View Blockchain Ledger ↗</a>
-                            </span>`, "success");
-
+                        showStatus(`✅ <b>Successfully issued and blockchain-secured all ${result.count} certificates!</b>`, "success");
                         fetchRealRecords();
                         fileInput.value = "";
                     } else {
@@ -610,16 +720,6 @@
             };
 
             reader.readAsText(file);
-        });
-
-        // Search Filter
-        document.getElementById("tableSearchInput").addEventListener("input", function () {
-            const query = this.value.toLowerCase().trim();
-            const rows = document.querySelectorAll("#recordsTableBody tr");
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(query) ? "" : "none";
-            });
         });
     </script>
 </body>
