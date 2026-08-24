@@ -5,6 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Portal - GGSIPU</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .cert-card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.25rem;
+            width: 100%;
+        }
+
+        .student-cert-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            transition: all 0.2s ease;
+        }
+
+        .student-cert-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .student-cert-card.revoked-bg {
+            background: #fff8f8;
+            border-color: #fecaca;
+        }
+
+        .badge-pill {
+            font-size: 0.72rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-active {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .badge-revoked {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .btn-action-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0.5rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-view-pdf {
+            background: #2563eb;
+            color: #ffffff !important;
+            border: 1px solid #2563eb;
+        }
+        .btn-view-pdf:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-download-pdf {
+            background: #0f172a;
+            color: #ffffff !important;
+            border: 1px solid #0f172a;
+        }
+        .btn-download-pdf:hover {
+            background: #1e293b;
+        }
+
+        .btn-verify-qr {
+            background: #f1f5f9;
+            color: #334155 !important;
+            border: 1px solid #cbd5e1;
+        }
+        .btn-verify-qr:hover {
+            background: #e2e8f0;
+        }
+    </style>
 </head>
 <body>
 
@@ -27,43 +122,37 @@
             <!-- Student Profile & Logout -->
             <div class="user-nav" style="display: flex; align-items: center; gap: 1rem;">
                 <div class="user-meta" style="text-align: right;">
-                    <div id="studentDisplayName" style="font-weight: 600; color: #0f172a; font-size: 0.95rem;">Student</div>
-                    <div id="studentDisplayEnroll" style="font-size: 0.8rem; color: #64748b;">-</div>
+                    <div id="studentDisplayName" style="font-weight: 700; color: #0f172a; font-size: 0.95rem;">Student</div>
+                    <div id="studentDisplayEnroll" style="font-size: 0.82rem; color: #64748b; font-family: monospace;">-</div>
                 </div>
-                <a href="#" id="studentLogoutBtn" class="btn-logout">Logout</a>
+                <a href="#" id="studentLogoutBtn" class="btn-logout" style="text-decoration: none;">Logout</a>
             </div>
         </div>
     </header>
 
     <!-- Main Content Workspace -->
-    <main class="container dashboard-container">
+    <main class="container dashboard-container" style="max-width: 1080px; margin: 2rem auto;">
 
         <!-- Issued Certificates Section -->
         <section class="dash-section">
-            <div class="section-card">
-                <div class="section-card-header table-header-flex">
+            <div class="section-card" style="padding: 1.75rem; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1.25rem;">
                     <div>
-                        <h2 class="section-title">Verified Certificates</h2>
-                        <p class="section-desc">View and download your academic and event credentials secured on blockchain.</p>
+                        <h2 class="section-title" style="margin: 0; font-size: 1.35rem; color: #0f172a;">Verified Certificates</h2>
+                        <p class="section-desc" style="margin: 4px 0 0 0; color: #64748b; font-size: 0.9rem;">
+                            View, download, and verify credentials linked to your enrollment number on the blockchain ledger.
+                        </p>
                     </div>
+                    <button type="button" id="btnSyncRecords" class="btn btn-secondary" style="padding: 0.55rem 1rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                        🔄 Sync Records
+                    </button>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="custom-table">
-                        <thead>
-                            <tr>
-                                <th>Certificate ID</th>
-                                <th>Title / Description</th>
-                                <th>Department</th>
-                                <th>Date of Issuance</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="studentCertTableBody">
-                            <!-- Dynamic records injected here -->
-                        </tbody>
-                    </table>
+                <!-- Dynamic Certificate Cards Container -->
+                <div id="certCardList" class="cert-card-container">
+                    <div style="text-align: center; color: #64748b; padding: 3rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1;">
+                        ⏳ Loading your verified certificates from the blockchain ledger...
+                    </div>
                 </div>
             </div>
         </section>
@@ -96,8 +185,10 @@
         </div>
     </footer>
 
-    <!-- Dynamic Session & Table Render Script -->
+    <!-- Core Dynamic Data & Multi-Certificate Fetching Script -->
     <script>
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
+
         // 1. Auth Guard Check
         if (sessionStorage.getItem("ipu_student_auth") !== "true") {
             alert("⚠️ Unauthorized access! Please sign in via Student Login.");
@@ -107,8 +198,6 @@
         // 2. Set Profile Header Details
         const studentName = sessionStorage.getItem("ipu_student_name") || "Student";
         const studentEnroll = sessionStorage.getItem("ipu_student_enroll") || "-";
-        const rawCerts = sessionStorage.getItem("ipu_student_certs");
-        const certificates = rawCerts ? JSON.parse(rawCerts) : [];
 
         document.getElementById("studentDisplayName").innerText = studentName;
         document.getElementById("studentDisplayEnroll").innerText = "Enroll: " + studentEnroll;
@@ -116,38 +205,123 @@
         // 3. Logout Handler
         document.getElementById("studentLogoutBtn").addEventListener("click", function(e) {
             e.preventDefault();
-            sessionStorage.removeItem("ipu_student_auth");
-            sessionStorage.removeItem("ipu_student_name");
-            sessionStorage.removeItem("ipu_student_enroll");
-            sessionStorage.removeItem("ipu_student_certs");
+            sessionStorage.clear();
             window.location.href = "student-login.html";
         });
 
-        // 4. Populate Table Rows Dynamically
-        const tbody = document.getElementById("studentCertTableBody");
+        // 4. Render Certificates Function
+        async function fetchAndRenderAllCertificates() {
+            const container = document.getElementById("certCardList");
+            const cleanUserEnroll = String(studentEnroll).replace(/^0+/, "").trim().toLowerCase();
 
-        if (certificates.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">No credentials found on ledger for this enrollment.</td></tr>`;
-        } else {
-            tbody.innerHTML = "";
-            certificates.forEach(cert => {
+            container.innerHTML = `
+                <div style="text-align: center; color: #64748b; padding: 3rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1;">
+                    ⏳ Syncing all certificates for Enrollment: <b>${studentEnroll}</b> from the ledger...
+                </div>`;
+
+            let matchedCerts = [];
+
+            // A. Pehle session storage check karo
+            const rawSession = sessionStorage.getItem("ipu_student_certs");
+            if (rawSession) {
+                try {
+                    const parsed = JSON.parse(rawSession);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        matchedCerts = parsed;
+                    }
+                } catch(e) {}
+            }
+
+            // B. Live Ledger Fallback: Agar session empty ho ya 1 se zyada certs check karne hon
+            if (matchedCerts.length === 0) {
+                try {
+                    const url = `${APPS_SCRIPT_URL}?action=getAll&_t=${Date.now()}`;
+                    const res = await fetch(url, { redirect: "follow" });
+                    const data = await res.json();
+
+                    if (data.status === "SUCCESS" && Array.isArray(data.certificates)) {
+                        matchedCerts = data.certificates.filter(c => {
+                            const cEnroll = String(c.enrollmentNo || "").replace(/^0+/, "").trim().toLowerCase();
+                            return cEnroll !== "" && cEnroll === cleanUserEnroll;
+                        });
+                        sessionStorage.setItem("ipu_student_certs", JSON.stringify(matchedCerts));
+                    }
+                } catch(err) {
+                    console.error("Live fetch error:", err);
+                }
+            }
+
+            container.innerHTML = "";
+
+            if (!matchedCerts || matchedCerts.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; color: #64748b; padding: 3.5rem 1.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1;">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📂</div>
+                        <strong style="color: #334155; font-size: 1.05rem;">No certificates found for Enrollment: ${studentEnroll}</strong>
+                        <p style="margin-top: 6px; font-size: 0.85rem; color: #64748b;">
+                            If your certificate was recently issued, click "🔄 Sync Records" to refresh.
+                        </p>
+                    </div>`;
+                return;
+            }
+
+            matchedCerts.forEach(cert => {
                 const dateStr = cert.timestamp ? new Date(cert.timestamp).toLocaleDateString("en-IN", { day: '2-digit', month: 'short', year: 'numeric' }) : "-";
-                
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td class="cert-code">${cert.certId}</td>
-                    <td class="font-bold">${cert.eventTitle}</td>
-                    <td>${cert.courseDept}</td>
-                    <td>${dateStr}</td>
-                    <td><span class="status-badge status-active">✓ Block #${cert.blockIndex} Verified</span></td>
-                    <td class="action-buttons">
-                        <a href="verify.html?certId=${encodeURIComponent(cert.certId)}" class="btn-table-action btn-view" target="_blank" style="text-decoration:none;">Verify</a>
-                        <a href="${cert.pdfLink}" target="_blank" class="btn-table-action btn-download" style="text-decoration:none; display:inline-block; line-height: normal;">Download PDF</a>
-                    </td>
+                const isRevoked = (cert.certStatus === "REVOKED");
+                const shortHash = cert.currentHash ? `${cert.currentHash.substring(0, 10)}...${cert.currentHash.slice(-8)}` : "Verified Block";
+                const pdfUrl = (cert.pdfLink && cert.pdfLink.startsWith("http")) ? cert.pdfLink : "#";
+
+                const statusBadge = isRevoked
+                    ? `<span class="badge-pill badge-revoked">REVOKED</span>`
+                    : `<span class="badge-pill badge-active">ACTIVE</span>`;
+
+                const card = document.createElement("div");
+                card.className = `student-cert-card ${isRevoked ? 'revoked-bg' : ''}`;
+
+                card.innerHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 4px; min-width: 220px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-family: monospace; font-weight: 700; color: #1e293b; font-size: 1rem;">${cert.certId}</span>
+                            <span style="background: #e0f2fe; color: #0369a1; font-size: 0.72rem; padding: 2px 7px; border-radius: 12px; font-weight: 700;">Block #${cert.blockIndex || 1}</span>
+                            ${statusBadge}
+                        </div>
+                        <div style="font-size: 0.76rem; color: #64748b; font-family: monospace;" title="${cert.currentHash}">
+                            Hash: ${shortHash}
+                        </div>
+                        ${isRevoked ? `<div style="font-size: 0.75rem; color: #dc2626; font-weight: 600; margin-top: 2px;">Reason: ${cert.revocationReason || "Revoked by Issuer"}</div>` : ''}
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; min-width: 180px;">
+                        <span style="font-weight: 700; color: #0f172a; font-size: 1.05rem;">${cert.eventTitle || "Academic Excellence"}</span>
+                        <span style="font-size: 0.85rem; color: #475569; margin-top: 2px;">Department: <b>${cert.courseDept || "AIML"}</b></span>
+                        <span style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">Issued on: ${dateStr}</span>
+                    </div>
+
+                    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                        <a href="${pdfUrl}" target="_blank" class="btn-action-pill btn-view-pdf" title="View certificate PDF">
+                            👁️ View PDF ↗
+                        </a>
+                        <a href="${pdfUrl}" target="_blank" class="btn-action-pill btn-download-pdf" title="Download certificate PDF">
+                            ⬇️ Download
+                        </a>
+                        <a href="verify.html?certId=${encodeURIComponent(cert.certId)}" target="_blank" class="btn-action-pill btn-verify-qr" title="Verify on Public Ledger">
+                            🔍 Verify QR
+                        </a>
+                    </div>
                 `;
-                tbody.appendChild(tr);
+
+                container.appendChild(card);
             });
         }
+
+        // Initialize on load
+        document.addEventListener("DOMContentLoaded", fetchAndRenderAllCertificates);
+
+        // Sync Records Button
+        document.getElementById("btnSyncRecords").addEventListener("click", () => {
+            sessionStorage.removeItem("ipu_student_certs");
+            fetchAndRenderAllCertificates();
+        });
     </script>
 </body>
 </html>
