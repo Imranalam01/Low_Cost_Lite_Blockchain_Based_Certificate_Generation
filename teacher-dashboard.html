@@ -2,17 +2,298 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Faculty Dashboard - GGSIPU</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* Base Global Reset & Layout */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f8fafc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+            color: #1e293b;
+        }
+
+        /* Responsive Sticky Header */
+        .univ-header {
+            width: 100%;
+            padding: 0.75rem 0;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-container-custom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            gap: 1.25rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+            min-width: 0;
+        }
+
+        .univ-logo-img {
+            height: 54px;
+            width: auto;
+            object-fit: contain;
+            pointer-events: none;
+            user-select: none;
+            cursor: default;
+            flex-shrink: 0;
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 38px;
+            background-color: #cbd5e1;
+            flex-shrink: 0;
+        }
+
+        .title-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .portal-badge {
+            display: inline-block;
+            align-self: flex-start;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .system-title {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #0f172a;
+            font-weight: 700;
+            line-height: 1.25;
+            white-space: normal;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .user-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+        }
+
+        .user-info {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 700;
+            font-size: 0.92rem;
+            color: #0f172a;
+        }
+
+        .user-role {
+            font-size: 0.78rem;
+            color: #64748b;
+        }
+
+        .btn-logout {
+            background: #fee2e2;
+            color: #dc2626 !important;
+            border: 1px solid #fecaca;
+            padding: 0.45rem 0.85rem;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-logout:hover {
+            background: #dc2626;
+            color: #ffffff !important;
+        }
+
+        .team-logo-img {
+            height: 58px;
+            width: auto;
+            max-width: 170px;
+            object-fit: contain;
+            border: none;
+            box-shadow: none;
+            filter: none;
+            pointer-events: none;
+            user-select: none;
+            cursor: default;
+        }
+
+        /* Main Workspace Container */
+        .dashboard-container {
+            flex: 1 0 auto;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2.25rem 1.5rem;
+        }
+
+        .dash-section {
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .section-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04);
+        }
+
+        .section-card-header {
+            margin-bottom: 1.25rem;
+        }
+
+        .section-title {
+            margin: 0 0 4px 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .section-desc {
+            margin: 0;
+            font-size: 0.88rem;
+            color: #64748b;
+        }
+
+        /* Form Responsive Grid */
+        .cert-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1.25rem;
+            width: 100%;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.86rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 0.35rem;
+        }
+
+        .form-group input, 
+        .form-group select,
+        .form-select {
+            width: 100%;
+            padding: 0.7rem 0.95rem;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            color: #0f172a;
+            outline: none;
+            background-color: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.65rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #ffffff;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
         /* Visual Template Selector Styles */
         .template-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.2rem;
-            margin-top: 0.75rem;
-            margin-bottom: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 0.6rem;
+            margin-bottom: 1.25rem;
+            width: 100%;
         }
 
         .template-card {
@@ -23,7 +304,7 @@
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
             display: flex;
             flex-direction: column;
         }
@@ -69,7 +350,7 @@
         }
 
         .template-name {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 700;
             color: #1e293b;
             margin-bottom: 2px;
@@ -77,7 +358,7 @@
 
         .template-preview-link {
             display: inline-block;
-            margin-top: 6px;
+            margin-top: 4px;
             font-size: 0.75rem;
             color: #2563eb;
             text-decoration: underline;
@@ -90,7 +371,7 @@
             padding: 1rem 1.25rem;
             border-radius: 8px;
             margin-bottom: 1.5rem;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             line-height: 1.5;
         }
         .status-banner.loading { display: block; background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
@@ -160,7 +441,7 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.03);
             flex-wrap: wrap;
             gap: 0.75rem;
-            transition: transform 0.15s ease;
+            transition: transform 0.15s ease, border-color 0.15s ease;
         }
         .audit-card-item:hover {
             border-color: #cbd5e1;
@@ -178,17 +459,202 @@
         .log-issue { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
         .log-revoke { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
         .log-batch { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
+
+        /* Footer Section */
+        .footer {
+            flex-shrink: 0;
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 2.5rem 1.5rem 1.75rem;
+            border-top: 1px solid #1e293b;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.5rem;
+        }
+
+        .footer-team {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+        }
+
+        .team-badge {
+            background: #2563eb;
+            color: #ffffff;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .contributors-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+        }
+
+        .contributors-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .contributor-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            max-width: 800px;
+        }
+
+        .contributor-pill {
+            background: #1e293b;
+            color: #cbd5e1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid #334155;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .contributor-pill:hover {
+            background: #334155;
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #1e293b;
+            padding-top: 1.25rem;
+            width: 100%;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* --- BREAKPOINTS FOR MAXIMUM RESPONSIVENESS --- */
+
+        /* Tablets (max-width: 992px) */
+        @media (max-width: 992px) {
+            .header-container-custom {
+                padding: 0 1.5rem;
+            }
+            .system-title {
+                font-size: 0.92rem;
+            }
+            .univ-logo-img {
+                height: 46px;
+            }
+            .team-logo-img {
+                height: 48px;
+            }
+            .dashboard-container {
+                padding: 1.75rem 1.25rem;
+            }
+        }
+
+        /* Small Tablets & Large Mobile (max-width: 768px) */
+        @media (max-width: 768px) {
+            .header-container-custom {
+                padding: 0 1rem;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+            .header-left {
+                gap: 0.75rem;
+            }
+            .univ-logo-img {
+                height: 40px;
+            }
+            .team-logo-img {
+                height: 42px;
+            }
+            .header-divider {
+                height: 28px;
+            }
+            .system-title {
+                font-size: 0.82rem;
+            }
+            .portal-badge {
+                font-size: 0.65rem;
+            }
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+                border-top: 1px solid #f1f5f9;
+                padding-top: 0.5rem;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0.9rem;
+            }
+            .section-card {
+                padding: 1.25rem 1rem;
+            }
+            .template-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            }
+        }
+
+        /* Mobile Screens (max-width: 480px) */
+        @media (max-width: 480px) {
+            .univ-header {
+                padding: 0.5rem 0;
+            }
+            .univ-logo-img {
+                height: 34px;
+            }
+            .team-logo-img {
+                height: 34px;
+            }
+            .system-title {
+                font-size: 0.76rem;
+                line-height: 1.2;
+            }
+            .dashboard-container {
+                padding: 1.25rem 0.75rem;
+            }
+            .btn {
+                width: 100%;
+            }
+            .pagination-container {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .pagination-container > div {
+                justify-content: center;
+            }
+            .contributor-pill {
+                font-size: 0.75rem;
+                padding: 3px 10px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
+    <!-- Header Section -->
     <header class="univ-header">
-        <div class="container header-container dash-header">
-            <div class="header-branding">
-                <a href="index.html" class="logo-link">
-                    <img src="assets/ipu-logo.png" alt="GGSIPU Logo" class="univ-logo-img">
-                </a>
+        <div class="header-container-custom">
+            
+            <!-- Left Side: University Logo & Title Group -->
+            <div class="header-left">
+                <img src="assets/ipu-logo.png" alt="GGSIPU Logo" class="univ-logo-img">
                 <div class="header-divider"></div>
                 <div class="title-group">
                     <span class="portal-badge">Faculty Portal</span>
@@ -196,17 +662,23 @@
                 </div>
             </div>
 
-            <div class="user-nav">
-                <div class="user-info">
-                    <span class="user-name" id="displayFacultyName">Faculty Panel</span>
-                    <span class="user-role" id="displayFacultyEmail">GGSIPU Campus</span>
+            <!-- Right Side: User Controls & Clean Team Logo -->
+            <div class="header-right">
+                <div class="user-nav">
+                    <div class="user-info">
+                        <span class="user-name" id="displayFacultyName">Faculty Panel</span>
+                        <span class="user-role" id="displayFacultyEmail">GGSIPU Campus</span>
+                    </div>
+                    <a href="teacher-login.html" id="btnLogout" class="btn-logout">Logout</a>
                 </div>
-                <a href="teacher-login.html" id="btnLogout" class="btn-logout">Logout</a>
+                <img src="assets/team_logo.png" alt="Team CodeLEOS Logo" class="team-logo-img">
             </div>
+
         </div>
     </header>
 
-    <main class="container dashboard-container">
+    <!-- Main Workspace Container -->
+    <main class="dashboard-container">
         
         <div id="statusBanner" class="status-banner"></div>
 
@@ -258,7 +730,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group" style="width: 100%; margin-top: 1rem;">
+                    <div class="form-group" style="width: 100%; margin-top: 0.5rem;">
                         <label style="font-weight: 700; display: block; margin-bottom: 0.25rem;">
                             Choose Certificate Design Template (Click to Select)
                         </label>
@@ -312,7 +784,7 @@
                     <p class="section-desc">Select template design and upload a CSV file containing batch student records.</p>
                 </div>
 
-                <div class="form-group" style="width: 100%; margin-top: 1rem;">
+                <div class="form-group" style="width: 100%; margin-top: 0.5rem;">
                     <label style="font-weight: 700; display: block; margin-bottom: 0.25rem;">
                         Choose Certificate Design Template (Click to Select)
                     </label>
@@ -338,8 +810,8 @@
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1rem; flex-wrap: wrap;">
-                    <input type="file" id="csvFileInput" accept=".csv" style="padding: 0.6rem; border: 1px dashed #94a3b8; border-radius: 6px; background: #fff; cursor: pointer;">
+                <div style="display: flex; gap: 0.85rem; align-items: center; margin-top: 1rem; flex-wrap: wrap;">
+                    <input type="file" id="csvFileInput" accept=".csv" style="padding: 0.6rem; border: 1px dashed #94a3b8; border-radius: 8px; background: #fff; cursor: pointer; flex: 1; min-width: 240px;">
                     <button type="button" id="btnUploadCsv" class="btn btn-primary">Process &amp; Issue Batch</button>
                     <button type="button" id="btnDownloadSample" class="btn btn-secondary">Download Sample CSV</button>
                 </div>
@@ -351,7 +823,7 @@
         </section>
 
         <!-- 3. Revoke Certificate -->
-        <section class="dash-section" style="margin-top: 2rem;">
+        <section class="dash-section">
             <div class="section-card" style="border-left: 4px solid #dc2626;">
                 <div class="section-card-header">
                     <h2 class="section-title" style="color: #991b1b;">Revoke Certificate (Ledger Invalidation)</h2>
@@ -370,7 +842,7 @@
                         </div>
                     </div>
 
-                    <div class="form-actions" style="margin-top: 0.5rem;">
+                    <div class="form-actions">
                         <button type="submit" id="btnSubmitRevoke" class="btn" style="background: #dc2626; color: #ffffff; font-weight: 700;">
                             ⚠️ Invalidate &amp; Revoke on Ledger
                         </button>
@@ -380,19 +852,19 @@
         </section>
 
         <!-- 4. Issued Records Section -->
-        <section class="dash-section" style="margin-top: 2rem;">
-            <div class="section-card" style="padding: 1.5rem; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <section class="dash-section">
+            <div class="section-card">
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
                     <div>
-                        <h2 class="section-title" style="margin: 0; font-size: 1.3rem; color: #0f172a;">Issued Certificate Records</h2>
-                        <p class="section-desc" style="margin: 4px 0 0 0; color: #64748b;">Live records stored on Google Sheet ledger and secured via SHA-256 block hash.</p>
+                        <h2 class="section-title">Issued Certificate Records</h2>
+                        <p class="section-desc">Live records stored on Google Sheet ledger and secured via SHA-256 block hash.</p>
                     </div>
                     
-                    <div style="display: flex; gap: 0.5rem; align-items: center;">
-                        <input type="text" id="tableSearchInput" placeholder="Search Enrollment, ID or Name" style="padding: 0.65rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; width: 260px; outline: none; background: #ffffff; color: #0f172a;">
-                        <button type="button" id="btnSearchRecords" class="btn btn-primary" style="padding: 0.65rem 1.2rem; font-weight: 600;">Search</button>
-                        <button type="button" id="btnRefreshRecords" class="btn btn-secondary" style="padding: 0.65rem 0.9rem;" title="Refresh Records">🔄</button>
+                    <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; width: auto;">
+                        <input type="text" id="tableSearchInput" placeholder="Search Enrollment, ID or Name" style="padding: 0.6rem 0.95rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; min-width: 220px; outline: none; background: #ffffff; color: #0f172a;">
+                        <button type="button" id="btnSearchRecords" class="btn btn-primary">Search</button>
+                        <button type="button" id="btnRefreshRecords" class="btn btn-secondary" title="Refresh Records">🔄</button>
                     </div>
                 </div>
 
@@ -424,18 +896,18 @@
         </section>
 
         <!-- 5. Compact & Paginated Audit Trail & Faculty Activity Log Section -->
-        <section class="dash-section" style="margin-top: 2rem;">
-            <div class="section-card" style="padding: 1.5rem; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        <section class="dash-section">
+            <div class="section-card">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem; margin-bottom: 1rem;">
                     <div>
-                        <h2 class="section-title" style="margin: 0; font-size: 1.3rem; color: #0f172a;">🛡️ Audit Trail &amp; Activity Log</h2>
-                        <p class="section-desc" style="margin: 4px 0 0 0; color: #64748b;">
+                        <h2 class="section-title">🛡️ Audit Trail &amp; Activity Log</h2>
+                        <p class="section-desc">
                             Immutable log of all faculty logins, certificate issuances, and revocation events.
                         </p>
                     </div>
-                    <div style="display: flex; gap: 0.5rem; align-items: center;">
-                        <input type="text" id="auditSearchInput" placeholder="Filter by name/action..." style="padding: 0.55rem 0.9rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.85rem; width: 220px; outline: none;">
-                        <button type="button" id="btnRefreshAudit" class="btn btn-secondary" style="padding: 0.55rem 0.9rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                    <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                        <input type="text" id="auditSearchInput" placeholder="Filter by name/action..." style="padding: 0.55rem 0.9rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.85rem; min-width: 200px; outline: none;">
+                        <button type="button" id="btnRefreshAudit" class="btn btn-secondary">
                             🔄 Refresh Logs
                         </button>
                     </div>
@@ -471,12 +943,16 @@
 
     </main>
 
+    <!-- Footer Section with Dark Theme & Contributors Tags -->
     <footer class="footer">
         <div class="container footer-content">
+            <!-- Team Branding -->
             <div class="footer-team">
                 <span>Designed &amp; Developed with ❤️ by</span>
                 <span class="team-badge">Team CodeLEOS</span>
             </div>
+
+            <!-- Contributors List -->
             <div class="contributors-wrapper">
                 <span class="contributors-label">Contributors</span>
                 <div class="contributor-tags">
@@ -488,12 +964,15 @@
                     <span class="contributor-pill">Ayush Jha</span>
                 </div>
             </div>
+
+            <!-- Copyright -->
             <div class="footer-bottom">
                 <p>© 2026 Guru Gobind Singh Indraprastha University. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Integrated Backend Connector Script -->
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
 
