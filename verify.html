@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Verify Certificate - GGSIPU Portal</title>
     <link rel="stylesheet" href="style.css">
+    <!-- QR Code Scanning Engine -->
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; }
@@ -313,7 +314,7 @@
                     
                     <form class="verify-form" id="verifyForm">
                         <div class="form-group">
-                            <input type="text" id="cert-id" name="certId" placeholder="e.g. XXXXXXXXXX" required>
+                            <input type="text" id="cert-id" name="certId" placeholder="e.g. IPU-2026-AIML001" required>
                         </div>
                         <button type="submit" id="btnVerify" class="btn btn-dark btn-block">Verify Document</button>
                     </form>
@@ -517,6 +518,7 @@
                 });
         });
 
+        // Fail-Safe Verification Engine (POST-first to prevent mobile redirection issues)
         async function runVerification(query) {
             const resultBox = document.getElementById("verificationResult");
             const badge = document.getElementById("verifyStatusBadge");
@@ -536,11 +538,25 @@
             btnVerify.disabled = true;
 
             try {
-                const url = `${APPS_SCRIPT_URL}?action=verify&query=${encodeURIComponent(query)}&_t=${Date.now()}`;
-                const response = await fetch(url, { redirect: "follow" });
-                const data = await response.json();
+                let data = null;
 
-                if (data.status === "SUCCESS") {
+                try {
+                    const response = await fetch(APPS_SCRIPT_URL, {
+                        method: "POST",
+                        body: JSON.stringify({
+                            action: "VERIFY",
+                            query: query
+                        })
+                    });
+                    const rawText = await response.text();
+                    data = JSON.parse(rawText);
+                } catch (postErr) {
+                    const fallbackUrl = `${APPS_SCRIPT_URL}?action=verify&query=${encodeURIComponent(query)}&_t=${Date.now()}`;
+                    const fallbackRes = await fetch(fallbackUrl, { redirect: "follow" });
+                    data = await fallbackRes.json();
+                }
+
+                if (data && data.status === "SUCCESS") {
                     if (data.isRevoked) {
                         badge.style.background = "#fffbeb";
                         badge.style.border = "1px solid #fde047";
@@ -588,7 +604,7 @@
                 badge.style.background = "#fef2f2";
                 badge.style.border = "1px solid #fecaca";
                 badge.style.color = "#991b1b";
-                badge.innerHTML = `❌ Network Error: Unable to query verification engine. (${err.message})`;
+                badge.innerHTML = `❌ Network Error: Unable to query verification engine. Please try again.`;
             } finally {
                 btnVerify.disabled = false;
             }
