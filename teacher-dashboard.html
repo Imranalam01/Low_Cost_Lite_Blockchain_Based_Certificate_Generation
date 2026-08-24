@@ -145,6 +145,42 @@
             opacity: 0.45;
             cursor: not-allowed;
         }
+
+        /* Revocation Pill & Action Styles */
+        .badge-status {
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .badge-active {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+        .badge-revoked {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .btn-danger-sm {
+            background: #ffffff;
+            color: #dc2626;
+            border: 1px solid #f87171;
+            padding: 0.45rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-danger-sm:hover {
+            background: #dc2626;
+            color: #ffffff;
+        }
     </style>
 </head>
 
@@ -183,7 +219,7 @@
         <!-- Live Alert Status Banner -->
         <div id="statusBanner" class="status-banner"></div>
 
-        <!-- Generate Certificate Section (Single Entry) -->
+        <!-- 1. Generate Certificate Section (Single Entry) -->
         <section class="dash-section">
             <div class="section-card">
                 <div class="section-card-header">
@@ -281,7 +317,7 @@
             </div>
         </section>
 
-        <!-- Bulk Issuance Section (Batch CSV Upload) -->
+        <!-- 2. Bulk Issuance Section (Batch CSV Upload) -->
         <section class="dash-section">
             <div class="section-card">
                 <div class="section-card-header">
@@ -339,7 +375,36 @@
             </div>
         </section>
 
-        <!-- Issued Records Section -->
+        <!-- 3. Certificate Revocation Section (Dedicated Form) -->
+        <section class="dash-section" style="margin-top: 2rem;">
+            <div class="section-card" style="border-left: 4px solid #dc2626;">
+                <div class="section-card-header">
+                    <h2 class="section-title" style="color: #991b1b;">Revoke Certificate (Ledger Invalidation)</h2>
+                    <p class="section-desc">Instantly mark any issued certificate as revoked on the Google Sheet &amp; cryptographic blockchain ledger.</p>
+                </div>
+
+                <form class="cert-form" id="revokeCertForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="revoke-target">Certificate ID or Enrollment Number</label>
+                            <input type="text" id="revoke-target" placeholder="e.g., IPU-2026-AIML001 or 0116403222" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="revoke-reason">Official Reason for Revocation</label>
+                            <input type="text" id="revoke-reason" placeholder="e.g., Disciplinary Action / Administrative Invalidation" required>
+                        </div>
+                    </div>
+
+                    <div class="form-actions" style="margin-top: 0.5rem;">
+                        <button type="submit" id="btnSubmitRevoke" class="btn" style="background: #dc2626; color: #ffffff; font-weight: 700;">
+                            ⚠️ Invalidate &amp; Revoke on Ledger
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- 4. Issued Records Section (Visual Ledger Cards with Pagination) -->
         <section class="dash-section" style="margin-top: 2rem;">
             <div class="section-card" style="padding: 1.5rem; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
                 
@@ -350,7 +415,7 @@
                     </div>
                     
                     <div style="display: flex; gap: 0.5rem; align-items: center;">
-                        <input type="text" id="tableSearchInput" placeholder="Search Enrollment no." style="padding: 0.65rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; width: 260px; outline: none; background: #ffffff; color: #0f172a;">
+                        <input type="text" id="tableSearchInput" placeholder="Search Enrollment, ID or Name" style="padding: 0.65rem 1rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; width: 260px; outline: none; background: #ffffff; color: #0f172a;">
                         <button type="button" id="btnSearchRecords" class="btn btn-primary" style="padding: 0.65rem 1.2rem; font-weight: 600;">Search</button>
                         <button type="button" id="btnRefreshRecords" class="btn btn-secondary" style="padding: 0.65rem 0.9rem;" title="Refresh Records">🔄</button>
                     </div>
@@ -481,15 +546,25 @@
                 const pdfUrl = rec.pdfLink || "#";
                 const shortHash = rec.currentHash ? `${rec.currentHash.substring(0, 10)}...${rec.currentHash.slice(-8)}` : "Verified Block";
                 const dateText = rec.timestamp ? new Date(rec.timestamp).toLocaleDateString("en-IN", { day: '2-digit', month: 'short', year: 'numeric' }) : "-";
+                const isRevoked = (rec.certStatus === "REVOKED");
+
+                const statusPill = isRevoked
+                    ? `<span class="badge-status badge-revoked">REVOKED</span>`
+                    : `<span class="badge-status badge-active">ACTIVE</span>`;
+
+                const revokeActionHtml = isRevoked
+                    ? `<span style="font-size: 0.78rem; color: #dc2626; font-weight: 600; max-width: 140px; word-break: break-word;" title="${rec.revocationReason}">${rec.revocationReason || "Revoked"}</span>`
+                    : `<button type="button" class="btn-danger-sm" onclick="quickRevoke('${rec.certId}', '${rec.studentName.replace(/'/g, "\\'")}')">Revoke</button>`;
 
                 const card = document.createElement("div");
-                card.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); flex-wrap: wrap; gap: 1rem;";
+                card.style.cssText = `display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; background: ${isRevoked ? '#fef2f2' : '#ffffff'}; border: 1px solid ${isRevoked ? '#fecaca' : '#e2e8f0'}; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); flex-wrap: wrap; gap: 1rem;`;
 
                 card.innerHTML = `
                     <div style="display: flex; flex-direction: column; gap: 3px; min-width: 180px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
                             <span style="font-family: monospace; font-weight: 700; color: #1e293b; font-size: 0.95rem;">${rec.certId}</span>
                             <span style="background: #e0f2fe; color: #0369a1; font-size: 0.72rem; padding: 2px 7px; border-radius: 12px; font-weight: 700;">Block #${rec.blockIndex || 1}</span>
+                            ${statusPill}
                         </div>
                         <div style="font-size: 0.75rem; color: #64748b; font-family: monospace;">Hash: ${shortHash}</div>
                     </div>
@@ -504,9 +579,9 @@
                         <span style="font-size: 0.8rem; color: #64748b;">Issued: ${dateText}</span>
                     </div>
 
-                    <div style="display: flex; gap: 6px;">
+                    <div style="display: flex; gap: 8px; align-items: center;">
                         <a href="${pdfUrl}" target="_blank" style="background: #2563eb; color: #ffffff; text-decoration: none; padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.82rem; font-weight: 600;">View PDF ↗</a>
-                        <a href="${pdfUrl}" target="_blank" style="background: #0f172a; color: #ffffff; text-decoration: none; padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.82rem; font-weight: 600;">Download</a>
+                        ${revokeActionHtml}
                     </div>
                 `;
 
@@ -566,6 +641,56 @@
             renderCurrentPage();
         }
 
+        // 1-Click Revoke from Record Row
+        function quickRevoke(certId, studentName) {
+            const reason = prompt(`⚠️ Are you sure you want to REVOKE certificate for ${studentName} (${certId})?\n\nEnter reason for revocation:`, "Administrative Revocation");
+            if (reason === null) return;
+
+            executeRevocation(certId, reason.trim() || "Administrative Invalidation");
+        }
+
+        async function executeRevocation(targetQuery, reason) {
+            showStatus(`⏳ Invalidating & Revoking Certificate <b>${targetQuery}</b> on Blockchain Ledger...`, "loading");
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        action: "REVOKE_CERT",
+                        query: targetQuery,
+                        reason: reason
+                    })
+                });
+
+                const result = await response.json();
+                if (result.status === "SUCCESS") {
+                    showStatus(`⚠️ <b>Certificate Successfully Revoked!</b><br>Target: <code>${result.certId || targetQuery}</code> | Reason: ${result.revocationReason || reason}`, "success");
+                    fetchRealRecords();
+                } else {
+                    showStatus(`❌ Revocation failed: ${result.message || "Error"}`, "error");
+                }
+            } catch (err) {
+                showStatus(`❌ Server Error: ${err.message}`, "error");
+            }
+        }
+
+        // Revoke Form Submission Handler
+        document.getElementById("revokeCertForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const targetQuery = document.getElementById("revoke-target").value.trim();
+            const reason = document.getElementById("revoke-reason").value.trim();
+
+            if (!confirm(`Confirm revocation for "${targetQuery}"?\nReason: ${reason}`)) return;
+
+            const btn = document.getElementById("btnSubmitRevoke");
+            btn.disabled = true;
+
+            await executeRevocation(targetQuery, reason);
+            
+            document.getElementById("revokeCertForm").reset();
+            btn.disabled = false;
+        });
+
+        // Pagination Events
         document.getElementById("btnPrevPage").addEventListener("click", () => {
             if (currentPage > 1) {
                 currentPage--;
@@ -627,6 +752,7 @@
                         courseDept: payload.courseDept,
                         currentHash: result.currentHash,
                         pdfLink: result.pdfLink,
+                        certStatus: "ACTIVE",
                         timestamp: new Date().toISOString()
                     };
 
