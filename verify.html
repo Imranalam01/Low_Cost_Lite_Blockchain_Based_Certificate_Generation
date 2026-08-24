@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Verify Certificate - GGSIPU Portal</title>
     <link rel="stylesheet" href="style.css">
-    <!-- QR Code Scanning Engine -->
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
-        /* Base Global Reset & Flex Layout */
         *, *::before, *::after {
             box-sizing: border-box;
         }
@@ -25,7 +23,6 @@
             color: #1e293b;
         }
 
-        /* Sticky Responsive Header */
         .univ-header {
             width: 100%;
             padding: 0.75rem 0;
@@ -101,26 +98,6 @@
             white-space: normal;
         }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .team-logo-img {
-            height: 64px;
-            width: auto;
-            max-width: 200px;
-            object-fit: contain;
-            border: none;
-            box-shadow: none;
-            filter: none;
-            pointer-events: none;
-            user-select: none;
-            cursor: default;
-        }
-
-        /* Main Workspace Container */
         .main-container {
             flex: 1 0 auto;
             display: flex;
@@ -177,7 +154,6 @@
             line-height: 1.4;
         }
 
-        /* Verification Grid Layout */
         .verify-grid {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -310,7 +286,6 @@
             cursor: pointer;
         }
 
-        /* Results Display Card */
         .verification-result-box {
             display: none;
             margin-top: 2rem;
@@ -319,7 +294,6 @@
             text-align: left;
         }
 
-        /* Footer Section */
         .footer {
             flex-shrink: 0;
             background: #0f172a;
@@ -404,18 +378,12 @@
             color: #64748b;
         }
 
-        /* --- RESPONSIVE BREAKPOINTS --- */
-
-        /* Tablets (max-width: 992px) */
         @media (max-width: 992px) {
             .header-container-custom {
                 padding: 0 1.5rem;
             }
             .system-title {
                 font-size: 0.95rem;
-            }
-            .team-logo-img {
-                height: 54px;
             }
             .univ-logo-img {
                 height: 48px;
@@ -425,7 +393,6 @@
             }
         }
 
-        /* Small Tablets & Large Mobile (max-width: 768px) */
         @media (max-width: 768px) {
             .header-container-custom {
                 padding: 0 1rem;
@@ -433,9 +400,6 @@
             }
             .univ-logo-img {
                 height: 42px;
-            }
-            .team-logo-img {
-                height: 46px;
             }
             .header-divider {
                 height: 30px;
@@ -458,7 +422,6 @@
             }
         }
 
-        /* Mobile Screens (max-width: 480px) */
         @media (max-width: 480px) {
             .univ-header {
                 padding: 0.6rem 0;
@@ -468,9 +431,6 @@
             }
             .univ-logo-img {
                 height: 36px;
-            }
-            .team-logo-img {
-                height: 38px;
             }
             .header-left {
                 gap: 0.6rem;
@@ -498,11 +458,8 @@
 </head>
 <body>
 
-    <!-- Header Section -->
     <header class="univ-header">
         <div class="header-container-custom">
-            
-            <!-- Left Side: University Logo & Title Group -->
             <div class="header-left">
                 <img src="assets/ipu-logo.png" alt="GGSIPU Logo" class="univ-logo-img">
                 <div class="header-divider"></div>
@@ -513,30 +470,18 @@
                     </h1>
                 </div>
             </div>
-
-            <!-- Right Side: Clean Team Logo -->
-            <div class="header-right">
-                <img src="assets/team_logo.png" alt="Team CodeLEOS Logo" class="team-logo-img">
-            </div>
-
         </div>
     </header>
 
-    <!-- Main Verification Section -->
     <main class="main-container">
-        
         <div class="verify-card">
-            <!-- Back to Home Link -->
             <a href="index.html" class="back-link">← Back to Home</a>
 
             <div class="card-icon">🔍</div>
             <h2 class="auth-title">Certificate Verification</h2>
             <p class="auth-subtitle">Verify academic credentials issued by Guru Gobind Singh Indraprastha University.</p>
 
-            <!-- Verification Input Grid -->
             <div class="verify-grid">
-                
-                <!-- Method 1: ID Search -->
                 <div class="verify-box">
                     <div>
                         <h3 class="verify-box-title">Search by Certificate ID / Hash</h3>
@@ -557,12 +502,10 @@
                     </form>
                 </div>
 
-                <!-- Divider -->
                 <div class="verify-or-divider">
                     <span>OR</span>
                 </div>
 
-                <!-- Method 2: Live Camera & File Scanner -->
                 <div class="verify-box qr-box">
                     <div>
                         <h3 class="verify-box-title">Scan QR / Upload Document</h3>
@@ -570,7 +513,6 @@
                     </div>
                     
                     <div class="qr-action-area">
-                        <!-- Camera Viewport -->
                         <div id="qr-reader" style="width: 100%; max-width: 280px; margin: 0 auto; display: none; border-radius: 8px; overflow: hidden; border: 1px solid #cbd5e1;"></div>
                         
                         <div id="qr-controls" style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem; width: 100%;">
@@ -585,16 +527,11 @@
                         <div id="scanStatusMsg" style="font-size: 0.8rem; color: #64748b; margin-top: 0.6rem;"></div>
                     </div>
                 </div>
-
             </div>
 
-            <!-- Dynamic Verification Result Container -->
             <div id="verificationResult" class="verification-result-box">
-                
-                <!-- Status Badge -->
                 <div id="verifyStatusBadge" style="padding: 0.85rem 1.15rem; border-radius: 8px; margin-bottom: 1.25rem; font-weight: 600; line-height: 1.4;"></div>
 
-                <!-- Details Grid -->
                 <div id="verifyDetailsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; font-size: 0.95rem;">
                     <div>
                         <strong style="color: #64748b; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.4px;">Candidate Name:</strong>
@@ -622,7 +559,6 @@
                     </div>
                 </div>
 
-                <!-- Blockchain Hash & Web3 Settlement Row -->
                 <div id="blockchainMetaRow" style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px dashed #cbd5e1; font-size: 0.85rem;">
                     <div style="margin-bottom: 0.75rem;">
                         <strong style="color: #64748b;">SHA-256 Block Hash:</strong>
@@ -633,23 +569,17 @@
                         <a id="btnResViewPdf" href="#" target="_blank" class="btn btn-primary btn-sm" style="display: none; text-decoration: none;">View Original PDF ↗</a>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </main>
 
-    <!-- Footer Section -->
     <footer class="footer">
         <div class="container footer-content">
-            <!-- Team Branding -->
             <div class="footer-team">
                 <span>Designed &amp; Developed with ❤️ by</span>
                 <span class="team-badge">Team CodeLEOS</span>
             </div>
 
-            <!-- Contributors List -->
             <div class="contributors-wrapper">
                 <span class="contributors-label">Contributors</span>
                 <div class="contributor-tags">
@@ -662,14 +592,12 @@
                 </div>
             </div>
 
-            <!-- Copyright -->
             <div class="footer-bottom">
                 <p>© 2026 Guru Gobind Singh Indraprastha University. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Verification & Scanner Script -->
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
 
@@ -704,7 +632,6 @@
             return result;
         }
 
-        // 1. Live Camera Scanner Logic
         const btnStartCamera = document.getElementById("btnStartCamera");
         const btnStopCamera = document.getElementById("btnStopCamera");
         const qrReaderDiv = document.getElementById("qr-reader");
@@ -754,7 +681,6 @@
             }
         }
 
-        // 2. File Upload QR Scanner Logic
         document.getElementById("qr-file-input").addEventListener("change", (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -774,7 +700,6 @@
                 });
         });
 
-        // 3. Core Verification Engine
         async function runVerification(query) {
             const resultBox = document.getElementById("verificationResult");
             const badge = document.getElementById("verifyStatusBadge");

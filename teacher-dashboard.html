@@ -6,7 +6,6 @@
     <title>Faculty Dashboard - GGSIPU</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Base Global Reset & Layout */
         *, *::before, *::after {
             box-sizing: border-box;
         }
@@ -23,7 +22,6 @@
             color: #1e293b;
         }
 
-        /* Responsive Sticky Header */
         .univ-header {
             width: 100%;
             padding: 0.75rem 0;
@@ -102,7 +100,6 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 1.25rem;
             flex-shrink: 0;
         }
 
@@ -148,20 +145,6 @@
             color: #ffffff !important;
         }
 
-        .team-logo-img {
-            height: 58px;
-            width: auto;
-            max-width: 170px;
-            object-fit: contain;
-            border: none;
-            box-shadow: none;
-            filter: none;
-            pointer-events: none;
-            user-select: none;
-            cursor: default;
-        }
-
-        /* Main Workspace Container */
         .dashboard-container {
             flex: 1 0 auto;
             width: 100%;
@@ -200,7 +183,6 @@
             color: #64748b;
         }
 
-        /* Form Responsive Grid */
         .cert-form {
             display: flex;
             flex-direction: column;
@@ -286,7 +268,6 @@
             background: #e2e8f0;
         }
 
-        /* Visual Template Selector Styles */
         .template-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -365,7 +346,6 @@
             cursor: pointer;
         }
 
-        /* Status Banner Styles */
         .status-banner {
             display: none;
             padding: 1rem 1.25rem;
@@ -378,7 +358,6 @@
         .status-banner.success { display: block; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
         .status-banner.error { display: block; background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
 
-        /* Pagination Styles */
         .pagination-container {
             display: flex;
             justify-content: space-between;
@@ -429,7 +408,6 @@
         }
         .btn-danger-sm:hover { background: #dc2626; color: #ffffff; }
 
-        /* Audit Trail Card Styles */
         .audit-card-item {
             display: flex;
             justify-content: space-between;
@@ -460,7 +438,6 @@
         .log-revoke { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
         .log-batch { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
 
-        /* Footer Section */
         .footer {
             flex-shrink: 0;
             background: #0f172a;
@@ -545,9 +522,6 @@
             color: #64748b;
         }
 
-        /* --- BREAKPOINTS FOR MAXIMUM RESPONSIVENESS --- */
-
-        /* Tablets (max-width: 992px) */
         @media (max-width: 992px) {
             .header-container-custom {
                 padding: 0 1.5rem;
@@ -558,15 +532,11 @@
             .univ-logo-img {
                 height: 46px;
             }
-            .team-logo-img {
-                height: 48px;
-            }
             .dashboard-container {
                 padding: 1.75rem 1.25rem;
             }
         }
 
-        /* Small Tablets & Large Mobile (max-width: 768px) */
         @media (max-width: 768px) {
             .header-container-custom {
                 padding: 0 1rem;
@@ -579,9 +549,6 @@
             .univ-logo-img {
                 height: 40px;
             }
-            .team-logo-img {
-                height: 42px;
-            }
             .header-divider {
                 height: 28px;
             }
@@ -593,7 +560,7 @@
             }
             .header-right {
                 width: 100%;
-                justify-content: space-between;
+                justify-content: flex-end;
                 border-top: 1px solid #f1f5f9;
                 padding-top: 0.5rem;
             }
@@ -609,15 +576,11 @@
             }
         }
 
-        /* Mobile Screens (max-width: 480px) */
         @media (max-width: 480px) {
             .univ-header {
                 padding: 0.5rem 0;
             }
             .univ-logo-img {
-                height: 34px;
-            }
-            .team-logo-img {
                 height: 34px;
             }
             .system-title {
@@ -648,11 +611,8 @@
 
 <body>
 
-    <!-- Header Section -->
     <header class="univ-header">
         <div class="header-container-custom">
-            
-            <!-- Left Side: University Logo & Title Group -->
             <div class="header-left">
                 <img src="assets/ipu-logo.png" alt="GGSIPU Logo" class="univ-logo-img">
                 <div class="header-divider"></div>
@@ -662,7 +622,6 @@
                 </div>
             </div>
 
-            <!-- Right Side: User Controls & Clean Team Logo -->
             <div class="header-right">
                 <div class="user-nav">
                     <div class="user-info">
@@ -671,13 +630,10 @@
                     </div>
                     <a href="teacher-login.html" id="btnLogout" class="btn-logout">Logout</a>
                 </div>
-                <img src="assets/team_logo.png" alt="Team CodeLEOS Logo" class="team-logo-img">
             </div>
-
         </div>
     </header>
 
-    <!-- Main Workspace Container -->
     <main class="dashboard-container">
         
         <div id="statusBanner" class="status-banner"></div>
@@ -854,7 +810,6 @@
         <!-- 4. Issued Records Section -->
         <section class="dash-section">
             <div class="section-card">
-                
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
                     <div>
                         <h2 class="section-title">Issued Certificate Records</h2>
@@ -891,11 +846,10 @@
                         <button type="button" class="pagination-btn" id="btnNextPage">Next →</button>
                     </div>
                 </div>
-
             </div>
         </section>
 
-        <!-- 5. Compact & Paginated Audit Trail & Faculty Activity Log Section -->
+        <!-- 5. Audit Trail & Activity Log Section -->
         <section class="dash-section">
             <div class="section-card">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem; margin-bottom: 1rem;">
@@ -913,14 +867,12 @@
                     </div>
                 </div>
 
-                <!-- Paginated Audit Cards Container -->
                 <div id="auditLogsContainer" style="display: flex; flex-direction: column; gap: 0.65rem; width: 100%; min-height: 120px;">
                     <div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 500;">
                         ⏳ Fetching system audit trail...
                     </div>
                 </div>
 
-                <!-- Dedicated Pagination Bar for Audit Logs -->
                 <div class="pagination-container" id="auditPaginationBar" style="display: none;">
                     <div style="display: flex; align-items: center; gap: 0.6rem;">
                         <span style="font-size: 0.85rem; color: #475569;">Show:</span>
@@ -943,16 +895,13 @@
 
     </main>
 
-    <!-- Footer Section with Dark Theme & Contributors Tags -->
     <footer class="footer">
         <div class="container footer-content">
-            <!-- Team Branding -->
             <div class="footer-team">
                 <span>Designed &amp; Developed with ❤️ by</span>
                 <span class="team-badge">Team CodeLEOS</span>
             </div>
 
-            <!-- Contributors List -->
             <div class="contributors-wrapper">
                 <span class="contributors-label">Contributors</span>
                 <div class="contributor-tags">
@@ -965,24 +914,20 @@
                 </div>
             </div>
 
-            <!-- Copyright -->
             <div class="footer-bottom">
                 <p>© 2026 Guru Gobind Singh Indraprastha University. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Integrated Backend Connector Script -->
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
 
-        // Certificates State
         let allRecordsCache = [];
         let filteredRecordsCache = [];
         let currentPage = 1;
         let pageSize = 5;
 
-        // Audit Logs State
         let allAuditLogsCache = [];
         let filteredAuditLogsCache = [];
         let currentAuditPage = 1;
@@ -1025,7 +970,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* ------------------ CERTIFICATES RENDERING ------------------ */
         function renderCurrentPage() {
             const container = document.getElementById("ledgerCardsContainer");
             const paginationBar = document.getElementById("paginationBar");
@@ -1149,7 +1093,6 @@
             renderCurrentPage();
         }
 
-        /* ------------------ AUDIT LOGS RENDERING & PAGINATION ------------------ */
         function renderAuditPage() {
             const container = document.getElementById("auditLogsContainer");
             const paginationBar = document.getElementById("auditPaginationBar");
@@ -1258,7 +1201,6 @@
             renderAuditPage();
         }
 
-        // Audit Events
         document.getElementById("btnPrevAuditPage").addEventListener("click", () => {
             if (currentAuditPage > 1) {
                 currentAuditPage--;
@@ -1283,7 +1225,6 @@
         document.getElementById("auditSearchInput").addEventListener("input", filterAuditLogs);
         document.getElementById("btnRefreshAudit").addEventListener("click", fetchAuditLogs);
 
-        /* ------------------ REVOCATION ENGINE ------------------ */
         function quickRevoke(certId, studentName) {
             const reason = prompt(`⚠️ Are you sure you want to REVOKE certificate for ${studentName} (${certId})?\n\nEnter reason for revocation:`, "Administrative Revocation");
             if (reason === null) return;
@@ -1332,7 +1273,6 @@
             btn.disabled = false;
         });
 
-        /* ------------------ CERTIFICATE PAGINATION EVENTS ------------------ */
         document.getElementById("btnPrevPage").addEventListener("click", () => {
             if (currentPage > 1) {
                 currentPage--;
@@ -1358,7 +1298,6 @@
         document.getElementById("btnSearchRecords").addEventListener("click", filterRecords);
         document.getElementById("btnRefreshRecords").addEventListener("click", fetchRealRecords);
 
-        /* ------------------ SINGLE ISSUANCE ------------------ */
         document.getElementById("issueCertForm").addEventListener("submit", async function (e) {
             e.preventDefault();
             const submitBtn = document.getElementById("btnSubmitSingle");
@@ -1403,7 +1342,6 @@
             }
         });
 
-        /* ------------------ BATCH CSV DOWNLOAD & UPLOAD ------------------ */
         document.getElementById("btnDownloadSample").addEventListener("click", () => {
             const csvContent = "data:text/csv;charset=utf-8," + 
                 "Student_Name,Enrollment_No,Dept,Event_Title,Cert_ID,DOB\n" +

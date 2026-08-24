@@ -6,7 +6,6 @@
     <title>Student Portal Dashboard - GGSIPU</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Base Global Reset & Layout */
         *, *::before, *::after {
             box-sizing: border-box;
         }
@@ -23,7 +22,6 @@
             color: #1e293b;
         }
 
-        /* Responsive Sticky Header */
         .univ-header {
             width: 100%;
             padding: 0.75rem 0;
@@ -102,7 +100,6 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 1.25rem;
             flex-shrink: 0;
         }
 
@@ -149,20 +146,6 @@
             color: #ffffff !important;
         }
 
-        .team-logo-img {
-            height: 58px;
-            width: auto;
-            max-width: 170px;
-            object-fit: contain;
-            border: none;
-            box-shadow: none;
-            filter: none;
-            pointer-events: none;
-            user-select: none;
-            cursor: default;
-        }
-
-        /* Main Workspace Container */
         .dashboard-container {
             flex: 1 0 auto;
             width: 100%;
@@ -227,7 +210,6 @@
             color: #0f172a;
         }
 
-        /* Certificate Cards Grid & Responsive Item */
         .cert-card-container {
             display: flex;
             flex-direction: column;
@@ -330,7 +312,6 @@
             background: #e2e8f0;
         }
 
-        /* Footer Section */
         .footer {
             flex-shrink: 0;
             background: #0f172a;
@@ -415,9 +396,6 @@
             color: #64748b;
         }
 
-        /* --- BREAKPOINTS FOR MAXIMUM RESPONSIVENESS --- */
-
-        /* Tablets (max-width: 992px) */
         @media (max-width: 992px) {
             .header-container-custom {
                 padding: 0 1.5rem;
@@ -428,15 +406,11 @@
             .univ-logo-img {
                 height: 46px;
             }
-            .team-logo-img {
-                height: 48px;
-            }
             .dashboard-container {
                 padding: 1.75rem 1.25rem;
             }
         }
 
-        /* Small Tablets & Large Mobile (max-width: 768px) */
         @media (max-width: 768px) {
             .header-container-custom {
                 padding: 0 1rem;
@@ -449,9 +423,6 @@
             .univ-logo-img {
                 height: 40px;
             }
-            .team-logo-img {
-                height: 42px;
-            }
             .header-divider {
                 height: 28px;
             }
@@ -463,7 +434,7 @@
             }
             .header-right {
                 width: 100%;
-                justify-content: space-between;
+                justify-content: flex-end;
                 border-top: 1px solid #f1f5f9;
                 padding-top: 0.5rem;
             }
@@ -481,15 +452,11 @@
             }
         }
 
-        /* Mobile Screens (max-width: 480px) */
         @media (max-width: 480px) {
             .univ-header {
                 padding: 0.5rem 0;
             }
             .univ-logo-img {
-                height: 34px;
-            }
-            .team-logo-img {
                 height: 34px;
             }
             .system-title {
@@ -519,11 +486,8 @@
 </head>
 <body>
 
-    <!-- Header Section -->
     <header class="univ-header">
         <div class="header-container-custom">
-            
-            <!-- Left Side: University Logo & Title Group -->
             <div class="header-left">
                 <img src="assets/ipu-logo.png" alt="GGSIPU Logo" class="univ-logo-img">
                 <div class="header-divider"></div>
@@ -535,7 +499,6 @@
                 </div>
             </div>
 
-            <!-- Right Side: User Controls & Clean Team Logo -->
             <div class="header-right">
                 <div class="user-nav">
                     <div class="user-meta">
@@ -544,16 +507,11 @@
                     </div>
                     <a href="#" id="studentLogoutBtn" class="btn-logout">Logout</a>
                 </div>
-                <img src="assets/team_logo.png" alt="Team CodeLEOS Logo" class="team-logo-img">
             </div>
-
         </div>
     </header>
 
-    <!-- Main Content Workspace -->
     <main class="dashboard-container">
-
-        <!-- Issued Certificates Section -->
         <section class="dash-section">
             <div class="section-card">
                 <div class="section-header-flex">
@@ -568,7 +526,6 @@
                     </button>
                 </div>
 
-                <!-- Dynamic Certificate Cards Container -->
                 <div id="certCardList" class="cert-card-container">
                     <div style="text-align: center; color: #64748b; padding: 3rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 500;">
                         ⏳ Loading your verified certificates from the blockchain ledger...
@@ -576,19 +533,15 @@
                 </div>
             </div>
         </section>
-
     </main>
 
-    <!-- Footer Section -->
     <footer class="footer">
         <div class="container footer-content">
-            <!-- Team Branding -->
             <div class="footer-team">
                 <span>Designed &amp; Developed with ❤️ by</span>
                 <span class="team-badge">Team CodeLEOS</span>
             </div>
 
-            <!-- Contributors List -->
             <div class="contributors-wrapper">
                 <span class="contributors-label">Contributors</span>
                 <div class="contributor-tags">
@@ -601,38 +554,32 @@
                 </div>
             </div>
 
-            <!-- Copyright -->
             <div class="footer-bottom">
                 <p>© 2026 Guru Gobind Singh Indraprastha University. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Core Dynamic Data & Multi-Certificate Fetching Script -->
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
 
-        // 1. Auth Guard Check
         if (sessionStorage.getItem("ipu_student_auth") !== "true") {
             alert("⚠️ Unauthorized access! Please sign in via Student Login.");
             window.location.href = "student-login.html";
         }
 
-        // 2. Set Profile Header Details
         const studentName = sessionStorage.getItem("ipu_student_name") || "Student";
         const studentEnroll = sessionStorage.getItem("ipu_student_enroll") || "-";
 
         document.getElementById("studentDisplayName").innerText = studentName;
         document.getElementById("studentDisplayEnroll").innerText = "Enroll: " + studentEnroll;
 
-        // 3. Logout Handler
         document.getElementById("studentLogoutBtn").addEventListener("click", function(e) {
             e.preventDefault();
             sessionStorage.clear();
             window.location.href = "student-login.html";
         });
 
-        // 4. Render Certificates Function
         async function fetchAndRenderAllCertificates() {
             const container = document.getElementById("certCardList");
             const cleanUserEnroll = String(studentEnroll).replace(/^0+/, "").trim().toLowerCase();
@@ -644,7 +591,6 @@
 
             let matchedCerts = [];
 
-            // A. Pehle session storage check karo
             const rawSession = sessionStorage.getItem("ipu_student_certs");
             if (rawSession) {
                 try {
@@ -655,7 +601,6 @@
                 } catch(e) {}
             }
 
-            // B. Live Ledger Fallback
             if (matchedCerts.length === 0) {
                 try {
                     const url = `${APPS_SCRIPT_URL}?action=getAll&_t=${Date.now()}`;
@@ -737,10 +682,8 @@
             });
         }
 
-        // Initialize on load
         document.addEventListener("DOMContentLoaded", fetchAndRenderAllCertificates);
 
-        // Sync Records Button
         document.getElementById("btnSyncRecords").addEventListener("click", () => {
             sessionStorage.removeItem("ipu_student_certs");
             fetchAndRenderAllCertificates();
