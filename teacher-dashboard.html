@@ -93,24 +93,9 @@
             font-size: 0.95rem;
             line-height: 1.5;
         }
-        .status-banner.loading {
-            display: block;
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            color: #1e40af;
-        }
-        .status-banner.success {
-            display: block;
-            background: #ecfdf5;
-            border: 1px solid #a7f3d0;
-            color: #065f46;
-        }
-        .status-banner.error {
-            display: block;
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #991b1b;
-        }
+        .status-banner.loading { display: block; background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+        .status-banner.success { display: block; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+        .status-banner.error { display: block; background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
 
         /* Pagination Styles */
         .pagination-container {
@@ -136,17 +121,9 @@
             transition: all 0.2s ease;
         }
 
-        .pagination-btn:hover:not(:disabled) {
-            background: #f1f5f9;
-            border-color: #94a3b8;
-        }
+        .pagination-btn:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
+        .pagination-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
-        .pagination-btn:disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
-        }
-
-        /* Revocation Pill & Action Styles */
         .badge-status {
             font-size: 0.72rem;
             padding: 2px 8px;
@@ -155,16 +132,8 @@
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
-        .badge-active {
-            background: #dcfce7;
-            color: #15803d;
-            border: 1px solid #bbf7d0;
-        }
-        .badge-revoked {
-            background: #fee2e2;
-            color: #b91c1c;
-            border: 1px solid #fecaca;
-        }
+        .badge-active { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+        .badge-revoked { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
 
         .btn-danger-sm {
             background: #ffffff;
@@ -177,16 +146,43 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .btn-danger-sm:hover {
-            background: #dc2626;
-            color: #ffffff;
+        .btn-danger-sm:hover { background: #dc2626; color: #ffffff; }
+
+        /* Audit Trail Card Styles */
+        .audit-card-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.9rem 1.15rem;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            transition: transform 0.15s ease;
         }
+        .audit-card-item:hover {
+            border-color: #cbd5e1;
+            transform: translateX(2px);
+        }
+        .log-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-family: monospace;
+            text-transform: uppercase;
+        }
+        .log-login { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
+        .log-issue { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
+        .log-revoke { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+        .log-batch { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
     </style>
 </head>
 
 <body>
 
-    <!-- Header -->
     <header class="univ-header">
         <div class="container header-container dash-header">
             <div class="header-branding">
@@ -196,30 +192,25 @@
                 <div class="header-divider"></div>
                 <div class="title-group">
                     <span class="portal-badge">Faculty Portal</span>
-                    <h1 class="system-title">
-                        Certificate Generation, Verification <span class="amp">&amp;</span> Management System
-                    </h1>
+                    <h1 class="system-title">Certificate Generation, Verification &amp; Management System</h1>
                 </div>
             </div>
 
-            <!-- Profile & Logout -->
             <div class="user-nav">
                 <div class="user-info">
                     <span class="user-name" id="displayFacultyName">Faculty Panel</span>
-                    <span class="user-role">GGSIPU Campus</span>
+                    <span class="user-role" id="displayFacultyEmail">GGSIPU Campus</span>
                 </div>
-                <a href="teacher-login.html" class="btn-logout">Logout</a>
+                <a href="teacher-login.html" id="btnLogout" class="btn-logout">Logout</a>
             </div>
         </div>
     </header>
 
-    <!-- Main Workspace -->
     <main class="container dashboard-container">
         
-        <!-- Live Alert Status Banner -->
         <div id="statusBanner" class="status-banner"></div>
 
-        <!-- 1. Generate Certificate Section (Single Entry) -->
+        <!-- 1. Generate Certificate Section -->
         <section class="dash-section">
             <div class="section-card">
                 <div class="section-card-header">
@@ -267,7 +258,6 @@
                         </div>
                     </div>
 
-                    <!-- Visual Template Gallery Picker (Single) -->
                     <div class="form-group" style="width: 100%; margin-top: 1rem;">
                         <label style="font-weight: 700; display: block; margin-bottom: 0.25rem;">
                             Choose Certificate Design Template (Click to Select)
@@ -282,7 +272,6 @@
                                     <a href="https://docs.google.com/presentation/d/16ZHQSN5Es_HQMagiNy3m1Ic0MLi5HszJXnVCxV0-pb8/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
                                 </div>
                             </div>
-
                             <div class="template-card" onclick="selectTemplate('single', 'template_2', this)">
                                 <img src="https://docs.google.com/presentation/d/1W2kpKU9zUT2xvaG2pQYRE_Oo2Hu3Zy2f7WIJpMU8JHY/export/png" alt="Template 2 Preview" class="template-preview-img">
                                 <div class="template-info">
@@ -290,7 +279,6 @@
                                     <a href="https://docs.google.com/presentation/d/1W2kpKU9zUT2xvaG2pQYRE_Oo2Hu3Zy2f7WIJpMU8JHY/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
                                 </div>
                             </div>
-
                             <div class="template-card" onclick="selectTemplate('single', 'template_3', this)">
                                 <img src="https://docs.google.com/presentation/d/1QHylky_GDKXYeeNH3qJTuzDDH8gEDWIbB8jhzKDqmfQ/export/png" alt="Template 3 Preview" class="template-preview-img">
                                 <div class="template-info">
@@ -298,7 +286,6 @@
                                     <a href="https://docs.google.com/presentation/d/1QHylky_GDKXYeeNH3qJTuzDDH8gEDWIbB8jhzKDqmfQ/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
                                 </div>
                             </div>
-
                             <div class="template-card" onclick="selectTemplate('single', 'template_4', this)">
                                 <img src="https://docs.google.com/presentation/d/12ZD6f0WwAaD7ahDsxYSFEtEQ77v5qi511DRVmyFTyZo/export/png" alt="Template 4 Preview" class="template-preview-img">
                                 <div class="template-info">
@@ -317,7 +304,7 @@
             </div>
         </section>
 
-        <!-- 2. Bulk Issuance Section (Batch CSV Upload) -->
+        <!-- 2. Bulk Batch CSV Upload -->
         <section class="dash-section">
             <div class="section-card">
                 <div class="section-card-header">
@@ -325,7 +312,6 @@
                     <p class="section-desc">Select template design and upload a CSV file containing batch student records.</p>
                 </div>
 
-                <!-- Visual Template Gallery Picker (Batch) -->
                 <div class="form-group" style="width: 100%; margin-top: 1rem;">
                     <label style="font-weight: 700; display: block; margin-bottom: 0.25rem;">
                         Choose Certificate Design Template (Click to Select)
@@ -335,30 +321,19 @@
                     <div class="template-grid" id="batchTemplateGrid">
                         <div class="template-card active" onclick="selectTemplate('batch', 'template_1', this)">
                             <img src="https://docs.google.com/presentation/d/16ZHQSN5Es_HQMagiNy3m1Ic0MLi5HszJXnVCxV0-pb8/export/png" alt="Template 1 Preview" class="template-preview-img">
-                            <div class="template-info">
-                                <div class="template-name">Template 1</div>
-                            </div>
+                            <div class="template-info"><div class="template-name">Template 1</div></div>
                         </div>
-
                         <div class="template-card" onclick="selectTemplate('batch', 'template_2', this)">
                             <img src="https://docs.google.com/presentation/d/1W2kpKU9zUT2xvaG2pQYRE_Oo2Hu3Zy2f7WIJpMU8JHY/export/png" alt="Template 2 Preview" class="template-preview-img">
-                            <div class="template-info">
-                                <div class="template-name">Template 2</div>
-                            </div>
+                            <div class="template-info"><div class="template-name">Template 2</div></div>
                         </div>
-
                         <div class="template-card" onclick="selectTemplate('batch', 'template_3', this)">
                             <img src="https://docs.google.com/presentation/d/1QHylky_GDKXYeeNH3qJTuzDDH8gEDWIbB8jhzKDqmfQ/export/png" alt="Template 3 Preview" class="template-preview-img">
-                            <div class="template-info">
-                                <div class="template-name">Template 3</div>
-                            </div>
+                            <div class="template-info"><div class="template-name">Template 3</div></div>
                         </div>
-
                         <div class="template-card" onclick="selectTemplate('batch', 'template_4', this)">
                             <img src="https://docs.google.com/presentation/d/12ZD6f0WwAaD7ahDsxYSFEtEQ77v5qi511DRVmyFTyZo/export/png" alt="Template 4 Preview" class="template-preview-img">
-                            <div class="template-info">
-                                <div class="template-name">Template 4</div>
-                            </div>
+                            <div class="template-info"><div class="template-name">Template 4</div></div>
                         </div>
                     </div>
                 </div>
@@ -375,7 +350,7 @@
             </div>
         </section>
 
-        <!-- 3. Certificate Revocation Section (Dedicated Form) -->
+        <!-- 3. Revoke Certificate -->
         <section class="dash-section" style="margin-top: 2rem;">
             <div class="section-card" style="border-left: 4px solid #dc2626;">
                 <div class="section-card-header">
@@ -404,7 +379,7 @@
             </div>
         </section>
 
-        <!-- 4. Issued Records Section (Visual Ledger Cards with Pagination) -->
+        <!-- 4. Issued Records Section -->
         <section class="dash-section" style="margin-top: 2rem;">
             <div class="section-card" style="padding: 1.5rem; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
                 
@@ -421,14 +396,12 @@
                     </div>
                 </div>
 
-                <!-- Live Ledger Cards Container -->
                 <div id="ledgerCardsContainer" style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%; min-height: 120px;">
                     <div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 500;">
                         ⏳ Fetching live records from Google Sheets Ledger...
                     </div>
                 </div>
 
-                <!-- Dynamic Pagination Bar -->
                 <div class="pagination-container" id="paginationBar" style="display: none;">
                     <div style="display: flex; align-items: center; gap: 0.6rem;">
                         <span style="font-size: 0.85rem; color: #475569;">Show:</span>
@@ -450,16 +423,60 @@
             </div>
         </section>
 
+        <!-- 5. Compact & Paginated Audit Trail & Faculty Activity Log Section -->
+        <section class="dash-section" style="margin-top: 2rem;">
+            <div class="section-card" style="padding: 1.5rem; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <h2 class="section-title" style="margin: 0; font-size: 1.3rem; color: #0f172a;">🛡️ Audit Trail &amp; Activity Log</h2>
+                        <p class="section-desc" style="margin: 4px 0 0 0; color: #64748b;">
+                            Immutable log of all faculty logins, certificate issuances, and revocation events.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <input type="text" id="auditSearchInput" placeholder="Filter by name/action..." style="padding: 0.55rem 0.9rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.85rem; width: 220px; outline: none;">
+                        <button type="button" id="btnRefreshAudit" class="btn btn-secondary" style="padding: 0.55rem 0.9rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                            🔄 Refresh Logs
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Paginated Audit Cards Container -->
+                <div id="auditLogsContainer" style="display: flex; flex-direction: column; gap: 0.65rem; width: 100%; min-height: 120px;">
+                    <div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 500;">
+                        ⏳ Fetching system audit trail...
+                    </div>
+                </div>
+
+                <!-- Dedicated Pagination Bar for Audit Logs -->
+                <div class="pagination-container" id="auditPaginationBar" style="display: none;">
+                    <div style="display: flex; align-items: center; gap: 0.6rem;">
+                        <span style="font-size: 0.85rem; color: #475569;">Show:</span>
+                        <select id="auditPageSizeSelect" style="padding: 0.35rem 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; outline: none;">
+                            <option value="5" selected>5 per page</option>
+                            <option value="10">10 per page</option>
+                            <option value="20">20 per page</option>
+                        </select>
+                        <span id="auditRecordCountText" style="font-size: 0.85rem; color: #64748b; margin-left: 6px;"></span>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <button type="button" class="pagination-btn" id="btnPrevAuditPage">← Prev</button>
+                        <span id="auditPageNumberText" style="font-size: 0.85rem; font-weight: 600; color: #1e293b; padding: 0 4px;"></span>
+                        <button type="button" class="pagination-btn" id="btnNextAuditPage">Next →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container footer-content">
             <div class="footer-team">
                 <span>Designed &amp; Developed with ❤️ by</span>
                 <span class="team-badge">Team CodeLEOS</span>
             </div>
-
             <div class="contributors-wrapper">
                 <span class="contributors-label">Contributors</span>
                 <div class="contributor-tags">
@@ -471,21 +488,29 @@
                     <span class="contributor-pill">Ayush Jha</span>
                 </div>
             </div>
-
             <div class="footer-bottom">
                 <p>© 2026 Guru Gobind Singh Indraprastha University. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Integrated Backend Connector Script -->
     <script>
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxleqW0AX_7mMh9P2q0hR5dYT3-XtgIPN0-hb48Nhblca0bUBuIeUyJwMvGmw35xwrF1Q/exec";
 
+        // Certificates State
         let allRecordsCache = [];
         let filteredRecordsCache = [];
         let currentPage = 1;
         let pageSize = 5;
+
+        // Audit Logs State
+        let allAuditLogsCache = [];
+        let filteredAuditLogsCache = [];
+        let currentAuditPage = 1;
+        let auditPageSize = 5;
+
+        const currentFacultyName = sessionStorage.getItem("ipu_faculty_name") || "Faculty Member";
+        const currentFacultyEmail = sessionStorage.getItem("ipu_faculty_email") || "faculty@ipu.ac.in";
 
         function selectTemplate(mode, templateKey, cardElement) {
             const containerId = mode === 'single' ? 'singleTemplateGrid' : 'batchTemplateGrid';
@@ -503,12 +528,15 @@
             const issueDateInput = document.getElementById("issue-date");
             if (issueDateInput) issueDateInput.value = today;
 
-            const fName = sessionStorage.getItem("ipu_faculty_name");
-            if (fName) {
-                document.getElementById("displayFacultyName").innerText = fName;
-            }
+            document.getElementById("displayFacultyName").innerText = currentFacultyName;
+            document.getElementById("displayFacultyEmail").innerText = currentFacultyEmail;
             
             fetchRealRecords();
+            fetchAuditLogs();
+        });
+
+        document.getElementById("btnLogout").addEventListener("click", () => {
+            sessionStorage.clear();
         });
 
         function showStatus(message, type = "loading") {
@@ -518,6 +546,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        /* ------------------ CERTIFICATES RENDERING ------------------ */
         function renderCurrentPage() {
             const container = document.getElementById("ledgerCardsContainer");
             const paginationBar = document.getElementById("paginationBar");
@@ -641,11 +670,144 @@
             renderCurrentPage();
         }
 
-        // 1-Click Revoke from Record Row
+        /* ------------------ AUDIT LOGS RENDERING & PAGINATION ------------------ */
+        function renderAuditPage() {
+            const container = document.getElementById("auditLogsContainer");
+            const paginationBar = document.getElementById("auditPaginationBar");
+            container.innerHTML = "";
+
+            if (!filteredAuditLogsCache || filteredAuditLogsCache.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 500;">
+                        No audit records match your search.
+                    </div>`;
+                paginationBar.style.display = "none";
+                return;
+            }
+
+            paginationBar.style.display = "flex";
+            const totalRecords = filteredAuditLogsCache.length;
+            const totalPages = Math.ceil(totalRecords / auditPageSize);
+
+            if (currentAuditPage > totalPages) currentAuditPage = totalPages;
+            if (currentAuditPage < 1) currentAuditPage = 1;
+
+            const startIndex = (currentAuditPage - 1) * auditPageSize;
+            const pageLogs = filteredAuditLogsCache.slice(startIndex, startIndex + auditPageSize);
+
+            pageLogs.forEach(log => {
+                const dateStr = log.timestamp ? new Date(log.timestamp).toLocaleString("en-IN", { dateStyle: 'medium', timeStyle: 'short' }) : "-";
+                
+                let tagClass = "log-issue";
+                if (log.actionType.includes("LOGIN")) tagClass = "log-login";
+                else if (log.actionType.includes("REVOKE")) tagClass = "log-revoke";
+                else if (log.actionType.includes("BATCH")) tagClass = "log-batch";
+
+                const card = document.createElement("div");
+                card.className = "audit-card-item";
+                card.innerHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 3px; min-width: 170px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="log-tag ${tagClass}">${log.actionType}</span>
+                            <span style="font-family: monospace; font-size: 0.85rem; font-weight: 700; color: #1e40af;">${log.targetRef}</span>
+                        </div>
+                        <span style="color: #64748b; font-size: 0.76rem;">${dateStr}</span>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; min-width: 160px;">
+                        <span style="font-weight: 700; color: #0f172a; font-size: 0.92rem;">${log.facultyName}</span>
+                        <span style="font-size: 0.78rem; color: #64748b;">${log.facultyEmail}</span>
+                    </div>
+
+                    <div style="flex: 1; min-width: 220px; font-size: 0.84rem; color: #334155; background: #f8fafc; padding: 6px 10px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        ${log.details}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById("auditRecordCountText").innerText = `Total: ${totalRecords} events`;
+            document.getElementById("auditPageNumberText").innerText = `Page ${currentAuditPage} of ${totalPages}`;
+            document.getElementById("btnPrevAuditPage").disabled = (currentAuditPage === 1);
+            document.getElementById("btnNextAuditPage").disabled = (currentAuditPage === totalPages);
+        }
+
+        async function fetchAuditLogs() {
+            const container = document.getElementById("auditLogsContainer");
+            container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 500;">⏳ Fetching system audit trail...</div>`;
+
+            try {
+                const url = `${APPS_SCRIPT_URL}?action=getAuditLogs&_t=${Date.now()}`;
+                const res = await fetch(url, { redirect: "follow" });
+                const data = await res.json();
+
+                if (data.status === "SUCCESS" && data.logs && data.logs.length > 0) {
+                    allAuditLogsCache = data.logs;
+                    filteredAuditLogsCache = [...allAuditLogsCache];
+                    currentAuditPage = 1;
+                    renderAuditPage();
+                } else {
+                    container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1;">No audit logs recorded yet.</div>`;
+                    document.getElementById("auditPaginationBar").style.display = "none";
+                }
+            } catch(e) {
+                console.error("Audit fetch error", e);
+                container.innerHTML = `<div style="text-align: center; color: #dc2626; padding: 2.5rem; background: #fef2f2; border-radius: 8px; border: 1px dashed #f87171;">Failed to load audit trail. Click 🔄 to retry.</div>`;
+            }
+        }
+
+        function filterAuditLogs() {
+            const query = document.getElementById("auditSearchInput").value.toLowerCase().trim();
+            if (!query) {
+                filteredAuditLogsCache = [...allAuditLogsCache];
+            } else {
+                filteredAuditLogsCache = allAuditLogsCache.filter(log => {
+                    const name = String(log.facultyName || "").toLowerCase();
+                    const email = String(log.facultyEmail || "").toLowerCase();
+                    const action = String(log.actionType || "").toLowerCase();
+                    const ref = String(log.targetRef || "").toLowerCase();
+                    const details = String(log.details || "").toLowerCase();
+
+                    return name.includes(query) || 
+                           email.includes(query) || 
+                           action.includes(query) || 
+                           ref.includes(query) || 
+                           details.includes(query);
+                });
+            }
+            currentAuditPage = 1;
+            renderAuditPage();
+        }
+
+        // Audit Events
+        document.getElementById("btnPrevAuditPage").addEventListener("click", () => {
+            if (currentAuditPage > 1) {
+                currentAuditPage--;
+                renderAuditPage();
+            }
+        });
+
+        document.getElementById("btnNextAuditPage").addEventListener("click", () => {
+            const totalPages = Math.ceil(filteredAuditLogsCache.length / auditPageSize);
+            if (currentAuditPage < totalPages) {
+                currentAuditPage++;
+                renderAuditPage();
+            }
+        });
+
+        document.getElementById("auditPageSizeSelect").addEventListener("change", (e) => {
+            auditPageSize = parseInt(e.target.value, 10);
+            currentAuditPage = 1;
+            renderAuditPage();
+        });
+
+        document.getElementById("auditSearchInput").addEventListener("input", filterAuditLogs);
+        document.getElementById("btnRefreshAudit").addEventListener("click", fetchAuditLogs);
+
+        /* ------------------ REVOCATION ENGINE ------------------ */
         function quickRevoke(certId, studentName) {
             const reason = prompt(`⚠️ Are you sure you want to REVOKE certificate for ${studentName} (${certId})?\n\nEnter reason for revocation:`, "Administrative Revocation");
             if (reason === null) return;
-
             executeRevocation(certId, reason.trim() || "Administrative Invalidation");
         }
 
@@ -657,7 +819,9 @@
                     body: JSON.stringify({
                         action: "REVOKE_CERT",
                         query: targetQuery,
-                        reason: reason
+                        reason: reason,
+                        issuerName: currentFacultyName,
+                        issuerEmail: currentFacultyEmail
                     })
                 });
 
@@ -665,6 +829,7 @@
                 if (result.status === "SUCCESS") {
                     showStatus(`⚠️ <b>Certificate Successfully Revoked!</b><br>Target: <code>${result.certId || targetQuery}</code> | Reason: ${result.revocationReason || reason}`, "success");
                     fetchRealRecords();
+                    fetchAuditLogs();
                 } else {
                     showStatus(`❌ Revocation failed: ${result.message || "Error"}`, "error");
                 }
@@ -673,7 +838,6 @@
             }
         }
 
-        // Revoke Form Submission Handler
         document.getElementById("revokeCertForm").addEventListener("submit", async function(e) {
             e.preventDefault();
             const targetQuery = document.getElementById("revoke-target").value.trim();
@@ -685,12 +849,11 @@
             btn.disabled = true;
 
             await executeRevocation(targetQuery, reason);
-            
             document.getElementById("revokeCertForm").reset();
             btn.disabled = false;
         });
 
-        // Pagination Events
+        /* ------------------ CERTIFICATE PAGINATION EVENTS ------------------ */
         document.getElementById("btnPrevPage").addEventListener("click", () => {
             if (currentPage > 1) {
                 currentPage--;
@@ -716,7 +879,7 @@
         document.getElementById("btnSearchRecords").addEventListener("click", filterRecords);
         document.getElementById("btnRefreshRecords").addEventListener("click", fetchRealRecords);
 
-        // Single Issuance Form Submission
+        /* ------------------ SINGLE ISSUANCE ------------------ */
         document.getElementById("issueCertForm").addEventListener("submit", async function (e) {
             e.preventDefault();
             const submitBtn = document.getElementById("btnSubmitSingle");
@@ -727,7 +890,9 @@
                 courseDept: document.getElementById("dept").value.trim(),
                 eventTitle: document.getElementById("cert-type").value,
                 dob: document.getElementById("student-dob").value.trim(),
-                template: document.getElementById("cert-template").value
+                template: document.getElementById("cert-template").value,
+                issuerName: currentFacultyName,
+                issuerEmail: currentFacultyEmail
             };
 
             submitBtn.disabled = true;
@@ -743,21 +908,8 @@
                 if (result.status === "SUCCESS") {
                     showStatus(`✅ <b>Certificate Successfully Mined!</b><br>Cert ID: <code>${result.certId}</code> | Block #${result.blockIndex} | Hash: <code>${result.currentHash}</code><br><a href="${result.pdfLink}" target="_blank" style="color: #065f46; font-weight: bold; text-decoration: underline;">👉 Open Generated PDF</a>`, "success");
                     
-                    const newRec = {
-                        blockIndex: result.blockIndex,
-                        certId: result.certId,
-                        studentName: payload.studentName,
-                        enrollmentNo: payload.enrollmentNo,
-                        eventTitle: payload.eventTitle,
-                        courseDept: payload.courseDept,
-                        currentHash: result.currentHash,
-                        pdfLink: result.pdfLink,
-                        certStatus: "ACTIVE",
-                        timestamp: new Date().toISOString()
-                    };
-
-                    allRecordsCache.unshift(newRec);
-                    filterRecords();
+                    fetchRealRecords();
+                    fetchAuditLogs();
 
                     document.getElementById("issueCertForm").reset();
                     document.getElementById("issue-date").value = new Date().toISOString().split("T")[0];
@@ -772,7 +924,7 @@
             }
         });
 
-        // Sample CSV Download
+        /* ------------------ BATCH CSV DOWNLOAD & UPLOAD ------------------ */
         document.getElementById("btnDownloadSample").addEventListener("click", () => {
             const csvContent = "data:text/csv;charset=utf-8," + 
                 "Student_Name,Enrollment_No,Dept,Event_Title,Cert_ID,DOB\n" +
@@ -789,7 +941,6 @@
             document.body.removeChild(link);
         });
 
-        // Batch CSV Upload
         document.getElementById("btnUploadCsv").addEventListener("click", async () => {
             const fileInput = document.getElementById("csvFileInput");
             const uploadBtn = document.getElementById("btnUploadCsv");
@@ -839,13 +990,19 @@
                 try {
                     const response = await fetch(APPS_SCRIPT_URL, {
                         method: "POST",
-                        body: JSON.stringify(batchData)
+                        body: JSON.stringify({
+                            action: "ISSUE_BATCH",
+                            records: batchData,
+                            issuerName: currentFacultyName,
+                            issuerEmail: currentFacultyEmail
+                        })
                     });
                     const result = await response.json();
 
                     if (result.status === "SUCCESS") {
                         showStatus(`✅ <b>Successfully issued and blockchain-secured all ${result.count} certificates!</b>`, "success");
                         fetchRealRecords();
+                        fetchAuditLogs();
                         fileInput.value = "";
                     } else {
                         showStatus(`❌ Batch issuance failed: ${result.message || "Error"}`, "error");
