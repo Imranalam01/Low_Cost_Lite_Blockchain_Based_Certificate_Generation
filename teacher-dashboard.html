@@ -75,11 +75,6 @@
             margin-bottom: 2px;
         }
 
-        .template-tag {
-            font-size: 0.75rem;
-            color: #64748b;
-        }
-
         .template-preview-link {
             display: inline-block;
             margin-top: 6px;
@@ -87,6 +82,34 @@
             color: #2563eb;
             text-decoration: underline;
             cursor: pointer;
+        }
+
+        /* Status Banner Styles */
+        .status-banner {
+            display: none;
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .status-banner.loading {
+            display: block;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+        }
+        .status-banner.success {
+            display: block;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+        }
+        .status-banner.error {
+            display: block;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
         }
 
         /* Pagination Styles */
@@ -220,7 +243,6 @@
                                 <img src="https://docs.google.com/presentation/d/16ZHQSN5Es_HQMagiNy3m1Ic0MLi5HszJXnVCxV0-pb8/export/png" alt="Template 1 Preview" class="template-preview-img">
                                 <div class="template-info">
                                     <div class="template-name">Template 1</div>
-                                    
                                     <a href="https://docs.google.com/presentation/d/16ZHQSN5Es_HQMagiNy3m1Ic0MLi5HszJXnVCxV0-pb8/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
                                 </div>
                             </div>
@@ -229,7 +251,6 @@
                                 <img src="https://docs.google.com/presentation/d/1W2kpKU9zUT2xvaG2pQYRE_Oo2Hu3Zy2f7WIJpMU8JHY/export/png" alt="Template 2 Preview" class="template-preview-img">
                                 <div class="template-info">
                                     <div class="template-name">Template 2</div>
-                                    
                                     <a href="https://docs.google.com/presentation/d/1W2kpKU9zUT2xvaG2pQYRE_Oo2Hu3Zy2f7WIJpMU8JHY/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
                                 </div>
                             </div>
@@ -238,7 +259,6 @@
                                 <img src="https://docs.google.com/presentation/d/1QHylky_GDKXYeeNH3qJTuzDDH8gEDWIbB8jhzKDqmfQ/export/png" alt="Template 3 Preview" class="template-preview-img">
                                 <div class="template-info">
                                     <div class="template-name">Template 3</div>
-                                    
                                     <a href="https://docs.google.com/presentation/d/1QHylky_GDKXYeeNH3qJTuzDDH8gEDWIbB8jhzKDqmfQ/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
                                 </div>
                             </div>
@@ -247,7 +267,6 @@
                                 <img src="https://docs.google.com/presentation/d/12ZD6f0WwAaD7ahDsxYSFEtEQ77v5qi511DRVmyFTyZo/export/png" alt="Template 4 Preview" class="template-preview-img">
                                 <div class="template-info">
                                     <div class="template-name">Template 4</div>
-                                    
                                     <a href="https://docs.google.com/presentation/d/12ZD6f0WwAaD7ahDsxYSFEtEQ77v5qi511DRVmyFTyZo/edit" target="_blank" class="template-preview-link" onclick="event.stopPropagation()">View Full Template ↗</a>
                                 </div>
                             </div>
@@ -282,7 +301,6 @@
                             <img src="https://docs.google.com/presentation/d/16ZHQSN5Es_HQMagiNy3m1Ic0MLi5HszJXnVCxV0-pb8/export/png" alt="Template 1 Preview" class="template-preview-img">
                             <div class="template-info">
                                 <div class="template-name">Template 1</div>
-                                
                             </div>
                         </div>
 
@@ -290,7 +308,6 @@
                             <img src="https://docs.google.com/presentation/d/1W2kpKU9zUT2xvaG2pQYRE_Oo2Hu3Zy2f7WIJpMU8JHY/export/png" alt="Template 2 Preview" class="template-preview-img">
                             <div class="template-info">
                                 <div class="template-name">Template 2</div>
-                                
                             </div>
                         </div>
 
@@ -298,7 +315,6 @@
                             <img src="https://docs.google.com/presentation/d/1QHylky_GDKXYeeNH3qJTuzDDH8gEDWIbB8jhzKDqmfQ/export/png" alt="Template 3 Preview" class="template-preview-img">
                             <div class="template-info">
                                 <div class="template-name">Template 3</div>
-                                
                             </div>
                         </div>
 
@@ -306,7 +322,6 @@
                             <img src="https://docs.google.com/presentation/d/12ZD6f0WwAaD7ahDsxYSFEtEQ77v5qi511DRVmyFTyZo/export/png" alt="Template 4 Preview" class="template-preview-img">
                             <div class="template-info">
                                 <div class="template-name">Template 4</div>
-                                
                             </div>
                         </div>
                     </div>
@@ -324,7 +339,7 @@
             </div>
         </section>
 
-        <!-- Issued Records Section (Visual Ledger Cards with Pagination) -->
+        <!-- Issued Records Section -->
         <section class="dash-section" style="margin-top: 2rem;">
             <div class="section-card" style="padding: 1.5rem; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
                 
@@ -498,7 +513,6 @@
                 container.appendChild(card);
             });
 
-            // Update Pagination Elements
             document.getElementById("recordCountText").innerText = `Total: ${totalRecords} records`;
             document.getElementById("pageNumberText").innerText = `Page ${currentPage} of ${totalPages}`;
             document.getElementById("btnPrevPage").disabled = (currentPage === 1);
@@ -552,7 +566,6 @@
             renderCurrentPage();
         }
 
-        // Pagination Events
         document.getElementById("btnPrevPage").addEventListener("click", () => {
             if (currentPage > 1) {
                 currentPage--;
@@ -589,12 +602,11 @@
                 courseDept: document.getElementById("dept").value.trim(),
                 eventTitle: document.getElementById("cert-type").value,
                 dob: document.getElementById("student-dob").value.trim(),
-                remarks: document.getElementById("grade-remarks").value.trim(),
                 template: document.getElementById("cert-template").value
             };
 
             submitBtn.disabled = true;
-            showStatus(`⏳ Mining Block &amp; Generating Certificate PDF for <b>${payload.studentName}</b>... Please wait.`, "loading");
+            showStatus(`⏳ Mining Block & Generating Certificate PDF for <b>${payload.studentName}</b>... Please wait.`, "loading");
 
             try {
                 const response = await fetch(APPS_SCRIPT_URL, {
