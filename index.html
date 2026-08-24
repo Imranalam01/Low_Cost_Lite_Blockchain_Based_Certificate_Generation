@@ -2,16 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>GGSIPU - Certificate Management Portal</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* Base Global Reset & Container Responsiveness */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
         .univ-header {
             width: 100%;
             padding: 0.75rem 0;
             background: #ffffff;
             border-bottom: 1px solid #e2e8f0;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
 
         .header-container-custom {
@@ -19,9 +36,9 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            max-width: 100%;
-            padding: 0 2.25rem;
-            box-sizing: border-box;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
             gap: 1.25rem;
         }
 
@@ -29,28 +46,65 @@
             display: flex;
             align-items: center;
             gap: 1.1rem;
+            min-width: 0; /* Prevents flex children from overflowing */
         }
 
-        /* Non-clickable logos */
         .univ-logo-img {
-            height: 58px;
+            height: 56px;
             width: auto;
             object-fit: contain;
             pointer-events: none;
             user-select: none;
             cursor: default;
+            flex-shrink: 0;
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 38px;
+            background-color: #cbd5e1;
+            flex-shrink: 0;
+        }
+
+        .title-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .portal-badge {
+            display: inline-block;
+            align-self: flex-start;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .system-title {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #0f172a;
+            font-weight: 700;
+            line-height: 1.25;
+            white-space: normal;
         }
 
         .header-right {
             display: flex;
             align-items: center;
+            flex-shrink: 0;
         }
 
-        /* Clean Team Logo (No Border, No Shadow) */
         .team-logo-img {
-            height: 70px;
+            height: 64px;
             width: auto;
-            max-width: 220px;
+            max-width: 200px;
             object-fit: contain;
             border: none;
             box-shadow: none;
@@ -60,15 +114,252 @@
             cursor: default;
         }
 
+        /* Main Workspace & Grid */
+        .main-container {
+            flex: 1 0 auto;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 2.25rem 1.75rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #cbd5e1;
+            box-shadow: 0 12px 24px -4px rgba(0,0,0,0.08);
+        }
+
+        .card-icon {
+            font-size: 2.75rem;
+            margin-bottom: 1rem;
+            line-height: 1;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.5;
+            margin: 0 0 1.75rem 0;
+            flex-grow: 1;
+        }
+
+        .card .btn {
+            width: 100%;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+
+        /* Footer Responsiveness */
+        .footer {
+            flex-shrink: 0;
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 2.5rem 1.5rem 1.75rem;
+            border-top: 1px solid #1e293b;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.5rem;
+        }
+
+        .footer-team {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+        }
+
+        .team-badge {
+            background: #2563eb;
+            color: #ffffff;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .contributors-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+        }
+
+        .contributors-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .contributor-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            max-width: 800px;
+        }
+
+        .contributor-pill {
+            background: #1e293b;
+            color: #cbd5e1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid #334155;
+            transition: background 0.2s ease;
+        }
+
+        .contributor-pill:hover {
+            background: #334155;
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #1e293b;
+            padding-top: 1.25rem;
+            width: 100%;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* --- BREAKPOINTS --- */
+
+        /* Tablets & Medium Screens (max-width: 992px) */
+        @media (max-width: 992px) {
+            .header-container-custom {
+                padding: 0 1.5rem;
+            }
+            .system-title {
+                font-size: 0.95rem;
+            }
+            .team-logo-img {
+                height: 54px;
+            }
+            .univ-logo-img {
+                height: 48px;
+            }
+            .main-container {
+                padding: 2.5rem 1.25rem;
+            }
+        }
+
+        /* Small Tablets & Large Phones (max-width: 768px) */
         @media (max-width: 768px) {
             .header-container-custom {
                 padding: 0 1rem;
-            }
-            .team-logo-img {
-                height: 50px;
+                gap: 0.75rem;
             }
             .univ-logo-img {
+                height: 42px;
+            }
+            .team-logo-img {
                 height: 46px;
+            }
+            .header-divider {
+                height: 30px;
+            }
+            .system-title {
+                font-size: 0.85rem;
+            }
+            .portal-badge {
+                font-size: 0.65rem;
+            }
+            .portal-grid {
+                grid-template-columns: 1fr;
+                max-width: 440px;
+                margin: 0 auto;
+                gap: 1.5rem;
+            }
+            .card {
+                padding: 1.75rem 1.25rem;
+            }
+        }
+
+        /* Ultra-Small Mobile Devices (max-width: 480px) */
+        @media (max-width: 480px) {
+            .univ-header {
+                padding: 0.6rem 0;
+            }
+            .header-container-custom {
+                padding: 0 0.75rem;
+            }
+            .univ-logo-img {
+                height: 36px;
+            }
+            .team-logo-img {
+                height: 38px;
+            }
+            .header-left {
+                gap: 0.6rem;
+            }
+            .system-title {
+                font-size: 0.78rem;
+                line-height: 1.2;
+            }
+            .main-container {
+                padding: 1.75rem 1rem;
+            }
+            .card-icon {
+                font-size: 2.25rem;
+            }
+            .card-title {
+                font-size: 1.15rem;
+            }
+            .card-desc {
+                font-size: 0.85rem;
+                margin-bottom: 1.25rem;
+            }
+            .contributor-pill {
+                font-size: 0.75rem;
+                padding: 3px 10px;
             }
         }
     </style>
