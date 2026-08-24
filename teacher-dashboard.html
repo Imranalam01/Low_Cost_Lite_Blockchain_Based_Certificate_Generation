@@ -6,9 +6,7 @@
     <title>Faculty Dashboard - GGSIPU</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -57,7 +55,6 @@
             object-fit: contain;
             pointer-events: none;
             user-select: none;
-            cursor: default;
             flex-shrink: 0;
         }
 
@@ -115,16 +112,8 @@
             flex-direction: column;
         }
 
-        .user-name {
-            font-weight: 700;
-            font-size: 0.92rem;
-            color: #0f172a;
-        }
-
-        .user-role {
-            font-size: 0.78rem;
-            color: #64748b;
-        }
+        .user-name { font-weight: 700; font-size: 0.92rem; color: #0f172a; }
+        .user-role { font-size: 0.78rem; color: #64748b; }
 
         .btn-logout {
             background: #fee2e2;
@@ -139,11 +128,7 @@
             cursor: pointer;
             white-space: nowrap;
         }
-
-        .btn-logout:hover {
-            background: #dc2626;
-            color: #ffffff !important;
-        }
+        .btn-logout:hover { background: #dc2626; color: #ffffff !important; }
 
         .dashboard-container {
             flex: 1 0 auto;
@@ -153,11 +138,7 @@
             padding: 2.25rem 1.5rem;
         }
 
-        .dash-section {
-            margin-bottom: 2rem;
-            width: 100%;
-        }
-
+        .dash-section { margin-bottom: 2rem; width: 100%; }
         .section-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -166,52 +147,15 @@
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04);
         }
 
-        .section-card-header {
-            margin-bottom: 1.25rem;
-        }
+        .section-card-header { margin-bottom: 1.25rem; }
+        .section-title { margin: 0 0 4px 0; font-size: 1.25rem; font-weight: 700; color: #0f172a; }
+        .section-desc { margin: 0; font-size: 0.88rem; color: #64748b; }
 
-        .section-title {
-            margin: 0 0 4px 0;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .section-desc {
-            margin: 0;
-            font-size: 0.88rem;
-            color: #64748b;
-        }
-
-        .cert-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.1rem;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 1.25rem;
-            width: 100%;
-        }
-
-        .form-group {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-size: 0.86rem;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 0.35rem;
-        }
-
-        .form-group input, 
-        .form-group select,
-        .form-select {
+        .cert-form { display: flex; flex-direction: column; gap: 1.1rem; }
+        .form-row { display: flex; gap: 1.25rem; width: 100%; }
+        .form-group { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.86rem; font-weight: 600; color: #334155; margin-bottom: 0.35rem; }
+        .form-group input, .form-group select, .form-select {
             width: 100%;
             padding: 0.7rem 0.95rem;
             border: 1.5px solid #cbd5e1;
@@ -222,20 +166,12 @@
             background-color: #ffffff;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
-
-        .form-group input:focus, 
-        .form-group select:focus {
+        .form-group input:focus, .form-group select:focus {
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
-        .form-actions {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 0.5rem;
-            flex-wrap: wrap;
-        }
-
+        .form-actions { display: flex; gap: 0.75rem; margin-top: 0.5rem; flex-wrap: wrap; }
         .btn {
             padding: 0.65rem 1.25rem;
             border-radius: 8px;
@@ -250,23 +186,10 @@
             justify-content: center;
             gap: 6px;
         }
-
-        .btn-primary {
-            background: #2563eb;
-            color: #ffffff;
-        }
-        .btn-primary:hover {
-            background: #1d4ed8;
-        }
-
-        .btn-secondary {
-            background: #f1f5f9;
-            color: #334155;
-            border: 1px solid #cbd5e1;
-        }
-        .btn-secondary:hover {
-            background: #e2e8f0;
-        }
+        .btn-primary { background: #2563eb; color: #ffffff; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-secondary { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; }
+        .btn-secondary:hover { background: #e2e8f0; }
 
         .template-grid {
             display: grid;
@@ -289,19 +212,12 @@
             display: flex;
             flex-direction: column;
         }
-
-        .template-card:hover {
-            border-color: #94a3b8;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-        }
-
+        .template-card:hover { border-color: #94a3b8; transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,0.08); }
         .template-card.active {
             border-color: #2563eb;
             background: #f0f7ff;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2), 0 4px 12px rgba(37, 99, 235, 0.15);
         }
-
         .template-card.active::before {
             content: "✓ Selected";
             position: absolute;
@@ -316,35 +232,10 @@
             z-index: 2;
         }
 
-        .template-preview-img {
-            width: 100%;
-            height: 125px;
-            object-fit: cover;
-            border-radius: 6px;
-            border: 1px solid #cbd5e1;
-            background: #f8fafc;
-        }
-
-        .template-info {
-            margin-top: 0.6rem;
-            text-align: left;
-        }
-
-        .template-name {
-            font-size: 0.88rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 2px;
-        }
-
-        .template-preview-link {
-            display: inline-block;
-            margin-top: 4px;
-            font-size: 0.75rem;
-            color: #2563eb;
-            text-decoration: underline;
-            cursor: pointer;
-        }
+        .template-preview-img { width: 100%; height: 125px; object-fit: cover; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; }
+        .template-info { margin-top: 0.6rem; text-align: left; }
+        .template-name { font-size: 0.88rem; font-weight: 700; color: #1e293b; margin-bottom: 2px; }
+        .template-preview-link { display: inline-block; margin-top: 4px; font-size: 0.75rem; color: #2563eb; text-decoration: underline; cursor: pointer; }
 
         .status-banner {
             display: none;
@@ -380,7 +271,6 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-
         .pagination-btn:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
         .pagination-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
@@ -421,18 +311,8 @@
             gap: 0.75rem;
             transition: transform 0.15s ease, border-color 0.15s ease;
         }
-        .audit-card-item:hover {
-            border-color: #cbd5e1;
-            transform: translateX(2px);
-        }
-        .log-tag {
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-family: monospace;
-            text-transform: uppercase;
-        }
+        .audit-card-item:hover { border-color: #cbd5e1; transform: translateX(2px); }
+        .log-tag { font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; font-family: monospace; text-transform: uppercase; }
         .log-login { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
         .log-issue { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
         .log-revoke { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
@@ -445,166 +325,47 @@
             padding: 2.5rem 1.5rem 1.75rem;
             border-top: 1px solid #1e293b;
         }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; }
+        .footer-team { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.95rem; color: #e2e8f0; }
+        .team-badge { background: #2563eb; color: #ffffff; padding: 2px 10px; border-radius: 12px; font-weight: 700; font-size: 0.8rem; }
+        .contributors-wrapper { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; width: 100%; }
+        .contributors-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #64748b; font-weight: 600; }
+        .contributor-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; max-width: 800px; }
+        .contributor-pill { background: #1e293b; color: #cbd5e1; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #334155; }
+        .contributor-pill:hover { background: #334155; color: #ffffff; }
+        .footer-bottom { border-top: 1px solid #1e293b; padding-top: 1.25rem; width: 100%; font-size: 0.8rem; color: #64748b; }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 1.5rem;
-        }
-
-        .footer-team {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            font-size: 0.95rem;
-            color: #e2e8f0;
-        }
-
-        .team-badge {
-            background: #2563eb;
-            color: #ffffff;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 0.8rem;
-        }
-
-        .contributors-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.75rem;
-            width: 100%;
-        }
-
-        .contributors-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        .contributor-tags {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-            max-width: 800px;
-        }
-
-        .contributor-pill {
-            background: #1e293b;
-            color: #cbd5e1;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            border: 1px solid #334155;
-            transition: background 0.2s ease, color 0.2s ease;
-        }
-
-        .contributor-pill:hover {
-            background: #334155;
-            color: #ffffff;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #1e293b;
-            padding-top: 1.25rem;
-            width: 100%;
-            font-size: 0.8rem;
-            color: #64748b;
-        }
-
-        @media (max-width: 992px) {
-            .header-container-custom {
-                padding: 0 1.5rem;
-            }
-            .system-title {
-                font-size: 0.92rem;
-            }
-            .univ-logo-img {
-                height: 46px;
-            }
-            .dashboard-container {
-                padding: 1.75rem 1.25rem;
-            }
-        }
-
+        /* --- MOBILE SCREEN FIXES --- */
         @media (max-width: 768px) {
+            .univ-header { padding: 0.6rem 0; }
             .header-container-custom {
+                display: grid;
+                grid-template-columns: 1fr auto;
+                grid-template-areas:
+                    "logo nav"
+                    "title title";
                 padding: 0 1rem;
-                flex-wrap: wrap;
-                gap: 0.75rem;
+                gap: 0.45rem 0.75rem;
+                align-items: center;
             }
-            .header-left {
-                gap: 0.75rem;
-            }
-            .univ-logo-img {
-                height: 40px;
-            }
-            .header-divider {
-                height: 28px;
-            }
-            .system-title {
-                font-size: 0.82rem;
-            }
-            .portal-badge {
-                font-size: 0.65rem;
-            }
-            .header-right {
+            .header-left { display: contents; }
+            .univ-logo-img { grid-area: logo; height: 38px; justify-self: start; }
+            .header-right { grid-area: nav; justify-self: end; }
+            .header-divider { display: none !important; }
+            .title-group {
+                grid-area: title;
                 width: 100%;
-                justify-content: flex-end;
                 border-top: 1px solid #f1f5f9;
-                padding-top: 0.5rem;
-            }
-            .form-row {
-                flex-direction: column;
-                gap: 0.9rem;
-            }
-            .section-card {
-                padding: 1.25rem 1rem;
-            }
-            .template-grid {
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            }
-        }
-
-        @media (max-width: 480px) {
-            .univ-header {
-                padding: 0.5rem 0;
-            }
-            .univ-logo-img {
-                height: 34px;
-            }
-            .system-title {
-                font-size: 0.76rem;
-                line-height: 1.2;
-            }
-            .dashboard-container {
-                padding: 1.25rem 0.75rem;
-            }
-            .btn {
-                width: 100%;
-            }
-            .pagination-container {
-                flex-direction: column;
-                align-items: stretch;
+                padding-top: 0.45rem;
                 text-align: center;
+                align-items: center;
             }
-            .pagination-container > div {
-                justify-content: center;
-            }
-            .contributor-pill {
-                font-size: 0.75rem;
-                padding: 3px 10px;
-            }
+            .portal-badge { align-self: center; font-size: 0.65rem; }
+            .system-title { font-size: 0.84rem; line-height: 1.3; text-align: center; }
+            .form-row { flex-direction: column; gap: 0.9rem; }
+            .section-card { padding: 1.25rem 1rem; }
+            .template-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+            .dashboard-container { padding: 1.25rem 0.75rem; }
         }
     </style>
 </head>
@@ -849,21 +610,17 @@
             </div>
         </section>
 
-        <!-- 5. Audit Trail & Activity Log Section -->
+        <!-- 5. Audit Trail Section -->
         <section class="dash-section">
             <div class="section-card">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem; margin-bottom: 1rem;">
                     <div>
                         <h2 class="section-title">🛡️ Audit Trail &amp; Activity Log</h2>
-                        <p class="section-desc">
-                            Immutable log of all faculty logins, certificate issuances, and revocation events.
-                        </p>
+                        <p class="section-desc">Immutable log of all faculty logins, certificate issuances, and revocation events.</p>
                     </div>
                     <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
                         <input type="text" id="auditSearchInput" placeholder="Filter by name/action..." style="padding: 0.55rem 0.9rem; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 0.85rem; min-width: 200px; outline: none;">
-                        <button type="button" id="btnRefreshAudit" class="btn btn-secondary">
-                            🔄 Refresh Logs
-                        </button>
+                        <button type="button" id="btnRefreshAudit" class="btn btn-secondary">🔄 Refresh Logs</button>
                     </div>
                 </div>
 
@@ -976,10 +733,7 @@
             container.innerHTML = "";
 
             if (!filteredRecordsCache || filteredRecordsCache.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 500;">
-                        No matching certificate records found.
-                    </div>`;
+                container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 500;">No matching certificate records found.</div>`;
                 paginationBar.style.display = "none";
                 return;
             }
@@ -1064,7 +818,6 @@
                     container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1;">No certificates found in ledger.</div>`;
                 }
             } catch (err) {
-                console.error("Fetch records error:", err);
                 container.innerHTML = `<div style="text-align: center; color: #ef4444; padding: 2.5rem; background: #fef2f2; border-radius: 8px; border: 1px dashed #f87171;">Failed to load records. Click 🔄 to retry.</div>`;
             }
         }
@@ -1099,10 +852,7 @@
             container.innerHTML = "";
 
             if (!filteredAuditLogsCache || filteredAuditLogsCache.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 500;">
-                        No audit records match your search.
-                    </div>`;
+                container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 2.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1; font-weight: 500;">No audit records match your search.</div>`;
                 paginationBar.style.display = "none";
                 return;
             }
@@ -1119,7 +869,6 @@
 
             pageLogs.forEach(log => {
                 const dateStr = log.timestamp ? new Date(log.timestamp).toLocaleString("en-IN", { dateStyle: 'medium', timeStyle: 'short' }) : "-";
-                
                 let tagClass = "log-issue";
                 if (log.actionType.includes("LOGIN")) tagClass = "log-login";
                 else if (log.actionType.includes("REVOKE")) tagClass = "log-revoke";
@@ -1173,7 +922,6 @@
                     document.getElementById("auditPaginationBar").style.display = "none";
                 }
             } catch(e) {
-                console.error("Audit fetch error", e);
                 container.innerHTML = `<div style="text-align: center; color: #dc2626; padding: 2.5rem; background: #fef2f2; border-radius: 8px; border: 1px dashed #f87171;">Failed to load audit trail. Click 🔄 to retry.</div>`;
             }
         }
@@ -1190,11 +938,7 @@
                     const ref = String(log.targetRef || "").toLowerCase();
                     const details = String(log.details || "").toLowerCase();
 
-                    return name.includes(query) || 
-                           email.includes(query) || 
-                           action.includes(query) || 
-                           ref.includes(query) || 
-                           details.includes(query);
+                    return name.includes(query) || email.includes(query) || action.includes(query) || ref.includes(query) || details.includes(query);
                 });
             }
             currentAuditPage = 1;
@@ -1202,26 +946,17 @@
         }
 
         document.getElementById("btnPrevAuditPage").addEventListener("click", () => {
-            if (currentAuditPage > 1) {
-                currentAuditPage--;
-                renderAuditPage();
-            }
+            if (currentAuditPage > 1) { currentAuditPage--; renderAuditPage(); }
         });
-
         document.getElementById("btnNextAuditPage").addEventListener("click", () => {
             const totalPages = Math.ceil(filteredAuditLogsCache.length / auditPageSize);
-            if (currentAuditPage < totalPages) {
-                currentAuditPage++;
-                renderAuditPage();
-            }
+            if (currentAuditPage < totalPages) { currentAuditPage++; renderAuditPage(); }
         });
-
         document.getElementById("auditPageSizeSelect").addEventListener("change", (e) => {
             auditPageSize = parseInt(e.target.value, 10);
             currentAuditPage = 1;
             renderAuditPage();
         });
-
         document.getElementById("auditSearchInput").addEventListener("input", filterAuditLogs);
         document.getElementById("btnRefreshAudit").addEventListener("click", fetchAuditLogs);
 
@@ -1262,38 +997,27 @@
             e.preventDefault();
             const targetQuery = document.getElementById("revoke-target").value.trim();
             const reason = document.getElementById("revoke-reason").value.trim();
-
             if (!confirm(`Confirm revocation for "${targetQuery}"?\nReason: ${reason}`)) return;
 
             const btn = document.getElementById("btnSubmitRevoke");
             btn.disabled = true;
-
             await executeRevocation(targetQuery, reason);
             document.getElementById("revokeCertForm").reset();
             btn.disabled = false;
         });
 
         document.getElementById("btnPrevPage").addEventListener("click", () => {
-            if (currentPage > 1) {
-                currentPage--;
-                renderCurrentPage();
-            }
+            if (currentPage > 1) { currentPage--; renderCurrentPage(); }
         });
-
         document.getElementById("btnNextPage").addEventListener("click", () => {
             const totalPages = Math.ceil(filteredRecordsCache.length / pageSize);
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderCurrentPage();
-            }
+            if (currentPage < totalPages) { currentPage++; renderCurrentPage(); }
         });
-
         document.getElementById("pageSizeSelect").addEventListener("change", (e) => {
             pageSize = parseInt(e.target.value, 10);
             currentPage = 1;
             renderCurrentPage();
         });
-
         document.getElementById("tableSearchInput").addEventListener("input", filterRecords);
         document.getElementById("btnSearchRecords").addEventListener("click", filterRecords);
         document.getElementById("btnRefreshRecords").addEventListener("click", fetchRealRecords);
@@ -1301,7 +1025,6 @@
         document.getElementById("issueCertForm").addEventListener("submit", async function (e) {
             e.preventDefault();
             const submitBtn = document.getElementById("btnSubmitSingle");
-            
             const payload = {
                 studentName: document.getElementById("student-name").value.trim(),
                 enrollmentNo: document.getElementById("enrollment-no").value.trim(),
@@ -1317,18 +1040,13 @@
             showStatus(`⏳ Mining Block & Generating Certificate PDF for <b>${payload.studentName}</b>... Please wait.`, "loading");
 
             try {
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: "POST",
-                    body: JSON.stringify(payload)
-                });
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
                 const result = await response.json();
 
                 if (result.status === "SUCCESS") {
                     showStatus(`✅ <b>Certificate Successfully Mined!</b><br>Cert ID: <code>${result.certId}</code> | Block #${result.blockIndex} | Hash: <code>${result.currentHash}</code><br><a href="${result.pdfLink}" target="_blank" style="color: #065f46; font-weight: bold; text-decoration: underline;">👉 Open Generated PDF</a>`, "success");
-                    
                     fetchRealRecords();
                     fetchAuditLogs();
-
                     document.getElementById("issueCertForm").reset();
                     document.getElementById("issue-date").value = new Date().toISOString().split("T")[0];
                     selectTemplate('single', 'template_1', document.querySelector('#singleTemplateGrid .template-card'));
@@ -1348,7 +1066,6 @@
                 "Aryan Verma,01916403201,AIML,Academic Excellence,IPU-2026-AIML001,06012006\n" +
                 "Sneha Gupta,01916403202,AIML,Institutional Event / Participation,IPU-2026-AIML002,01012006\n" +
                 "Kunal Singh,01916403203,CSE,Degree / Program Completion,IPU-2026-AIML003,02012006";
-            
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
@@ -1374,7 +1091,6 @@
             reader.onload = async function (e) {
                 const text = e.target.result;
                 const lines = text.split(/\r\n|\n/).filter(line => line.trim() !== "");
-                
                 if (lines.length <= 1) {
                     showStatus("❌ CSV file appears to be empty.", "error");
                     return;
@@ -1430,7 +1146,6 @@
                     uploadBtn.disabled = false;
                 }
             };
-
             reader.readAsText(file);
         });
     </script>

@@ -6,9 +6,7 @@
     <title>Student Portal Dashboard - GGSIPU</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -57,7 +55,6 @@
             object-fit: contain;
             pointer-events: none;
             user-select: none;
-            cursor: default;
             flex-shrink: 0;
         }
 
@@ -115,17 +112,8 @@
             flex-direction: column;
         }
 
-        #studentDisplayName {
-            font-weight: 700;
-            color: #0f172a;
-            font-size: 0.92rem;
-        }
-
-        #studentDisplayEnroll {
-            font-size: 0.8rem;
-            color: #64748b;
-            font-family: monospace;
-        }
+        #studentDisplayName { font-weight: 700; color: #0f172a; font-size: 0.92rem; }
+        #studentDisplayEnroll { font-size: 0.8rem; color: #64748b; font-family: monospace; }
 
         .btn-logout {
             background: #fee2e2;
@@ -140,11 +128,7 @@
             cursor: pointer;
             white-space: nowrap;
         }
-
-        .btn-logout:hover {
-            background: #dc2626;
-            color: #ffffff !important;
-        }
+        .btn-logout:hover { background: #dc2626; color: #ffffff !important; }
 
         .dashboard-container {
             flex: 1 0 auto;
@@ -154,10 +138,7 @@
             padding: 2.25rem 1.5rem;
         }
 
-        .dash-section {
-            width: 100%;
-        }
-
+        .dash-section { width: 100%; }
         .section-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -176,18 +157,8 @@
             padding-bottom: 1.25rem;
         }
 
-        .section-title {
-            margin: 0 0 4px 0;
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .section-desc {
-            margin: 0;
-            font-size: 0.88rem;
-            color: #64748b;
-        }
+        .section-title { margin: 0 0 4px 0; font-size: 1.35rem; font-weight: 700; color: #0f172a; }
+        .section-desc { margin: 0; font-size: 0.88rem; color: #64748b; }
 
         .btn-sync {
             padding: 0.55rem 1rem;
@@ -204,19 +175,9 @@
             gap: 6px;
             white-space: nowrap;
         }
+        .btn-sync:hover { background: #e2e8f0; color: #0f172a; }
 
-        .btn-sync:hover {
-            background: #e2e8f0;
-            color: #0f172a;
-        }
-
-        .cert-card-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 1.25rem;
-            width: 100%;
-        }
+        .cert-card-container { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.25rem; width: 100%; }
 
         .student-cert-card {
             display: flex;
@@ -231,46 +192,14 @@
             gap: 1.25rem;
             transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
         }
+        .student-cert-card:hover { border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transform: translateY(-2px); }
+        .student-cert-card.revoked-bg { background: #fff8f8; border-color: #fecaca; }
 
-        .student-cert-card:hover {
-            border-color: #cbd5e1;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-            transform: translateY(-2px);
-        }
+        .badge-pill { font-size: 0.72rem; padding: 3px 8px; border-radius: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
+        .badge-active { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+        .badge-revoked { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
 
-        .student-cert-card.revoked-bg {
-            background: #fff8f8;
-            border-color: #fecaca;
-        }
-
-        .badge-pill {
-            font-size: 0.72rem;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .badge-active {
-            background: #dcfce7;
-            color: #15803d;
-            border: 1px solid #bbf7d0;
-        }
-
-        .badge-revoked {
-            background: #fee2e2;
-            color: #b91c1c;
-            border: 1px solid #fecaca;
-        }
-
-        .card-actions-wrapper {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
+        .card-actions-wrapper { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
         .btn-action-pill {
             display: inline-flex;
             align-items: center;
@@ -284,33 +213,12 @@
             transition: all 0.2s;
             white-space: nowrap;
         }
-
-        .btn-view-pdf {
-            background: #2563eb;
-            color: #ffffff !important;
-            border: 1px solid #2563eb;
-        }
-        .btn-view-pdf:hover {
-            background: #1d4ed8;
-        }
-
-        .btn-download-pdf {
-            background: #0f172a;
-            color: #ffffff !important;
-            border: 1px solid #0f172a;
-        }
-        .btn-download-pdf:hover {
-            background: #1e293b;
-        }
-
-        .btn-verify-qr {
-            background: #f1f5f9;
-            color: #334155 !important;
-            border: 1px solid #cbd5e1;
-        }
-        .btn-verify-qr:hover {
-            background: #e2e8f0;
-        }
+        .btn-view-pdf { background: #2563eb; color: #ffffff !important; border: 1px solid #2563eb; }
+        .btn-view-pdf:hover { background: #1d4ed8; }
+        .btn-download-pdf { background: #0f172a; color: #ffffff !important; border: 1px solid #0f172a; }
+        .btn-download-pdf:hover { background: #1e293b; }
+        .btn-verify-qr { background: #f1f5f9; color: #334155 !important; border: 1px solid #cbd5e1; }
+        .btn-verify-qr:hover { background: #e2e8f0; }
 
         .footer {
             flex-shrink: 0;
@@ -319,168 +227,46 @@
             padding: 2.5rem 1.5rem 1.75rem;
             border-top: 1px solid #1e293b;
         }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; }
+        .footer-team { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.95rem; color: #e2e8f0; }
+        .team-badge { background: #2563eb; color: #ffffff; padding: 2px 10px; border-radius: 12px; font-weight: 700; font-size: 0.8rem; }
+        .contributors-wrapper { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; width: 100%; }
+        .contributors-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #64748b; font-weight: 600; }
+        .contributor-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; max-width: 800px; }
+        .contributor-pill { background: #1e293b; color: #cbd5e1; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #334155; }
+        .contributor-pill:hover { background: #334155; color: #ffffff; }
+        .footer-bottom { border-top: 1px solid #1e293b; padding-top: 1.25rem; width: 100%; font-size: 0.8rem; color: #64748b; }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 1.5rem;
-        }
-
-        .footer-team {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            font-size: 0.95rem;
-            color: #e2e8f0;
-        }
-
-        .team-badge {
-            background: #2563eb;
-            color: #ffffff;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 0.8rem;
-        }
-
-        .contributors-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.75rem;
-            width: 100%;
-        }
-
-        .contributors-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        .contributor-tags {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-            max-width: 800px;
-        }
-
-        .contributor-pill {
-            background: #1e293b;
-            color: #cbd5e1;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            border: 1px solid #334155;
-            transition: background 0.2s ease, color 0.2s ease;
-        }
-
-        .contributor-pill:hover {
-            background: #334155;
-            color: #ffffff;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #1e293b;
-            padding-top: 1.25rem;
-            width: 100%;
-            font-size: 0.8rem;
-            color: #64748b;
-        }
-
-        @media (max-width: 992px) {
-            .header-container-custom {
-                padding: 0 1.5rem;
-            }
-            .system-title {
-                font-size: 0.92rem;
-            }
-            .univ-logo-img {
-                height: 46px;
-            }
-            .dashboard-container {
-                padding: 1.75rem 1.25rem;
-            }
-        }
-
+        /* --- MOBILE SCREEN FIXES --- */
         @media (max-width: 768px) {
+            .univ-header { padding: 0.6rem 0; }
             .header-container-custom {
+                display: grid;
+                grid-template-columns: 1fr auto;
+                grid-template-areas:
+                    "logo user"
+                    "title title";
                 padding: 0 1rem;
-                flex-wrap: wrap;
-                gap: 0.75rem;
+                gap: 0.45rem 0.75rem;
+                align-items: center;
             }
-            .header-left {
-                gap: 0.75rem;
-            }
-            .univ-logo-img {
-                height: 40px;
-            }
-            .header-divider {
-                height: 28px;
-            }
-            .system-title {
-                font-size: 0.82rem;
-            }
-            .portal-badge {
-                font-size: 0.65rem;
-            }
-            .header-right {
+            .header-left { display: contents; }
+            .univ-logo-img { grid-area: logo; height: 38px; justify-self: start; }
+            .header-right { grid-area: user; justify-self: end; }
+            .header-divider { display: none !important; }
+            .title-group {
+                grid-area: title;
                 width: 100%;
-                justify-content: flex-end;
                 border-top: 1px solid #f1f5f9;
-                padding-top: 0.5rem;
+                padding-top: 0.45rem;
+                text-align: center;
+                align-items: center;
             }
-            .section-card {
-                padding: 1.25rem 1rem;
-            }
-            .student-cert-card {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-            .card-actions-wrapper {
-                width: 100%;
-                justify-content: flex-start;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .univ-header {
-                padding: 0.5rem 0;
-            }
-            .univ-logo-img {
-                height: 34px;
-            }
-            .system-title {
-                font-size: 0.76rem;
-                line-height: 1.2;
-            }
-            .dashboard-container {
-                padding: 1.25rem 0.75rem;
-            }
-            .section-title {
-                font-size: 1.15rem;
-            }
-            .btn-sync {
-                width: 100%;
-                justify-content: center;
-            }
-            .btn-action-pill {
-                flex: 1 1 auto;
-                justify-content: center;
-            }
-            .contributor-pill {
-                font-size: 0.75rem;
-                padding: 3px 10px;
-            }
+            .portal-badge { align-self: center; font-size: 0.65rem; }
+            .system-title { font-size: 0.84rem; line-height: 1.3; text-align: center; }
+            .student-cert-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .card-actions-wrapper { width: 100%; justify-content: flex-start; }
+            .dashboard-container { padding: 1.25rem 0.75rem; }
         }
     </style>
 </head>
@@ -493,9 +279,7 @@
                 <div class="header-divider"></div>
                 <div class="title-group">
                     <span class="portal-badge">Student Portal</span>
-                    <h1 class="system-title">
-                        Certificate Generation, Verification <span class="amp">&amp;</span> Management System
-                    </h1>
+                    <h1 class="system-title">Certificate Generation, Verification &amp; Management System</h1>
                 </div>
             </div>
 
@@ -517,13 +301,9 @@
                 <div class="section-header-flex">
                     <div>
                         <h2 class="section-title">Verified Certificates</h2>
-                        <p class="section-desc">
-                            View, download, and verify credentials linked to your enrollment number on the blockchain ledger.
-                        </p>
+                        <p class="section-desc">View, download, and verify credentials linked to your enrollment number on the blockchain ledger.</p>
                     </div>
-                    <button type="button" id="btnSyncRecords" class="btn-sync">
-                        🔄 Sync Records
-                    </button>
+                    <button type="button" id="btnSyncRecords" class="btn-sync">🔄 Sync Records</button>
                 </div>
 
                 <div id="certCardList" class="cert-card-container">
@@ -584,20 +364,14 @@
             const container = document.getElementById("certCardList");
             const cleanUserEnroll = String(studentEnroll).replace(/^0+/, "").trim().toLowerCase();
 
-            container.innerHTML = `
-                <div style="text-align: center; color: #64748b; padding: 3rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1;">
-                    ⏳ Syncing all certificates for Enrollment: <b>${studentEnroll}</b> from the ledger...
-                </div>`;
+            container.innerHTML = `<div style="text-align: center; color: #64748b; padding: 3rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1;">⏳ Syncing all certificates for Enrollment: <b>${studentEnroll}</b> from the ledger...</div>`;
 
             let matchedCerts = [];
-
             const rawSession = sessionStorage.getItem("ipu_student_certs");
             if (rawSession) {
                 try {
                     const parsed = JSON.parse(rawSession);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        matchedCerts = parsed;
-                    }
+                    if (Array.isArray(parsed) && parsed.length > 0) matchedCerts = parsed;
                 } catch(e) {}
             }
 
@@ -626,9 +400,7 @@
                     <div style="text-align: center; color: #64748b; padding: 3.5rem 1.5rem; background: #f8fafc; border-radius: 8px; border: 1px dashed #cbd5e1;">
                         <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📂</div>
                         <strong style="color: #334155; font-size: 1.05rem;">No certificates found for Enrollment: ${studentEnroll}</strong>
-                        <p style="margin-top: 6px; font-size: 0.85rem; color: #64748b;">
-                            If your certificate was recently issued, click "🔄 Sync Records" to refresh.
-                        </p>
+                        <p style="margin-top: 6px; font-size: 0.85rem; color: #64748b;">If your certificate was recently issued, click "🔄 Sync Records" to refresh.</p>
                     </div>`;
                 return;
             }
@@ -653,9 +425,7 @@
                             <span style="background: #e0f2fe; color: #0369a1; font-size: 0.72rem; padding: 2px 7px; border-radius: 12px; font-weight: 700;">Block #${cert.blockIndex || 1}</span>
                             ${statusBadge}
                         </div>
-                        <div style="font-size: 0.76rem; color: #64748b; font-family: monospace;" title="${cert.currentHash}">
-                            Hash: ${shortHash}
-                        </div>
+                        <div style="font-size: 0.76rem; color: #64748b; font-family: monospace;" title="${cert.currentHash}">Hash: ${shortHash}</div>
                         ${isRevoked ? `<div style="font-size: 0.75rem; color: #dc2626; font-weight: 600; margin-top: 2px;">Reason: ${cert.revocationReason || "Revoked by Issuer"}</div>` : ''}
                     </div>
 
@@ -666,24 +436,16 @@
                     </div>
 
                     <div class="card-actions-wrapper">
-                        <a href="${pdfUrl}" target="_blank" class="btn-action-pill btn-view-pdf" title="View certificate PDF">
-                            👁️ View PDF ↗
-                        </a>
-                        <a href="${pdfUrl}" target="_blank" class="btn-action-pill btn-download-pdf" title="Download certificate PDF">
-                            ⬇️ Download
-                        </a>
-                        <a href="verify.html?certId=${encodeURIComponent(cert.certId)}" target="_blank" class="btn-action-pill btn-verify-qr" title="Verify on Public Ledger">
-                            🔍 Verify QR
-                        </a>
+                        <a href="${pdfUrl}" target="_blank" class="btn-action-pill btn-view-pdf">👁️ View PDF ↗</a>
+                        <a href="${pdfUrl}" target="_blank" class="btn-action-pill btn-download-pdf">⬇️ Download</a>
+                        <a href="verify.html?certId=${encodeURIComponent(cert.certId)}" target="_blank" class="btn-action-pill btn-verify-qr">🔍 Verify QR</a>
                     </div>
                 `;
-
                 container.appendChild(card);
             });
         }
 
         document.addEventListener("DOMContentLoaded", fetchAndRenderAllCertificates);
-
         document.getElementById("btnSyncRecords").addEventListener("click", () => {
             sessionStorage.removeItem("ipu_student_certs");
             fetchAndRenderAllCertificates();

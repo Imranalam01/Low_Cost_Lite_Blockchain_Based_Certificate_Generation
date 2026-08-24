@@ -6,9 +6,7 @@
     <title>Student Login - GGSIPU Portal</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -57,7 +55,6 @@
             object-fit: contain;
             pointer-events: none;
             user-select: none;
-            cursor: default;
             flex-shrink: 0;
         }
 
@@ -129,29 +126,11 @@
             margin-bottom: 1.25rem;
             transition: color 0.2s;
         }
-        .back-link:hover {
-            color: #16a34a;
-        }
+        .back-link:hover { color: #16a34a; }
 
-        .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            line-height: 1;
-        }
-
-        .auth-title {
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin: 0 0 0.4rem 0;
-        }
-
-        .auth-subtitle {
-            font-size: 0.88rem;
-            color: #64748b;
-            margin: 0 0 1.5rem 0;
-            line-height: 1.4;
-        }
+        .card-icon { font-size: 2.5rem; margin-bottom: 0.5rem; line-height: 1; }
+        .auth-title { font-size: 1.35rem; font-weight: 700; color: #0f172a; margin: 0 0 0.4rem 0; }
+        .auth-subtitle { font-size: 0.88rem; color: #64748b; margin: 0 0 1.5rem 0; line-height: 1.4; }
 
         .auth-status-alert {
             display: none;
@@ -163,23 +142,9 @@
             line-height: 1.4;
         }
 
-        .auth-form {
-            text-align: left;
-        }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 0.4rem;
-        }
-
+        .auth-form { text-align: left; }
+        .form-group { margin-bottom: 1.25rem; display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.88rem; font-weight: 600; color: #334155; margin-bottom: 0.4rem; }
         .form-group input {
             width: 100%;
             padding: 0.75rem 1rem;
@@ -191,7 +156,6 @@
             background-color: #ffffff;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
-
         .form-group input:focus {
             border-color: #16a34a;
             box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
@@ -207,23 +171,12 @@
             font-size: 0.95rem;
             font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: background-color 0.2s;
             display: inline-block;
             margin-top: 0.5rem;
         }
-
-        .btn-submit-student:hover {
-            background: #15803d;
-        }
-
-        .btn-submit-student:active {
-            transform: scale(0.99);
-        }
-
-        .btn-submit-student:disabled {
-            opacity: 0.65;
-            cursor: not-allowed;
-        }
+        .btn-submit-student:hover { background: #15803d; }
+        .btn-submit-student:disabled { opacity: 0.65; cursor: not-allowed; }
 
         .footer {
             flex-shrink: 0;
@@ -232,135 +185,46 @@
             padding: 2.5rem 1.5rem 1.75rem;
             border-top: 1px solid #1e293b;
         }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; }
+        .footer-team { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.5rem; font-size: 0.95rem; color: #e2e8f0; }
+        .team-badge { background: #2563eb; color: #ffffff; padding: 2px 10px; border-radius: 12px; font-weight: 700; font-size: 0.8rem; }
+        .contributors-wrapper { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; width: 100%; }
+        .contributors-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #64748b; font-weight: 600; }
+        .contributor-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; max-width: 800px; }
+        .contributor-pill { background: #1e293b; color: #cbd5e1; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #334155; }
+        .contributor-pill:hover { background: #334155; color: #ffffff; }
+        .footer-bottom { border-top: 1px solid #1e293b; padding-top: 1.25rem; width: 100%; font-size: 0.8rem; color: #64748b; }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 1.5rem;
-        }
-
-        .footer-team {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            font-size: 0.95rem;
-            color: #e2e8f0;
-        }
-
-        .team-badge {
-            background: #2563eb;
-            color: #ffffff;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 0.8rem;
-        }
-
-        .contributors-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.75rem;
-            width: 100%;
-        }
-
-        .contributors-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        .contributor-tags {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-            max-width: 800px;
-        }
-
-        .contributor-pill {
-            background: #1e293b;
-            color: #cbd5e1;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            border: 1px solid #334155;
-            transition: background 0.2s ease, color 0.2s ease;
-        }
-
-        .contributor-pill:hover {
-            background: #334155;
-            color: #ffffff;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #1e293b;
-            padding-top: 1.25rem;
-            width: 100%;
-            font-size: 0.8rem;
-            color: #64748b;
-        }
-
+        /* --- MOBILE SCREEN FIXES --- */
         @media (max-width: 768px) {
+            .univ-header { padding: 0.6rem 0; }
             .header-container-custom {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
                 padding: 0 1rem;
-            }
-            .univ-logo-img {
-                height: 42px;
-            }
-            .header-divider {
-                height: 30px;
-            }
-            .system-title {
-                font-size: 0.85rem;
-            }
-            .portal-badge {
-                font-size: 0.65rem;
-            }
-            .auth-card {
-                padding: 1.75rem 1.25rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .univ-header {
-                padding: 0.6rem 0;
-            }
-            .header-container-custom {
-                padding: 0 0.75rem;
-            }
-            .univ-logo-img {
-                height: 36px;
+                gap: 0.45rem;
             }
             .header-left {
-                gap: 0.6rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.45rem;
+                width: 100%;
             }
-            .system-title {
-                font-size: 0.78rem;
-                line-height: 1.2;
+            .univ-logo-img { height: 38px; }
+            .header-divider { display: none !important; }
+            .title-group {
+                width: 100%;
+                border-top: 1px solid #f1f5f9;
+                padding-top: 0.45rem;
+                text-align: center;
+                align-items: center;
             }
-            .auth-container {
-                padding: 2rem 1rem;
-            }
-            .auth-title {
-                font-size: 1.2rem;
-            }
-            .auth-subtitle {
-                font-size: 0.82rem;
-                margin-bottom: 1.25rem;
-            }
-            .contributor-pill {
-                font-size: 0.75rem;
-                padding: 3px 10px;
-            }
+            .portal-badge { align-self: center; font-size: 0.65rem; }
+            .system-title { font-size: 0.84rem; line-height: 1.3; text-align: center; }
+            .auth-container { padding: 2rem 1rem; }
+            .auth-card { padding: 1.75rem 1.25rem; }
         }
     </style>
 </head>
@@ -394,25 +258,12 @@
             <form class="auth-form" id="studentLoginForm">
                 <div class="form-group">
                     <label for="loginEnroll">Official Enrollment Number</label>
-                    <input 
-                        type="text" 
-                        id="loginEnroll" 
-                        placeholder="e.g. 0116403222" 
-                        required 
-                        autocomplete="username"
-                    >
+                    <input type="text" id="loginEnroll" placeholder="e.g. 0116403222" required autocomplete="username">
                 </div>
 
                 <div class="form-group" style="margin-bottom: 1.5rem;">
                     <label for="loginDob">Date of Birth (DDMMYYYY)</label>
-                    <input 
-                        type="password" 
-                        id="loginDob" 
-                        placeholder="e.g. 06012006" 
-                        maxlength="10"
-                        required 
-                        autocomplete="current-password"
-                    >
+                    <input type="password" id="loginDob" placeholder="e.g. 06012006" maxlength="10" required autocomplete="current-password">
                     <small style="color: #64748b; font-size: 0.75rem; margin-top: 5px; display: block;">Format: 8-digit Date of Birth</small>
                 </div>
 
@@ -481,10 +332,7 @@
             showAlert("⏳ Verifying credentials against university ledger...", "loading");
 
             try {
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: "POST",
-                    body: JSON.stringify(payload)
-                });
+                const response = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
                 const data = await response.json();
 
                 if (data.status === "SUCCESS") {
@@ -494,9 +342,7 @@
                     sessionStorage.setItem("ipu_student_certs", JSON.stringify(data.certificates));
 
                     showAlert(`✅ Welcome, <b>${data.studentName}</b>! Redirecting to dashboard...`, "success");
-                    setTimeout(() => {
-                        window.location.href = "student-dashboard.html";
-                    }, 700);
+                    setTimeout(() => { window.location.href = "student-dashboard.html"; }, 700);
                 } else {
                     showAlert(`❌ ${data.message}`, "error");
                 }

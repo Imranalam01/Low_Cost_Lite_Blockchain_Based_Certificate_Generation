@@ -6,7 +6,6 @@
     <title>GGSIPU - Certificate Management Portal</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Base Global Reset & Container Responsiveness */
         *, *::before, *::after {
             box-sizing: border-box;
         }
@@ -17,9 +16,13 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-color: #f8fafc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow-x: hidden;
+            color: #1e293b;
         }
 
+        /* Responsive Header */
         .univ-header {
             width: 100%;
             padding: 0.75rem 0;
@@ -46,16 +49,15 @@
             display: flex;
             align-items: center;
             gap: 1.1rem;
-            min-width: 0; /* Prevents flex children from overflowing */
+            min-width: 0;
         }
 
         .univ-logo-img {
-            height: 56px;
+            height: 54px;
             width: auto;
             object-fit: contain;
             pointer-events: none;
             user-select: none;
-            cursor: default;
             flex-shrink: 0;
         }
 
@@ -102,16 +104,15 @@
         }
 
         .team-logo-img {
-            height: 64px;
+            height: 60px;
             width: auto;
-            max-width: 200px;
+            max-width: 190px;
             object-fit: contain;
             border: none;
             box-shadow: none;
             filter: none;
             pointer-events: none;
             user-select: none;
-            cursor: default;
         }
 
         /* Main Workspace & Grid */
@@ -185,7 +186,7 @@
             transition: all 0.2s ease;
         }
 
-        /* Footer Responsiveness */
+        /* Footer Section */
         .footer {
             flex-shrink: 0;
             background: #0f172a;
@@ -270,107 +271,84 @@
             color: #64748b;
         }
 
-        /* --- BREAKPOINTS --- */
-
-        /* Tablets & Medium Screens (max-width: 992px) */
-        @media (max-width: 992px) {
-            .header-container-custom {
-                padding: 0 1.5rem;
-            }
-            .system-title {
-                font-size: 0.95rem;
-            }
-            .team-logo-img {
-                height: 54px;
-            }
-            .univ-logo-img {
-                height: 48px;
-            }
-            .main-container {
-                padding: 2.5rem 1.25rem;
-            }
-        }
-
-        /* Small Tablets & Large Phones (max-width: 768px) */
+        /* --- MOBILE SCREEN FIXES --- */
         @media (max-width: 768px) {
+            .univ-header {
+                padding: 0.6rem 0;
+            }
+
             .header-container-custom {
+                display: grid;
+                grid-template-columns: 1fr auto;
+                grid-template-areas:
+                    "logo team"
+                    "title title";
                 padding: 0 1rem;
-                gap: 0.75rem;
+                gap: 0.45rem 0.75rem;
+                align-items: center;
             }
+
+            .header-left {
+                display: contents;
+            }
+
             .univ-logo-img {
-                height: 42px;
+                grid-area: logo;
+                height: 38px;
+                justify-self: start;
             }
+
+            .header-right {
+                grid-area: team;
+                justify-self: end;
+            }
+
             .team-logo-img {
-                height: 46px;
+                height: 38px;
             }
+
             .header-divider {
-                height: 30px;
+                display: none !important;
             }
-            .system-title {
-                font-size: 0.85rem;
+
+            .title-group {
+                grid-area: title;
+                width: 100%;
+                border-top: 1px solid #f1f5f9;
+                padding-top: 0.45rem;
+                text-align: center;
+                align-items: center;
             }
+
             .portal-badge {
+                align-self: center;
                 font-size: 0.65rem;
+            }
+
+            .system-title {
+                font-size: 0.84rem;
+                line-height: 1.3;
+                text-align: center;
+            }
+
+            .main-container {
+                padding: 2rem 1rem;
             }
             .portal-grid {
                 grid-template-columns: 1fr;
                 max-width: 440px;
                 margin: 0 auto;
-                gap: 1.5rem;
-            }
-            .card {
-                padding: 1.75rem 1.25rem;
-            }
-        }
-
-        /* Ultra-Small Mobile Devices (max-width: 480px) */
-        @media (max-width: 480px) {
-            .univ-header {
-                padding: 0.6rem 0;
-            }
-            .header-container-custom {
-                padding: 0 0.75rem;
-            }
-            .univ-logo-img {
-                height: 36px;
-            }
-            .team-logo-img {
-                height: 38px;
-            }
-            .header-left {
-                gap: 0.6rem;
-            }
-            .system-title {
-                font-size: 0.78rem;
-                line-height: 1.2;
-            }
-            .main-container {
-                padding: 1.75rem 1rem;
-            }
-            .card-icon {
-                font-size: 2.25rem;
-            }
-            .card-title {
-                font-size: 1.15rem;
-            }
-            .card-desc {
-                font-size: 0.85rem;
-                margin-bottom: 1.25rem;
-            }
-            .contributor-pill {
-                font-size: 0.75rem;
-                padding: 3px 10px;
+                gap: 1.25rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
+    <!-- Responsive Header with Multi-Tier Mobile Grid -->
     <header class="univ-header">
         <div class="header-container-custom">
             
-            <!-- Left Side: University Logo & Title Group -->
             <div class="header-left">
                 <img src="assets/ipu-logo.png" alt="GGSIPU Logo" class="univ-logo-img">
                 <div class="header-divider"></div>
@@ -382,7 +360,6 @@
                 </div>
             </div>
 
-            <!-- Right Side: Clean Team Logo -->
             <div class="header-right">
                 <img src="assets/team_logo.png" alt="Team CodeLEOS Logo" class="team-logo-img">
             </div>
@@ -391,7 +368,7 @@
     </header>
 
     <!-- Main Content Container -->
-    <main class="main-container container">
+    <main class="main-container">
         <section class="portal-grid">
             
             <!-- Teacher Portal -->
@@ -424,13 +401,11 @@
     <!-- Footer Section -->
     <footer class="footer">
         <div class="container footer-content">
-            <!-- Team Branding -->
             <div class="footer-team">
                 <span>Designed &amp; Developed with ❤️ by</span>
                 <span class="team-badge">Team CodeLEOS</span>
             </div>
 
-            <!-- Contributors List -->
             <div class="contributors-wrapper">
                 <span class="contributors-label">Contributors</span>
                 <div class="contributor-tags">
@@ -443,7 +418,6 @@
                 </div>
             </div>
 
-            <!-- Copyright -->
             <div class="footer-bottom">
                 <p>© 2026 Guru Gobind Singh Indraprastha University. All rights reserved.</p>
             </div>
